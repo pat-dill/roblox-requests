@@ -17,7 +17,7 @@ Accepted options:
 | data    | string OR table OR FormData | Data to send in the body of the request. Tables will automatically be encoded as JSON. |
 | cookies | dictionary OR CookieJar     | Cookies to send with request.                                                          |
 
-### http.get(url, options), post, head, put, delete, patch, options
+### http.get, post, head, put, delete, patch, options
 
 `http.get(url, [options]) -> Response`
 
@@ -73,7 +73,7 @@ will not block the current thread.
 ### Attributes
 
 - request (Request) - Request that generated this response
-- url (string) - URL that generated this response
+- url (string) - Requests' URL
 - method (string) - Request's HTTP method
 - success (bool) - `true` if response was successful
 - code (number) - Status code of reponse
@@ -87,6 +87,46 @@ will not block the current thread.
 `Response:json() -> Variant`
 
 Converts JSON response to a Lua object.
+
+## http.Session
+
+`http.Session([base_url]) -> Session`
+
+Creates a session with an optional base URL.
+
+All main module methods also apply to sessions.
+
+### Attributes
+
+- headers (dictionary) - Default headers used with each request
+- cookies (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header
+- base_url (string) - Base URL to prefix each request with
+
+### Session:set_headers
+
+`Session:set_headers(new_headers)`
+
+Updates headers dictionary with values of new_headers.
+
+### Session:send
+
+`Session:send(method, url, [opts]) -> Response`
+
+Creates and sends a request prepared with session defaults.
+Options specified here will override the session values.
+
+### Session:get, post, head, put, delete, patch, options
+
+`Session:get(url, [opts]) -> Response`
+
+Shortcut methods for `Session:send`
+
+### Session:Request
+
+`Session:Request(method, url, [opts]) -> Request`
+
+Creates a Request prepared with session defaults.
+Options specified here will override the session values.
 
 ## http.FormData
 
