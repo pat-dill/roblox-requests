@@ -12,6 +12,8 @@ local FormData = require(Src.form)
 
 local http = {}
 
+http.VERSION = "0.1.0"
+
 http.Request = Request.new
 http.Session = Session.new
 http.FormData = FormData.new
