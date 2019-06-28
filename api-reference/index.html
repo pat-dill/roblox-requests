@@ -336,8 +336,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#httpgeturl-options-post-head-put-delete-patch-options" title="http.get(url, options), post, head, put, delete, patch, options" class="md-nav__link">
-    http.get(url, options), post, head, put, delete, patch, options
+  <a href="#httpget-post-head-put-delete-patch-options" title="http.get, post, head, put, delete, patch, options" class="md-nav__link">
+    http.get, post, head, put, delete, patch, options
   </a>
   
 </li>
@@ -423,6 +423,54 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#httpsession" title="http.Session" class="md-nav__link">
+    http.Session
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes_2" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionset_headers" title="Session:set_headers" class="md-nav__link">
+    Session:set_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionsend" title="Session:send" class="md-nav__link">
+    Session:send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionget-post-head-put-delete-patch-options" title="Session:get, post, head, put, delete, patch, options" class="md-nav__link">
+    Session:get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionrequest" title="Session:Request" class="md-nav__link">
+    Session:Request
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#httpformdata" title="http.FormData" class="md-nav__link">
     http.FormData
   </a>
@@ -458,7 +506,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#attributes_2" title="Attributes" class="md-nav__link">
+  <a href="#attributes_3" title="Attributes" class="md-nav__link">
     Attributes
   </a>
   
@@ -530,8 +578,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#httpgeturl-options-post-head-put-delete-patch-options" title="http.get(url, options), post, head, put, delete, patch, options" class="md-nav__link">
-    http.get(url, options), post, head, put, delete, patch, options
+  <a href="#httpget-post-head-put-delete-patch-options" title="http.get, post, head, put, delete, patch, options" class="md-nav__link">
+    http.get, post, head, put, delete, patch, options
   </a>
   
 </li>
@@ -617,6 +665,54 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#httpsession" title="http.Session" class="md-nav__link">
+    http.Session
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes_2" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionset_headers" title="Session:set_headers" class="md-nav__link">
+    Session:set_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionsend" title="Session:send" class="md-nav__link">
+    Session:send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionget-post-head-put-delete-patch-options" title="Session:get, post, head, put, delete, patch, options" class="md-nav__link">
+    Session:get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionrequest" title="Session:Request" class="md-nav__link">
+    Session:Request
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#httpformdata" title="http.FormData" class="md-nav__link">
     http.FormData
   </a>
@@ -652,7 +748,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#attributes_2" title="Attributes" class="md-nav__link">
+  <a href="#attributes_3" title="Attributes" class="md-nav__link">
     Attributes
   </a>
   
@@ -733,7 +829,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="httpgeturl-options-post-head-put-delete-patch-options">http.get(url, options), post, head, put, delete, patch, options</h3>
+<h3 id="httpget-post-head-put-delete-patch-options">http.get, post, head, put, delete, patch, options</h3>
 <p><code>http.get(url, [options]) -&gt; Response</code></p>
 <p>Shortcut methods for <code>http.send</code>.</p>
 <h2 id="httprequest">http.Request</h2>
@@ -767,7 +863,7 @@ will not block the current thread.</p>
 <h3 id="attributes_1">Attributes</h3>
 <ul>
 <li>request (Request) - Request that generated this response</li>
-<li>url (string) - URL that generated this response</li>
+<li>url (string) - Requests' URL</li>
 <li>method (string) - Request's HTTP method</li>
 <li>success (bool) - <code>true</code> if response was successful</li>
 <li>code (number) - Status code of reponse</li>
@@ -779,6 +875,30 @@ will not block the current thread.</p>
 <h3 id="responsejson">Response:json</h3>
 <p><code>Response:json() -&gt; Variant</code></p>
 <p>Converts JSON response to a Lua object.</p>
+<h2 id="httpsession">http.Session</h2>
+<p><code>http.Session([base_url]) -&gt; Session</code></p>
+<p>Creates a session with an optional base URL.</p>
+<p>All main module methods also apply to sessions.</p>
+<h3 id="attributes_2">Attributes</h3>
+<ul>
+<li>headers (dictionary) - Default headers used with each request</li>
+<li>cookies (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header</li>
+<li>base_url (string) - Base URL to prefix each request with. If a request UTL contains the HTTP protocol ("http(s)://"), this will be ignored</li>
+</ul>
+<h3 id="sessionset_headers">Session:set_headers</h3>
+<p><code>Session:set_headers(new_headers)</code></p>
+<p>Updates headers dictionary with values of new_headers.</p>
+<h3 id="sessionsend">Session:send</h3>
+<p><code>Session:send(method, url, [opts]) -&gt; Response</code></p>
+<p>Creates and sends a request prepared with session defaults.
+Options specified here will override the session values.</p>
+<h3 id="sessionget-post-head-put-delete-patch-options">Session:get, post, head, put, delete, patch, options</h3>
+<p><code>Session:get(url, [opts]) -&gt; Response</code></p>
+<p>Shortcut methods for <code>Session:send</code></p>
+<h3 id="sessionrequest">Session:Request</h3>
+<p><code>Session:Request(method, url, [opts]) -&gt; Request</code></p>
+<p>Creates a Request prepared with session defaults.
+Options specified here will override the session values.</p>
 <h2 id="httpformdata">http.FormData</h2>
 <p><code>http.FormData([{fieldName, fieldValue}, [...]]) -&gt; FormData</code></p>
 <p>Creates form data based on given fields. Field names cannot contain '=' or '&amp;' characters.</p>
@@ -795,7 +915,7 @@ Content type must be specified if not <code>text/plain</code>.</p>
 <p>Creates a CookieJar object.</p>
 <p>When cookies are added for a URL, its hostname is taken and used as the domain for that cookie
 (this is being reworked in the future).</p>
-<h3 id="attributes_2">Attributes</h3>
+<h3 id="attributes_3">Attributes</h3>
 <ul>
 <li>domains (dictionary) - Table containing cookies for each domain</li>
 </ul>
