@@ -11,7 +11,7 @@ local CookieJar = require(Src.cookies)
 -- Session class
 local Session = {}
 Session.__index = Session
-function Session.new(url_prefix)
+function Session.new(base_url)
 	-- Creates new Session object
 
 	local self = setmetatable({}, Session)
@@ -19,7 +19,7 @@ function Session.new(url_prefix)
 	self.headers = {}
 	self.cookies = CookieJar.new()
 
-	self.url_prefix = url_prefix or ""
+	self.base_url = base_url or ""
 
 	self.before_request = nil
 	self.after_request = nil
@@ -48,7 +48,7 @@ function Session:Request(method, url, opts)
 
 	-- add prefix if not absolute url
 	if not (url:sub(1, 7) == "http://" or url:sub(1, 8) == "https://") then
-		url = self.url_prefix .. url
+		url = self.base_url .. url
 	end
 
 	-- prepare request based on session defaults
