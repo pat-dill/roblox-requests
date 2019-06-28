@@ -100,7 +100,7 @@ All main module methods also apply to sessions.
 
 - headers (dictionary) - Default headers used with each request
 - cookies (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header
-- base_url (string) - Base URL to prefix each request with
+- base_url (string) - Base URL to prefix each request with. If a request UTL contains the HTTP protocol ("http(s)://"), this will be ignored
 
 ### Session:set_headers
 

@@ -182,9 +182,6 @@ print(r:json().url)
 
 Any non-text files will be encoded using Base64 before upload.
 
-!!! warning
-	Roblox doesn't support file uploads larger than 100 MB.
-
 ## Response Status Codes
 
 We can check the response status code and message:
