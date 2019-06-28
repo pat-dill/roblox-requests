@@ -1,0 +1,23 @@
+site_name: Roblox Requests Documentation
+repo_name: 'jpatrickdill/roblox-requests'
+repo_url: 'https://github.com/jpatrickdill/roblox-requests'
+
+theme:
+  name: 'material'
+  palette:
+    primary: 'green'
+    accent: 'green'
+
+markdown_extensions:
+  - toc
+  - admonition
+  - codehilite
+
+
+nav:
+  - Home: index.md
+  - Guide:
+    - Installation: guide/installation.md
+    - Quickstart: guide/quickstart.md
+    - Advanced Usage: guide/advanced.md
+  - API Reference: api-reference.md
