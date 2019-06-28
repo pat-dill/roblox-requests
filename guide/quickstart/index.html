@@ -312,6 +312,19 @@
     Response Content
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response-headers" title="Response Headers" class="md-nav__link">
+    Response Headers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -433,6 +446,19 @@
   <a href="#response-content" title="Response Content" class="md-nav__link">
     Response Content
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response-headers" title="Response Headers" class="md-nav__link">
+    Response Headers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -558,6 +584,27 @@ If you'd like to decode JSON data, you can use the <code>:json()</code> method:<
 <p>In the case that JSON decoding fails, an exception will be raised. It should be noted, however, that a successful <code>:json()</code> call
 does <strong>not</strong> indicate the success of the response. Some servers may return a JSON object in a failed response, such as error details.</p>
 <p>To check that a response is successful, use <code>r.success</code> or <code>r.code</code>.</p>
+<h3 id="response-headers">Response Headers</h3>
+<p>Response headers are often needed when using an API. They can be accessed as a dictionary through the <code>headers</code> attribute:</p>
+<div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://upload.wikimedia.org/wikipedia/commons/3/38/JPEG_example_JPG_RIP_001.jpg&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Last-Modified&quot;</span><span class="p">])</span>
+<span class="c1">-- Wed, 08 Oct 2014 23:28:44 GMT</span>
+</pre></div>
+
+
+<p>This dictionary, however, is special. HTTP headers are case-insensitive, so you can access them however you like:</p>
+<div class="codehilite"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Last-Modified&quot;</span><span class="p">])</span>
+<span class="c1">-- Wed, 08 Oct 2014 23:28:44 GMT</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">])</span>
+<span class="c1">-- image/jpeg</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;SeRvEr&quot;</span><span class="p">])</span>
+<span class="c1">-- ATS/8.0.3</span>
+</pre></div>
+
+
 <h2 id="custom-headers">Custom Headers</h2>
 <p>If you'd like to add HTTP headers, just pass a dictionary to the <code>headers</code> option.</p>
 <p>For example, API keys are often specified in the headers of a request:</p>
