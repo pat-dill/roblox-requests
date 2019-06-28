@@ -77,6 +77,30 @@ does **not** indicate the success of the response. Some servers may return a JSO
 
 To check that a response is successful, use `r.success` or `r.code`.
 
+### Response Headers
+
+Response headers are often needed when using an API. They can be accessed as a dictionary through the `headers` attribute:
+
+```lua
+local r = http.get("https://upload.wikimedia.org/wikipedia/commons/3/38/JPEG_example_JPG_RIP_001.jpg")
+
+print(r.headers["Last-Modified"])
+-- Wed, 08 Oct 2014 23:28:44 GMT
+```
+
+This dictionary, however, is special. HTTP headers are case-insensitive, so you can access them however you like:
+
+```lua
+print(r.headers["Last-Modified"])
+-- Wed, 08 Oct 2014 23:28:44 GMT
+
+print(r.headers["content-type"])
+-- image/jpeg
+
+print(r.headers["SeRvEr"])
+-- ATS/8.0.3
+```
+
 ## Custom Headers
 
 If you'd like to add HTTP headers, just pass a dictionary to the `headers` option.
