@@ -3,16 +3,17 @@
 
 **Roblox Requests** brings user-friendly HTTP to Roblox with no need for the manual labor of HttpService.
 
-With Requests, you can send robust, human-readable HTTP requests without ever having to deal with the underlying HttpService. No more manual query strings or encoding POST data.
+With Requests you can send robust, human-readable HTTP requests without ever having to deal with the underlying HttpService.
+No more manual query strings or encoding POST data.
 
 ## Roblox Requests Features
 
-- Sessions with cookie persistence, base URLs/headers/query
-- Automatic query string building
-- Automatic JSON body encoding
-- Elegant response structure with builtin JSON decoding
-- Domain based Key/Value cookies
-- Multipart form building including file encoding and upload
+- **Sessions** with cookie persistence, base URLs/headers
+- Automatic **query string building**
+- Automatic **JSON body encoding**
+- Elegant response structure with **builtin JSON decoding**
+- Domain based **Key/Value cookies**
+- **Multipart form building** including file encoding and upload
 
 ---
 
