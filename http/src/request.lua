@@ -28,6 +28,8 @@ function Request.new(method, url, opts)
 
 	local self = setmetatable({}, Request)
 
+	opts = opts or {}
+
 	local u = Url.parse(url)
 	local headers = opts.headers or {}
 

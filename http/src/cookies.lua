@@ -127,7 +127,7 @@ function CookieJar:string(url)
 
 	for k, v in pairs(self.domains[domain]) do
 		if v ~= nil then
-			str = str .. k .. "=" .. v .. ";"
+			str = str .. k .. "=" .. v .. "; "
 		end
 	end
 
