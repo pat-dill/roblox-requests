@@ -6,6 +6,7 @@ local Src = Main.src
 local json = require(Src.json)
 
 local CookieJar = require(Src.cookies)
+local CaseInsensitive = require(Lib.nocasetable)
 
 -- Response Object
 
@@ -26,7 +27,7 @@ function Response.new(req, resp)
 	self.success = resp.Success
 	self.code = resp.StatusCode
 	self.message = resp.StatusMessage
-	self.headers = resp.Headers
+	self.headers = CaseInsensitive(resp.Headers)
 	self.content = resp.Body
 
 	-- additional metadata for quick access
