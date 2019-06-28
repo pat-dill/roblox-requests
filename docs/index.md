@@ -27,7 +27,7 @@ have to add query strings to URLs or encode your POST data again.
 
 ### Roblox Requests Features
 
-- Sessions with cookie persistance, base URLs/headers/query
+- Sessions with cookie persistence, base URLs/headers/query
 - Automatic query string building
 - Automatic JSON body encoding
 - Elegant response structure with builtin JSON decoding
