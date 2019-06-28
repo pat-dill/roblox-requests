@@ -22,11 +22,13 @@ An example of what you can do with Requests:
 ```lua
 local http = require(game.ReplicatedStorage.http)
 
-local r = http.post("https://httpbin.org/post", { query = {arg="value"},
-	                                              data = {this="json"}  })
+local r = http.post("https://httpbin.org/post", {
+	query = {arg="value"},
+	data = {this="json"}  
+})
 
 print(r.content_type,
-	  r:json().url)
+      r:json().url)
 
 -- output:
 -- application/json
@@ -39,6 +41,6 @@ Requests' powerful API allows you to send HTTP/1.1 requests without the need of 
 have to add query strings to URLs or encode your POST data again.
 
 
-## [Documentation](https://jpatrickdill.github.io/roblox-requests/)
+## [Documentation](https://jpatrickdill.github.io/roblox-requests/guide/installation/)
 
-[In this documentation](https://jpatrickdill.github.io/roblox-requests/) you'll find step-by-step instructions to get the most out of Roblox Requests.
+[In this documentation](https://jpatrickdill.github.io/roblox-requests/guide/installation/) you'll find step-by-step instructions to get the most out of Roblox Requests.
