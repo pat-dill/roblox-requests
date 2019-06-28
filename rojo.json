@@ -1,0 +1,10 @@
+{
+  "name": "roblox-requests",
+  "servePort": 8000,
+  "partitions": {
+    "http": {
+      "path": "http",
+      "target": "ReplicatedStorage.http"
+    }
+  }
+}
