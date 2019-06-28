@@ -34,7 +34,7 @@ function Response.new(req, resp)
 	self.content_length = self.headers["content-length"] or #self.content
 
 	-- cookies
-	self.cookies = req.cookies or CookieJar.new()
+	self.cookies = CookieJar.new()
 	self.cookies:set(self.url, self.headers["set-cookie"] or {})
 
 	return self
