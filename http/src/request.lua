@@ -10,6 +10,10 @@ local json = require(Src.json)
 
 local Response = require(Src.response)
 local CookieJar = require(Src.cookies)
+local RateLimiter = require(Src.ratelimit)
+
+-- use same RL object
+local RateLimit = RateLimiter.get("http", 250, 30)
 
 -- Request object
 
@@ -25,6 +29,7 @@ function Request.new(method, url, opts)
 		--    data: (str OR dictionary) Data to send in POST or PATCH request
 		--     log: (bool) Whether to log the request
 		-- cookies: (CookieJar OR dict) Cookies to use in request
+		-- ignore_ratelimit: (bool) If true, rate limiting is ignored. Not recommended unless you are rate limiting yourself.
 
 	local self = setmetatable({}, Request)
 
@@ -123,8 +128,26 @@ function Request:_send()
 		options.Body = self.data
 	end
 
-	local resp = httpservice:RequestAsync(options)
-	resp = Response.new(self, resp)
+	local attempts = 0
+	local succ, resp = false, nil
+
+	while attempts < 5 do
+		-- check if request will exceed rate limit
+		if RateLimit:request() then
+			resp = Response.new(self, httpservice:RequestAsync(options))
+			succ = true
+			break
+		end
+
+		warn("[http] Rate limit exceeded. Retrying in 5 seconds")
+
+		attempts = attempts + 1
+		wait(5)
+	end
+
+	if not succ then
+		error("[http] Rate limit exceeded")
+	end
 
 	if self._log then
 		print("[http]", resp.code, resp.message, "|", resp.method, resp.url)
