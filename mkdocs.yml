@@ -16,6 +16,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Release Notes: changes.md
   - Guide:
     - Installation: guide/installation.md
     - Quickstart: guide/quickstart.md

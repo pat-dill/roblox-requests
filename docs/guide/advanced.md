@@ -78,3 +78,43 @@ request:send(cb)
 
 -- continue executing without waiting for response
 ```
+
+## Ratelimiting
+
+Roblox Requests ratelimits all HTTP requests sent through the module. If a request would tip the ratelimit past 500
+requests/minute, Requests will issue a warning and retry in 5 seconds.
+
+By default, the ratelimiter allows 250 requests every 30 seconds, smoothing bursts over a 1 minute period.
+You can change these settings with `http.set_ratelimit`:
+
+```lua
+local http = require(ReplicatedStorage.http)
+
+http.set_ratelimit(10, 60)  -- allow 10 requests every 60 seconds
+```
+
+In order for these changes to apply, `set_ratelimit` **must** be called before any HTTP requests are sent.
+
+If you'd like a request to ignore the ratelimit, just set the `ignore_ratelimit` option to `true`:
+
+```lua
+
+if custom_ratelimit_function() then
+	http.get("https://httpbin.org", { ignore_ratelimit=true })
+end
+```
+
+You can also disable a session's ratelimits by setting the `ignore_ratelimit` property:
+
+```lua
+local session = http.Session()
+
+session.ignore_ratelimit = true
+
+-- let's break roblox!
+while wait() do
+	session:get("https://httpbin.org/get")
+end
+```
+
+It's recommended that you only do this if you're applying some other limiting function.

@@ -1,6 +1,6 @@
 # API Reference
 
-## Module Level
+## Module
 
 ### http.send
 
@@ -10,18 +10,27 @@ Creates and sends an HTTP request with the given method, URL, and options.
 
 Accepted options:
 
-| Name    | Type                        | Description                                                                            |
-|---------|-----------------------------|----------------------------------------------------------------------------------------|
-| headers | dictionary                  | Headers to be used with the Request.                                                   |
-| query   | dictionary                  | Query string parameters to add to the URL.                                             |
-| data    | string OR table OR FormData | Data to send in the body of the request. Tables will automatically be encoded as JSON. |
-| cookies | dictionary OR CookieJar     | Cookies to send with request.                                                          |
+| Name             | Type                        | Description                                                                            |
+|------------------|-----------------------------|----------------------------------------------------------------------------------------|
+| headers          | dictionary                  | Headers to be used with the Request.                                                   |
+| query            | dictionary                  | Query string parameters to add to the URL.                                             |
+| data             | string OR table OR FormData | Data to send in the body of the request. Tables will automatically be encoded as JSON. |
+| cookies          | dictionary OR CookieJar     | Cookies to send with request.                                                          |
+| ignore_ratelimit | bool                        | If true, the rate-limit will be ignored for this request.                              |
 
 ### http.get, post, head, put, delete, patch, options
 
 `http.get(url, [options]) -> Response`
 
 Shortcut methods for `http.send`.
+
+### http.set_ratelimit
+
+`http.set_ratelimit(requests, period)`
+
+Changes global rate limit. Default is 250 requests / 30 seconds.
+
+This **must** be called before any HTTP requests are made for changes to take effect.
 
 ## http.Request
 
@@ -100,7 +109,8 @@ All main module methods also apply to sessions.
 
 - headers (dictionary) - Default headers used with each request
 - cookies (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header
-- base_url (string) - Base URL to prefix each request with. If a request UTL contains the HTTP protocol ("http(s)://"), this will be ignored
+- base_url (string) - Base URL to prefix each request with. If a request URL contains the HTTP protocol (http(s)://), this will be ignored
+- ignore_ratelimit (bool) - If true, all requests will ignore the global rate-limit
 
 ### Session:set_headers
 

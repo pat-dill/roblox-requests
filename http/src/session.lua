@@ -21,6 +21,8 @@ function Session.new(base_url)
 
 	self.base_url = base_url or ""
 
+	self.ignore_ratelimit = false
+
 	self.before_request = nil
 	self.after_request = nil
 
@@ -57,7 +59,8 @@ function Session:Request(method, url, opts)
 		query = opts.query,
 		data = opts.data,
 		log = self.log or opts.log,
-		cookies = opts.cookies or self.cookies
+		cookies = opts.cookies or self.cookies,
+		ignore_ratelimit = opts.ignore_ratelimit or self.ignore_ratelimit
 	})
 
 	request:update_headers(opts.headers or {})

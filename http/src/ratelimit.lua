@@ -81,6 +81,12 @@ function RateLimiter:weighted(i)
     return current*p + prev*(1-p)
 end
 
+function RateLimiter:consumption()
+    -- returns current calculated rate consumption
+
+    return self:weighted() / self.rate
+end
+
 function RateLimiter:request()
     -- checks if request will fall within ratelimit
     -- returns true if allowed, false if denied
