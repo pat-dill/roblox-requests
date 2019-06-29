@@ -8,7 +8,7 @@ local Src = script.src
 
 local Request = require(Src.request)
 local Session = require(Src.session)
-local FormData = require(Src.form)
+local Forms = require(Src.form)
 
 local RateLimiter = require(Src.ratelimit)
 
@@ -18,7 +18,9 @@ http.VERSION = "0.2a0"
 
 http.Request = Request.new
 http.Session = Session.new
-http.FormData = FormData.new
+
+http.FormData = Forms.FormData.new
+http.File = Forms.File.new
 
 function http.send(method, url, opts)
 	-- quick method to send http requests

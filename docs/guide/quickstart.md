@@ -145,7 +145,10 @@ print(r.content)
 Requests supports URL encoded and multipart encoded forms through the `FormData` class. Creating forms is simple:
 
 ```lua
-local form = http.FormData({"key", "value"}, {"key2", "value2"}, ...)
+local form = http.FormData({
+    key1 = "value1",
+    key2 = {"value2", "value3"}
+})
 ```
 
 Fields can also be added after the form is created:
@@ -179,11 +182,11 @@ print(r.content)
 Requests makes it easy to upload files:
 
 ```lua
-local file_name = "example.txt"
-local file_content = "Lorem ipsum"
+local example = http.File("example.txt", "This is an example text file.")
 
-local form = http.FormData()
-form:AddFile("file", file_content, file_name)
+local form = http.FormData({
+    file = example
+})
 
 local r = http.post("https://api.anonymousfiles.io/", { data=form })
 print(r:json().url)
@@ -194,17 +197,24 @@ Binary files can also be uploaded. This example downloads an image then uploads 
 
 ```lua
 local image_url = "https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg"
-local image = http.get(image_url)
+
+local image = http.File("example.jpg", http.get(image_url).content)
 
 local form = http.FormData()
-form:AddFile("file", image.content, "image.jpg", "image/jpeg")  -- content type must be specified for non-text files
+form:AddField("file", image)
 
 local r = http.post("https://api.anonymousfiles.io/", { data=form })
 print(r:json().url)
 -- https://anonymousfiles.io/zwtSGyvZ/
 ```
 
-Any non-text files will be encoded using Base64 before upload.
+Any non-text files are encoded using Base64.
+
+Requests will try to guess the file type from the extension. If you'd like, however, you can set it yourself:
+
+```lua
+local file = http.File("extensionless_name", "<html>But we know it's HTML</html>", "text/html")
+```
 
 ## Response Status Codes
 

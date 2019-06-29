@@ -13,6 +13,8 @@ markdown_extensions:
   - admonition
   - codehilite
 
+plugins:
+  - markdownextradata: {}
 
 nav:
   - Home: index.md
@@ -22,3 +24,7 @@ nav:
     - Quickstart: guide/quickstart.md
     - Advanced Usage: guide/advanced.md
   - API Reference: api-reference.md
+
+
+extra:
+  version: 0.2pre2

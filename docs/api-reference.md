@@ -140,9 +140,9 @@ Options specified here will override the session values.
 
 ## http.FormData
 
-`http.FormData([{fieldName, fieldValue}, [...]]) -> FormData`
+`http.FormData(fields) -> FormData`
 
-Creates form data based on given fields. Field names cannot contain '=' or '&' characters.
+Creates form data based on given fields. Fields should be passed in a dictionary.
 
 ### FormData:AddField
 
@@ -150,14 +150,14 @@ Creates form data based on given fields. Field names cannot contain '=' or '&' c
 
 Adds field with given name and value.
 
-### FormData:AddFile
+## http.File
 
-`FormData:AddFile(fieldName, fileContent, [fileName, [contentType]])`
+`http.File(content) -> File`
 
-Adds a file to the form with optional file name and content type.
-Content type must be specified if not `text/plain`.
+`http.File(filename, content, [content_type]) -> File`
 
-Any non-text files will be encoded using Base64.
+Creates a file for use in a FormData field. If no content type is specified, it will
+be guessed from the file extension.
 
 ## http.CookieJar
 

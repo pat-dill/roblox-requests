@@ -1,4 +1,4 @@
-# Roblox Requests 0.2a0
+# Roblox Requests {{ version }} 
 
 **Roblox Requests** brings user-friendly HTTP to Roblox with no need for the manual labor of HttpService.
 
@@ -33,6 +33,7 @@ have to add query strings to URLs or encode your POST data again.
 - Elegant response structure with builtin JSON decoding
 - Domain based Key/Value cookies
 - Multipart form building including file encoding and upload
+- Global, configurable ratelimiting
 
 Roblox Requests was inspired by the well known [Python Requests](https://2.python-requests.org/en/master/) library.
 Feel free to contribute new features on the library's [GitHub](https://github.com/jpatrickdill/roblox-requests).

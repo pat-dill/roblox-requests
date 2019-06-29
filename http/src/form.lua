@@ -8,6 +8,7 @@ local Src = Main.src
 
 local httpservice = game:GetService("HttpService")
 
+local MIME = require(Lib.mimetypes)
 local b64 = require(Lib.b64)
 
 --
@@ -22,56 +23,87 @@ local function randomString(l)
 	return s
 end
 
+-- File object
+
+local File = {}
+File.__index = File
+function File.new(...)
+	-- File.new(content)
+	-- File.new(name, content)
+	-- File.new(name, content, content_type)
+
+	local self = setmetatable({}, File)
+
+	self.__IsFile = true
+
+	self.name = "unknown"
+	self.content = ""
+	self.content_type = nil
+
+	local args = {...}
+	if #args == 1 then
+		-- File(content)
+
+		self.content = args[1]
+	elseif #args >= 2 then
+		-- File(name, content[, content_type])
+
+		self.name = args[1]
+		self.content = args[2]
+		self.content_type = args[3]
+	end
+
+	-- no content-type provided: guess
+	if (not self.content_type) then
+		local ext = self.name:split(".")
+		ext = ext[#ext]
+
+		self.content_type = MIME[ext:lower()] or "text/plain"
+	end
+
+	if type(self.content) ~= "string" then
+		error(("[http] Invalid file content for file %s"):format(self.name))
+	end
+
+	return self
+end
+
+function File:__tostring(self)
+	return ("File('%s', '%s')"):format(self.name, self.content_type)
+end
+
 
 -- FormData object
 
 local FormData = {}
 FormData.__index = FormData
-function FormData.new(...)
+function FormData.new(fields)
 	local self = setmetatable({}, FormData)
 	self.__FormData = true
 
-	local args = {...}
+	local fields = fields or {}
 
 	self.boundary = "--FormBoundary-" .. randomString(28)
-
-	self.fields = {}
-
 	self.content_type = "application/x-www-form-urlencoded"
 
-	for _, v in ipairs(args) do
-		-- if 2 values: (name, value)
-		-- if 3 values: (name, filename, value)
-
-		if #v == 2 then
-			self:AddField(v[1], v[2])
-		else
-			self:AddFile(v[1], v[3], v[2])
-		end
+	self.fields = {}
+	for k, v in pairs(fields) do
+		self:AddField(k, v)
 	end
-
 
 	return self
 end
 
 function FormData:AddField(name, value)
+	-- set content-type to multipart if file is provided
+	if value.__IsFile then
+		self.content_type = 'multipart/form-data; boundary="' .. self.boundary .. '"'
+	end
+
 	table.insert(self.fields, {
 		Name = name,
-		Value = value,
-		File = false
+		Value = value
 	})
-end
-
-function FormData:AddFile(name, value, filename, filetype)
-	table.insert(self.fields, {
-		Name = name,
-		Value = value,
-		FileName = filename or "unknown",
-		ContentType = filetype or "text/plain",
-		File = true
-	})
-
-	self.content_type = 'multipart/form-data; boundary="' .. self.boundary .. '"'
 end
 
 function FormData:build()
@@ -81,7 +113,7 @@ function FormData:build()
 
 	if self.content_type == "application/x-www-form-urlencoded" then
 		for _, field in ipairs(self.fields) do
-			if field.File then
+			if field.Value.__IsFile then
 				error("[http] URL encoded forms cannot contain any files")
 			end
 
@@ -110,18 +142,25 @@ function FormData:build()
 		for _, field in pairs(self.fields) do
 			content = content .. "--"..self.boundary.."\r\n"
 
+			local val = field.Value
+
 			content = content .. ('Content-Disposition: form-data; name="%s"'):format(field.Name)
-			if field.FileName then
-				content = content .. ('; filename="%s"'):format(field.FileName)
-				content = content .. "\r\nContent-Type: " .. field.ContentType
+
+			-- handle files
+			if field.Value.__IsFile then
+				val = field.Value.content
+
+				content = content .. ('; filename="%s"'):format(field.Value.name)
+				content = content .. "\r\nContent-Type: " .. field.Value.content_type
+
+				-- encode non-text files
+				if field.Value.content_type:sub(1, 5) ~= "text/" then
+					val = b64.encode(val)
+					content = content .. "\r\nContent-Transfer-Encoding: base64"
+				end
 			end
 
-			if field.ContentType:sub(1, 4) ~= "text" then
-				field.Value = b64.encode(field.Value)
-				content = content .. "\r\nContent-Transfer-Encoding: base64"
-			end
-
-			content = content .. "\r\n\r\n\r\n" .. field.Value .. "\r\n"
+			content = content .. "\r\n\r\n\r\n" .. val .. "\r\n"
 		end
 		content = content .. "--"..self.boundary.."--"
 	end
@@ -130,4 +169,7 @@ function FormData:build()
 end
 
 ---------------
-return FormData
+return {
+	["FormData"] = FormData,
+	["File"] = File
+}
