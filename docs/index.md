@@ -1,4 +1,4 @@
-# Roblox Requests 0.1.0
+# Roblox Requests 0.2a0
 
 **Roblox Requests** brings user-friendly HTTP to Roblox with no need for the manual labor of HttpService.
 
