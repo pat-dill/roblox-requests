@@ -171,7 +171,7 @@ print(r.content)
 --    ...
 --	  "form": {
 --	    "key": "value", 
---	    "key2": "value2"
+--	    "key2": ["value2", "value3"]
 --	  }, 
 --	  ...
 --	}

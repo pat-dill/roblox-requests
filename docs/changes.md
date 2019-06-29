@@ -4,15 +4,17 @@ Here you'll find a list of changes in this release, along with a list of what's 
 
 ## Additions
 
-### Rate-limit Functionality
+### Global Rate-Limiting
 
-Requests are globally rate limited using the Sliding Window algorithm.
+Requests are rate-limited using a sliding window.
 Default setting is 250 requests / 30 seconds, but can be changed via `http.set_ratelimit`.
 
 ## Changes
 
-- Added `http.File`
-- Changed FormData functionality
+- Reworked FormData class
+    - Fields are now passed in a dictionary
+    - `:AddField()` method used for both text and file fields
+    - New `http.File` class for files
 
 ## To Do
 
@@ -20,4 +22,4 @@ Default setting is 250 requests / 30 seconds, but can be changed via `http.set_r
 - Rework CookieJars
 
 !!! warning
-    Backwards-compatibility is NOT guaranteed before the 1.0 release.
+    Backwards-compatibility is NOT guaranteed before version 1.0.
