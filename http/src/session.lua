@@ -7,6 +7,19 @@ local Src = Main.src
 
 local Request = require(Src.request)
 local CookieJar = require(Src.cookies)
+local RateLimiter = require(Src.ratelimit)
+
+-- util
+
+local function randomString(l)
+	local s = ""
+
+	for i=1, l do
+		s = s .. string.char(math.random(97, 122))
+	end
+
+	return s
+end
 
 -- Session class
 local Session = {}
@@ -21,6 +34,7 @@ function Session.new(base_url)
 
 	self.base_url = base_url or ""
 
+	self._ratelimit = nil
 	self.ignore_ratelimit = false
 
 	self.before_request = nil
@@ -30,6 +44,27 @@ function Session.new(base_url)
 
 	-----------
 	return self
+end
+
+function Session:set_ratelimit(rate, window)
+	-- delete original ratelimiter
+	if self._ratelimit then
+		_G.ratelimit[self._ratelimit.id] = nil
+	end
+
+	-- sets new session ratelimiter
+	local rl_id = "http.session-" .. randomString(12)
+
+	self._ratelimit = RateLimiter.get(rl_id, rate, window)
+end
+
+function Session:disable_ratelimit()
+	-- disables session rate limit
+
+	if self._ratelimit then
+		_G.ratelimit[self._ratelimit.id] = nil
+		self._ratelimit=  nil
+	end
 end
 
 function Session:set_headers(headers)
@@ -62,6 +97,10 @@ function Session:Request(method, url, opts)
 		cookies = opts.cookies or self.cookies,
 		ignore_ratelimit = opts.ignore_ratelimit or self.ignore_ratelimit
 	})
+
+	if self._ratelimit then
+		table.insert(request._ratelimits, self._ratelimit)  -- make request follow session ratelimit
+	end
 
 	request:update_headers(opts.headers or {})
 

@@ -12,9 +12,6 @@ local Response = require(Src.response)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
 
--- use same RL object
-local RateLimit = nil
-
 -- Request object
 
 local Request = {}
@@ -33,8 +30,6 @@ function Request.new(method, url, opts)
 
 	local self = setmetatable({}, Request)
 
-	RateLimit = RateLimiter.get("http", 250, 30)
-
 	opts = opts or {}
 
 	local u = Url.parse(url)
@@ -45,6 +40,8 @@ function Request.new(method, url, opts)
 	self.headers = headers
 	self.query = {}
 	self.data = nil
+
+	self._ratelimits = {RateLimiter.get("http", 250, 30)}
 
 	self.ignore_ratelimit = opts.ignore_ratelimit or false
 
@@ -119,6 +116,17 @@ function Request:set_data(data)
 	self.data = data
 end
 
+function Request:_ratelimit()
+	-- checks all ratelimiters assigned to request
+
+	for _, rl in ipairs(self._ratelimits) do
+		if not rl:request() then
+			return false
+		end
+	end
+
+	return true
+end
 
 function Request:_send()
 	-- prepare request options
@@ -137,7 +145,7 @@ function Request:_send()
 
 	while attempts < 5 do
 		-- check if request will exceed rate limit
-		if self.ignore_ratelimit or RateLimit:request() then
+		if self.ignore_ratelimit or self:_ratelimit() then
 			resp = Response.new(self, httpservice:RequestAsync(options))
 			succ = true
 			break
@@ -154,7 +162,7 @@ function Request:_send()
 	end
 
 	if self._log then
-		local rl = tostring(math.floor(RateLimit:consumption()*1000)*0.1) .. "%"
+		local rl = tostring(math.floor(self._ratelimits[#self._ratelimits]:consumption()*1000)*0.1) .. "%"
 
 		print("[http]", resp.code, resp.message, "|", resp.method, resp.url, "(", rl, "ratelimit )")
 	end

@@ -118,6 +118,21 @@ All main module methods also apply to sessions.
 
 Updates headers dictionary with values of new_headers.
 
+### Session:set_ratelimit
+
+`Session:set_ratelimit(requests, seconds)`
+
+Sets custom rate-limit for the Session. Requests sent by the session must follow this ratelimit and the global ratelimit.
+
+This can be changed at any time by calling the function again.
+
+### Session:disable_ratelimit
+
+`Session:disable_ratelimit()`
+
+Disables the Session rate-limit if one is set. This will **not** affect the global rate-limit. To make your session
+ignore the global rate-limit, use `session.ignore_ratelimit = true`
+
 ### Session:send
 
 `Session:send(method, url, [opts]) -> Response`

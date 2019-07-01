@@ -8,6 +8,7 @@ Here you'll find a list of changes in this release, along with a list of what's 
 
 Requests are rate-limited using a sliding window.
 Default setting is 250 requests / 30 seconds, but can be changed via `http.set_ratelimit`.
+Individual session rate-limits can also be with `Session:set_ratelimit`.
 
 ## Changes
 
@@ -18,7 +19,6 @@ Default setting is 250 requests / 30 seconds, but can be changed via `http.set_r
 
 ## To Do
 
-- Add session level rate-limit config
 - Rework CookieJars
 
 !!! warning

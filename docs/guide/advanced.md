@@ -53,7 +53,7 @@ print(r2.content)
 
 When you send a request with the `http.get()` method, a `Request` object is actually created and
 prepared with any data you passed. In some cases, you may wish to do something extra
-with the request before it is sent. The following allows you to:
+with the request before it is sent. This is possible by creating the Request directly:
 
 ```lua
 local request = http.Request("POST", "https://httpbin.org/post", { data=data })
@@ -62,6 +62,8 @@ request:set_data("use this body instead")
 
 local response = request:send()
 ```
+
+The same is possible from a session by using `Session:Request()`.
 
 ### Asynchronous Requests
 
@@ -79,12 +81,12 @@ request:send(cb)
 -- continue executing without waiting for response
 ```
 
-## Ratelimiting
+## Rate-limiting
 
 Roblox Requests ratelimits all HTTP requests sent through the module. If a request would tip the ratelimit past 500
 requests/minute, Requests will issue a warning and retry in 5 seconds.
 
-By default, the ratelimiter allows 250 requests every 30 seconds, smoothing bursts over a 1 minute period.
+By default, the rate-limiter allows 250 requests every 30 seconds, smoothing bursts over a 1 minute period.
 You can change these settings with `http.set_ratelimit`:
 
 ```lua
@@ -95,7 +97,7 @@ http.set_ratelimit(10, 60)  -- allow 10 requests every 60 seconds
 
 In order for these changes to apply, `set_ratelimit` **must** be called before any HTTP requests are sent.
 
-If you'd like a request to ignore the ratelimit, just set the `ignore_ratelimit` option to `true`:
+If you'd like a request to ignore the rate-limit, just set the `ignore_ratelimit` option to `true`:
 
 ```lua
 
@@ -104,7 +106,7 @@ if custom_ratelimit_function() then
 end
 ```
 
-You can also disable a session's ratelimits by setting the `ignore_ratelimit` property:
+You can also disable a session's rate-limits by setting the `ignore_ratelimit` property:
 
 ```lua
 local session = http.Session()
@@ -118,3 +120,28 @@ end
 ```
 
 It's recommended that you only do this if you're applying some other limiting function.
+
+### Session rate-limits
+
+If you want to make a specific session follow a different rate-limit, you can set one:
+
+```lua
+local session = http.Session()
+
+session:set_ratelimit(10, 60)  -- 10 requests/minute
+
+local i = 0
+while wait(1) do
+	i = i + 1
+
+	http.get("https://httpbin.org/get")  -- module level requests still follow normal rate-limit
+
+	if i%6 == 0 then  -- only send every 6 seconds (10/min)
+		session:get("https://httpbin.org/get")
+	end
+end
+```
+
+Unlike the global rate-limiter, this one can be changed any time you like by calling `set_ratelimit`.
+It can also be removed by calling `disable_ratelimit`.
+
