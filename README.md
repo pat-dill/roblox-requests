@@ -1,5 +1,5 @@
 
-# Roblox Requests 0.2pre2
+# Roblox Requests 0.2.0
 
 **Roblox Requests** brings user-friendly HTTP to Roblox with no need for the manual labor of HttpService.
 
@@ -11,10 +11,10 @@ No more manual query strings or encoding POST data.
 - Sessions with cookie persistence, base URLs/headers
 - Automatic query string building
 - Automatic JSON body encoding
-- Elegant response structure with builtin JSON decoding
+- Builtin Response object and JSON decoding
 - Domain based Key/Value cookies
 - Multipart form building including file encoding and upload
-- Global, configurable ratelimiting
+- Global ratelimiting with per-session config options
 
 ---
 

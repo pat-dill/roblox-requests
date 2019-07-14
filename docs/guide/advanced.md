@@ -156,6 +156,6 @@ while wait(1) do
 end
 ```
 
-Unlike the global rate-limiter, this one can be changed any time you like by calling `set_ratelimit`.
-It can also be removed by calling `disable_ratelimit`.
+Unlike the global rate-limiter, this one can be changed any time you like by calling `:set_ratelimit()`.
+It can also be removed by calling `:disable_ratelimit()`.
 
