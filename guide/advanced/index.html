@@ -36,7 +36,7 @@
     
     
       
-        <title>Advanced Usage - Roblox Requests Documentation</title>
+        <title>Advanced Usage - Roblox Requests</title>
       
     
     
@@ -94,7 +94,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../.." title="Roblox Requests Documentation" class="md-header-nav__button md-logo">
+        <a href="../.." title="Roblox Requests" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -107,7 +107,7 @@
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
             <span class="md-header-nav__topic">
-              Roblox Requests Documentation
+              Roblox Requests
             </span>
             <span class="md-header-nav__topic">
               
@@ -118,31 +118,6 @@
         </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
-        
-          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
-          
-<div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
-      <label class="md-icon md-search__icon" for="__search"></label>
-      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
-        &#xE5CD;
-      </button>
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result">
-          <div class="md-search-result__meta">
-            Type to start searching
-          </div>
-          <ol class="md-search-result__list"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
         
       </div>
       
@@ -186,12 +161,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../.." title="Roblox Requests Documentation" class="md-nav__button md-logo">
+    <a href="../.." title="Roblox Requests" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
     </a>
-    Roblox Requests Documentation
+    Roblox Requests
   </label>
   
     <div class="md-nav__source">
@@ -232,18 +207,30 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../../changes/" title="Release Notes" class="md-nav__link">
+      Release Notes
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
     
-    <label class="md-nav__link" for="nav-2">
+    <label class="md-nav__link" for="nav-3">
       Guide
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
+      <label class="md-nav__title" for="nav-3">
         Guide
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -332,6 +319,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#rate-limiting" title="Rate-limiting" class="md-nav__link">
+    Rate-limiting
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-rate-limits" title="Session rate-limits" class="md-nav__link">
+    Session rate-limits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -407,6 +414,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#rate-limiting" title="Rate-limiting" class="md-nav__link">
+    Rate-limiting
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-rate-limits" title="Session rate-limits" class="md-nav__link">
+    Session rate-limits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -435,21 +462,33 @@ It also persists cookies across all requests made from the Session instance.</p>
 <p>Persisting cookies across requests:</p>
 <div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">session</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Session</span><span class="p">()</span>
 
-<span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/cookies/set/sessioncookie/123456789&quot;</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">cookies</span><span class="p">:</span><span class="n">insert</span><span class="p">(</span><span class="s2">&quot;sessioncookie&quot;</span><span class="p">,</span> <span class="s2">&quot;123456789&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;httpbin.org&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/cookies&quot;</span><span class="p">})</span>  <span class="c1">-- add new cookie to httpbin.org/cookies</span>
 <span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/cookies&quot;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
 <span class="c1">-- {&quot;cookies&quot;: {&quot;sessioncookie&quot;: &quot;123456789&quot;}}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/&quot;</span><span class="p">).</span><span class="n">content</span><span class="p">)</span>  <span class="c1">-- cookies will only be sent to their set path</span>
+<span class="c1">-- {&quot;cookies&quot;: {}}</span>
 </pre></div>
 
 
-<p>Sessions can also be used to provide default data to requests. This is done
-with some helper functions:</p>
+<p>Sessions can also be used to provide default data to requests.</p>
 <div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">session</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Session</span><span class="p">()</span>
-<span class="n">session</span><span class="p">:</span><span class="n">set_headers</span><span class="p">{[</span><span class="s2">&quot;X-Test&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span><span class="p">}</span>
+<span class="n">session</span><span class="p">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">[</span><span class="s2">&quot;X-Test&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="p">}</span>
 
 <span class="c1">-- both &quot;x-test&quot; and &quot;x-test2&quot; are sent</span>
 <span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/headers&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">headers</span><span class="o">=</span><span class="p">{[</span><span class="s2">&quot;X-Test2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span><span class="p">}</span> <span class="p">})</span>
+</pre></div>
+
+
+<p>Additional headers can also be merged with the current headers:</p>
+<div class="codehilite"><pre><span></span><span class="n">session</span><span class="p">:</span><span class="n">set_headers</span><span class="p">({</span>
+    <span class="p">[</span><span class="s2">&quot;x-third&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="p">})</span>  
+<span class="c1">-- session.headers now contains both &quot;X-Test&quot; and &quot;x-third&quot;</span>
 </pre></div>
 
 
@@ -472,7 +511,7 @@ using a session. This example will only send cookies with the first request:</p>
 <h2 id="request-objects">Request Objects</h2>
 <p>When you send a request with the <code>http.get()</code> method, a <code>Request</code> object is actually created and
 prepared with any data you passed. In some cases, you may wish to do something extra
-with the request before it is sent. The following allows you to:</p>
+with the request before it is sent. This is possible by creating the Request directly:</p>
 <div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">request</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;https://httpbin.org/post&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span> <span class="p">})</span>
 
 <span class="n">request</span><span class="p">:</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;use this body instead&quot;</span><span class="p">)</span>
@@ -481,6 +520,7 @@ with the request before it is sent. The following allows you to:</p>
 </pre></div>
 
 
+<p>The same is possible from a session by using <code>Session:Request()</code>.</p>
 <h3 id="asynchronous-requests">Asynchronous Requests</h3>
 <p>When handling <code>Request</code> objects directly, you can send them in a separate thread by specifying a callback:</p>
 <div class="codehilite"><pre><span></span><span class="kr">function</span> <span class="nf">cb</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
@@ -493,6 +533,61 @@ with the request before it is sent. The following allows you to:</p>
 
 <span class="c1">-- continue executing without waiting for response</span>
 </pre></div>
+
+
+<h2 id="rate-limiting">Rate-limiting</h2>
+<p>Roblox Requests ratelimits all HTTP requests sent through the module. If a request would tip the ratelimit past 500
+requests/minute, Requests will issue a warning and retry in 5 seconds.</p>
+<p>By default, the rate-limiter allows 250 requests every 30 seconds, smoothing bursts over a 1 minute period.
+You can change these settings with <code>http.set_ratelimit</code>:</p>
+<div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">http</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">ReplicatedStorage</span><span class="p">.</span><span class="n">http</span><span class="p">)</span>
+
+<span class="n">http</span><span class="p">.</span><span class="n">set_ratelimit</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>  <span class="c1">-- allow 10 requests every 60 seconds</span>
+</pre></div>
+
+
+<p>In order for these changes to apply, <code>set_ratelimit</code> <strong>must</strong> be called before any HTTP requests are sent.</p>
+<p>If you'd like a request to ignore the rate-limit, just set the <code>ignore_ratelimit</code> option to <code>true</code>:</p>
+<div class="codehilite"><pre><span></span><span class="kr">if</span> <span class="n">custom_ratelimit_function</span><span class="p">()</span> <span class="kr">then</span>
+    <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">ignore_ratelimit</span><span class="o">=</span><span class="kc">true</span> <span class="p">})</span>
+<span class="kr">end</span>
+</pre></div>
+
+
+<p>You can also disable a session's rate-limits by setting the <code>ignore_ratelimit</code> property:</p>
+<div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">session</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Session</span><span class="p">()</span>
+
+<span class="n">session</span><span class="p">.</span><span class="n">ignore_ratelimit</span> <span class="o">=</span> <span class="kc">true</span>
+
+<span class="c1">-- let&#39;s break roblox!</span>
+<span class="kr">while</span> <span class="n">wait</span><span class="p">()</span> <span class="kr">do</span>
+    <span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/get&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+</pre></div>
+
+
+<p>It's recommended that you only do this if you're applying some other limiting function.</p>
+<h3 id="session-rate-limits">Session rate-limits</h3>
+<p>If you want to make a specific session follow a different rate-limit, you can set one:</p>
+<div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">session</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Session</span><span class="p">()</span>
+
+<span class="n">session</span><span class="p">:</span><span class="n">set_ratelimit</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>  <span class="c1">-- 10 requests/minute</span>
+
+<span class="kd">local</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="kr">while</span> <span class="n">wait</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/get&quot;</span><span class="p">)</span>  <span class="c1">-- module level requests still follow normal rate-limit</span>
+
+    <span class="kr">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">6</span> <span class="o">==</span> <span class="mi">0</span> <span class="kr">then</span>  <span class="c1">-- only send every 6 seconds (10/min)</span>
+        <span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/get&quot;</span><span class="p">)</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+</pre></div>
+
+
+<p>Unlike the global rate-limiter, this one can be changed any time you like by calling <code>set_ratelimit</code>.
+It can also be removed by calling <code>disable_ratelimit</code>.</p>
                 
                   
                 
