@@ -1,0 +1,1037 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>API Reference - Roblox Requests</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.01803549.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#4caf50">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="green" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#api-reference" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="Roblox Requests" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Roblox Requests
+            </span>
+            <span class="md-header-nav__topic">
+              
+                API Reference
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/jpatrickdill/roblox-requests/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    jpatrickdill/roblox-requests
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="Roblox Requests" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Roblox Requests
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/jpatrickdill/roblox-requests/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    jpatrickdill/roblox-requests
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../changes/" title="Release Notes" class="md-nav__link">
+      Release Notes
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/installation/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/quickstart/" title="Quickstart" class="md-nav__link">
+      Quickstart
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/advanced/" title="Advanced Usage" class="md-nav__link">
+      Advanced Usage
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        API Reference
+      </label>
+    
+    <a href="./" title="API Reference" class="md-nav__link md-nav__link--active">
+      API Reference
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module" title="Module" class="md-nav__link">
+    Module
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpsend" title="http.send" class="md-nav__link">
+    http.send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpget-post-head-put-delete-patch-options" title="http.get, post, head, put, delete, patch, options" class="md-nav__link">
+    http.get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpset_ratelimit" title="http.set_ratelimit" class="md-nav__link">
+    http.set_ratelimit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httprequest" title="http.Request" class="md-nav__link">
+    http.Request
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestupdate_headers" title="Request:update_headers" class="md-nav__link">
+    Request:update_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestupdate_query" title="Request:update_query" class="md-nav__link">
+    Request:update_query
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestset_data" title="Request:set_data" class="md-nav__link">
+    Request:set_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestsend" title="Request:send" class="md-nav__link">
+    Request:send
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" title="Response" class="md-nav__link">
+    Response
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes_1" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responsejson" title="Response:json" class="md-nav__link">
+    Response:json
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpsession" title="http.Session" class="md-nav__link">
+    http.Session
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes_2" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionset_headers" title="Session:set_headers" class="md-nav__link">
+    Session:set_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionset_ratelimit" title="Session:set_ratelimit" class="md-nav__link">
+    Session:set_ratelimit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessiondisable_ratelimit" title="Session:disable_ratelimit" class="md-nav__link">
+    Session:disable_ratelimit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionsend" title="Session:send" class="md-nav__link">
+    Session:send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionget-post-head-put-delete-patch-options" title="Session:get, post, head, put, delete, patch, options" class="md-nav__link">
+    Session:get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionrequest" title="Session:Request" class="md-nav__link">
+    Session:Request
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpformdata" title="http.FormData" class="md-nav__link">
+    http.FormData
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formdataaddfield" title="FormData:AddField" class="md-nav__link">
+    FormData:AddField
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpfile" title="http.File" class="md-nav__link">
+    http.File
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpcookiejar" title="http.CookieJar" class="md-nav__link">
+    http.CookieJar
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cookiejarinsert" title="CookieJar:insert" class="md-nav__link">
+    CookieJar:insert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookiejardelete" title="CookieJar:delete" class="md-nav__link">
+    CookieJar:delete
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module" title="Module" class="md-nav__link">
+    Module
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpsend" title="http.send" class="md-nav__link">
+    http.send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpget-post-head-put-delete-patch-options" title="http.get, post, head, put, delete, patch, options" class="md-nav__link">
+    http.get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpset_ratelimit" title="http.set_ratelimit" class="md-nav__link">
+    http.set_ratelimit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httprequest" title="http.Request" class="md-nav__link">
+    http.Request
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestupdate_headers" title="Request:update_headers" class="md-nav__link">
+    Request:update_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestupdate_query" title="Request:update_query" class="md-nav__link">
+    Request:update_query
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestset_data" title="Request:set_data" class="md-nav__link">
+    Request:set_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestsend" title="Request:send" class="md-nav__link">
+    Request:send
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" title="Response" class="md-nav__link">
+    Response
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes_1" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responsejson" title="Response:json" class="md-nav__link">
+    Response:json
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpsession" title="http.Session" class="md-nav__link">
+    http.Session
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes_2" title="Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionset_headers" title="Session:set_headers" class="md-nav__link">
+    Session:set_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionset_ratelimit" title="Session:set_ratelimit" class="md-nav__link">
+    Session:set_ratelimit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessiondisable_ratelimit" title="Session:disable_ratelimit" class="md-nav__link">
+    Session:disable_ratelimit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionsend" title="Session:send" class="md-nav__link">
+    Session:send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionget-post-head-put-delete-patch-options" title="Session:get, post, head, put, delete, patch, options" class="md-nav__link">
+    Session:get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionrequest" title="Session:Request" class="md-nav__link">
+    Session:Request
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpformdata" title="http.FormData" class="md-nav__link">
+    http.FormData
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formdataaddfield" title="FormData:AddField" class="md-nav__link">
+    FormData:AddField
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpfile" title="http.File" class="md-nav__link">
+    http.File
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpcookiejar" title="http.CookieJar" class="md-nav__link">
+    http.CookieJar
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cookiejarinsert" title="CookieJar:insert" class="md-nav__link">
+    CookieJar:insert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookiejardelete" title="CookieJar:delete" class="md-nav__link">
+    CookieJar:delete
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/jpatrickdill/roblox-requests/edit/master/docs/api-reference.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="api-reference">API Reference</h1>
+<h2 id="module">Module</h2>
+<h3 id="httpsend">http.send</h3>
+<p><code>http.send(method, url, [options]) -&gt; Response</code></p>
+<p>Creates and sends an HTTP request with the given method, URL, and options.</p>
+<p>Options:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>headers</td>
+<td>dictionary</td>
+<td>Headers to be used with the Request.</td>
+</tr>
+<tr>
+<td>query</td>
+<td>dictionary</td>
+<td>Query string parameters to add to the URL.</td>
+</tr>
+<tr>
+<td>data</td>
+<td>string OR table OR FormData</td>
+<td>Data to send in the body of the request. Tables will automatically be encoded as JSON.</td>
+</tr>
+<tr>
+<td>cookies</td>
+<td>dictionary OR CookieJar</td>
+<td>Cookies to send with request.</td>
+</tr>
+<tr>
+<td>ignore_ratelimit</td>
+<td>bool</td>
+<td>If true, the rate-limit will be ignored for this request.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="httpget-post-head-put-delete-patch-options">http.get, post, head, put, delete, patch, options</h3>
+<p><code>http.get(url, [options]) -&gt; Response</code></p>
+<p>Shortcut methods for <code>http.send</code>.</p>
+<h3 id="httpset_ratelimit">http.set_ratelimit</h3>
+<p><code>http.set_ratelimit(requests, period)</code></p>
+<p>Changes global rate limit. Default is 250 requests / 30 seconds.</p>
+<p>This <strong>must</strong> be called before any HTTP requests are made for changes to take effect.</p>
+<h2 id="httprequest">http.Request</h2>
+<p><code>http.Request(method, url, [options]) -&gt; Request</code></p>
+<p>Creates and prepares a Request object.</p>
+<h3 id="attributes">Attributes</h3>
+<p>Note: These attributes are all read-only. Use the provided methods instead of setting them directly.</p>
+<ul>
+<li><strong>method</strong> (string) - HTTP verb used for request</li>
+<li><strong>url</strong> (string) - URL request is sent to</li>
+<li><strong>headers</strong> (dictionary) - Headers used for this request</li>
+<li><strong>query</strong> (dictionary) - Parameters to add to URL</li>
+<li><strong>data</strong> (string) - Raw data sent with request</li>
+</ul>
+<h3 id="requestupdate_headers">Request:update_headers</h3>
+<p><code>Request:update_headers(headers)</code></p>
+<p>Updates request headers based on a dictionary of new headers.</p>
+<h3 id="requestupdate_query">Request:update_query</h3>
+<p><code>Request:update_query(params)</code></p>
+<p>Updates URL query string based on a dictionary of parameters.</p>
+<h3 id="requestset_data">Request:set_data</h3>
+<p><code>Request:set_data(data)</code></p>
+<p>Sets new data for request. The data can be a string, table (JSON), or FormData.</p>
+<h3 id="requestsend">Request:send</h3>
+<p><code>Request:send() -&gt; Response</code></p>
+<p>Sends the request and returns a <code>Response</code> object.</p>
+<p><code>Request:send(cb)</code></p>
+<p>Sends request and passes the response to a callback function. This
+will not block the current thread.</p>
+<h2 id="response">Response</h2>
+<h3 id="attributes_1">Attributes</h3>
+<ul>
+<li><strong>request</strong> (Request) - Request that generated this response</li>
+<li><strong>url</strong> (string) - Requests' URL</li>
+<li><strong>method</strong> (string) - Request's HTTP method</li>
+<li><strong>success</strong> (bool) - <code>true</code> if response was successful</li>
+<li><strong>code</strong> (number) - Status code of reponse</li>
+<li><strong>message</strong> (string) - Status message of response</li>
+<li><strong>headers</strong> (dictionary) - Headers sent in response</li>
+<li><strong>content</strong> (string) - Response body</li>
+<li><strong>cookies</strong> (CookieJar) - New cookies sent in this response</li>
+</ul>
+<h3 id="responsejson">Response:json</h3>
+<p><code>Response:json() -&gt; Variant</code></p>
+<p>Converts JSON response to a Lua object.</p>
+<h2 id="httpsession">http.Session</h2>
+<p><code>http.Session([base_url]) -&gt; Session</code></p>
+<p>Creates a session with an optional base URL.</p>
+<p>All main module methods also apply to sessions.</p>
+<h3 id="attributes_2">Attributes</h3>
+<ul>
+<li><strong>headers</strong> (dictionary) - Default headers used with each request</li>
+<li><strong>cookies</strong> (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header</li>
+<li><strong>base_url</strong> (string) - Base URL to prefix each request with. If a request URL contains the HTTP protocol (http(s)://), this will be ignored</li>
+<li><strong>ignore_ratelimit</strong> (bool) - If true, all requests will ignore the global rate-limit</li>
+</ul>
+<h3 id="sessionset_headers">Session:set_headers</h3>
+<p><code>Session:set_headers(new_headers)</code></p>
+<p>Updates headers dictionary with values of new_headers.</p>
+<h3 id="sessionset_ratelimit">Session:set_ratelimit</h3>
+<p><code>Session:set_ratelimit(requests, seconds)</code></p>
+<p>Sets custom rate-limit for the Session. Requests sent by the session must follow this ratelimit and the global ratelimit.</p>
+<p>This can be changed at any time by calling the function again.</p>
+<h3 id="sessiondisable_ratelimit">Session:disable_ratelimit</h3>
+<p><code>Session:disable_ratelimit()</code></p>
+<p>Disables the Session rate-limit if one is set. This will <strong>not</strong> affect the global rate-limit. To make your session
+ignore the global rate-limit, use <code>session.ignore_ratelimit = true</code></p>
+<h3 id="sessionsend">Session:send</h3>
+<p><code>Session:send(method, url, [opts]) -&gt; Response</code></p>
+<p>Creates and sends a request prepared with session defaults.
+Options specified here will override the session values.</p>
+<h3 id="sessionget-post-head-put-delete-patch-options">Session:get, post, head, put, delete, patch, options</h3>
+<p><code>Session:get(url, [opts]) -&gt; Response</code></p>
+<p>Shortcut methods for <code>Session:send</code></p>
+<h3 id="sessionrequest">Session:Request</h3>
+<p><code>Session:Request(method, url, [opts]) -&gt; Request</code></p>
+<p>Creates a Request prepared with session defaults.
+Options specified here will override the session values.</p>
+<h2 id="httpformdata">http.FormData</h2>
+<p><code>http.FormData(fields) -&gt; FormData</code></p>
+<p>Creates form data based on given fields. Fields should be passed in a dictionary.</p>
+<h3 id="formdataaddfield">FormData:AddField</h3>
+<p><code>FormData:AddField(name, value)</code></p>
+<p>Adds field with given name and value.</p>
+<h2 id="httpfile">http.File</h2>
+<p><code>http.File(content) -&gt; File</code></p>
+<p><code>http.File(filename, content, [content_type]) -&gt; File</code></p>
+<p>Creates a file for use in a FormData field. If no content type is specified, it will
+be guessed from the file extension.</p>
+<h2 id="httpcookiejar">http.CookieJar</h2>
+<p>CookieJars are used to store and persist cookies. This is the object referenced by <code>session.cookies</code>.</p>
+<h3 id="cookiejarinsert">CookieJar:insert</h3>
+<p><code>CookieJar:insert(name, value, options)</code></p>
+<p>Creates a new cookie with an optional domain and path</p>
+<p>Options:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>domain</td>
+<td>string</td>
+<td>If specified, the cookie will only apply to URLs on this domain.</td>
+</tr>
+<tr>
+<td>path</td>
+<td>string</td>
+<td>If specified, the cookie will only apply to URLs that begin with this path.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cookiejardelete">CookieJar:delete</h3>
+<p><code>CookieJar:delete(name)</code></p>
+<p>Deletes a cookie.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../guide/advanced/" title="Advanced Usage" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Advanced Usage
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>
