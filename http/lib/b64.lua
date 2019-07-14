@@ -1,6 +1,6 @@
 -- base64
 
-local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
 -- encoding
 function enc(data)
@@ -32,7 +32,36 @@ function dec(data)
     end))
 end
 
+function safe_enc(data, log)
+    -- encodes data without risk of script timeout by splitting into chunks
+
+    if log == nil then
+        log = true
+    end
+
+    local CHUNK_SIZE = math.floor(200*1024/3)*3  -- 200 KB chunks
+
+    local encoded = ""
+    local chunks = {}
+
+    while #data > 0 do
+        table.insert(chunks, data:sub(1, CHUNK_SIZE))
+        data = data:sub(CHUNK_SIZE+1)
+    end
+
+    for i, chunk in ipairs(chunks) do
+        if log then
+            print(("[http] Encoding B64 chunk %s/%s"):format(i, #chunks))
+        end
+        encoded = encoded .. enc(chunk)
+
+        wait()  -- prevent script timeout
+    end
+
+    return encoded
+end
+
 return {
-	encode = enc,
+	encode = safe_enc,
 	decode = dec
 }

@@ -8,15 +8,19 @@ local Src = script.src
 
 local Request = require(Src.request)
 local Session = require(Src.session)
-local FormData = require(Src.form)
+local Forms = require(Src.form)
+
+local RateLimiter = require(Src.ratelimit)
 
 local http = {}
 
-http.VERSION = "0.1.0"
+http.VERSION = "0.2.0"
 
 http.Request = Request.new
 http.Session = Session.new
-http.FormData = FormData.new
+
+http.FormData = Forms.FormData.new
+http.File = Forms.File.new
 
 function http.send(method, url, opts)
 	-- quick method to send http requests
@@ -40,6 +44,13 @@ for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATC
 	http[method:lower()] = function(url, opts)
 		return http.send(method, url, opts)
 	end
+end
+
+function http.set_ratelimit(requests, period)
+	-- sets rate limit settings
+	local rl = RateLimiter.get("http", requests, period)
+
+	print("[http] RateLimiter settings changed: ", rl.rate, "reqs /", rl.window_size, "secs")
 end
 
 return http

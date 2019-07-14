@@ -9,12 +9,6 @@ local Src = Main.src
 local json = require(Src.json)
 local Url = require(Lib.url)
 
-local function get_domain(url)
-	local host = Url.parse(url).host
-
-	return host or url
-end
-
 local function maybe_number(str)
 	-- convert value to number if possible
 
@@ -35,32 +29,70 @@ local function trim(s)
 	return s
 end
 
-local function parse(cookie_string, sep)
-	-- parse cookie string and return table
+-- Cookie object
 
-	sep = sep or ","
+local Cookie = {}
+Cookie.__index = Cookie
+function Cookie.new(name, value, opts)
+	local self = setmetatable({}, Cookie)
 
-	local ck = {}
+	opts = opts or {}
 
-	-- ignore expiration data, etc
-	cookie_string = cookie_string:split(";")[1]
+	self.name = name
+	self.value = value
 
-	for _, s in ipairs(cookie_string:split(sep)) do
-		local nv = s:split("=")
-		if #nv < 2 then
-			error("[http] Error parsing cookies: " .. s)
-		end
+	self.domain = opts.domain or ""
+	self.path = opts.path or ""
 
-		local name = trim(nv[1])
+	return self
+end
 
-		-- concat rest of cookie (may have extra equal signs that get split)
-		table.remove(nv, 1)
-		local value = trim(table.concat(nv, "="))
+function Cookie.fromSet(s)
+	-- create from Set-Cookie header
 
-		ck[name] = maybe_number(value)
+	local opts = {}
+
+	local args = s:split(";")
+
+	local nv = args[1]:split("=")
+	local name, value = trim(nv[1]), trim(nv[2])
+
+	for i=2, #args do
+		local kv = args[i]:split("=")
+		local k, v = trim(kv[1]):lower(), trim(kv[2])
+
+		opts[k] = v
 	end
 
-	return ck
+	return Cookie.new(name, value, opts)
+end
+
+function Cookie:matches(url)
+	-- check if cookie should be used for URL
+
+	if not self.domain then
+		return true
+	end
+
+	local u = Url.parse(url)
+
+	if self.domain:sub(1, 1) == "." then  -- wildcard domain
+		if not (u.host:sub(-#self.domain, -1) == self.domain or u.host == self.domain:sub(2)) then
+			return false
+		end
+	else
+		if u.host ~= self.domain then
+			return false
+		end
+	end
+
+	if self.path then
+		if not u.path:sub(1, #self.path) == self.path then
+			return false
+		end
+	end
+
+	return true
 end
 
 -- CookieJar object
@@ -72,66 +104,44 @@ function CookieJar.new()
 
 	self.__cookiejar = true  -- used to differentiate from dictionaries
 
-	self.domains = {}
+	self.cookies = {}
 
 	return self
 end
 
-function CookieJar:set(url, c_or_n, v)
+function CookieJar:insert(name, value, opts)
 	-- set new cookies in cookie jar
 
-	local domain = get_domain(url)
-
-	if not self.domains[domain] then
-		self.domains[domain] = {}
-	end
-
-	if v then 
-		-- single cookie passed
-		self.domains[domain][c_or_n] = v
-
-	else 
-		-- table passed
-		local cookies = c_or_n
-
-		if cookies.__cookiejar then
-			-- if cookiejar passed, only get relevant cookies
-			cookies = cookies.domains[domain]
-		end
-
-		if type(cookies) == "string" then
-			cookies = parse(cookies)
-		end
-
-		for k, v in pairs(cookies) do
-			self.domains[domain][k] = v
-		end
-	end
+	self.cookies[name] = Cookie.new(name, value, opts)
 
 	return self
 end
 
-function CookieJar:delete(domain, name)
-	self.cookies[domain][name] = nil
+function CookieJar:SetCookie(s)
+	-- add cookie from set-cookie string
+
+	local c = Cookie.fromSet(s)
+
+	self.cookies[c.name] = c
+end
+
+function CookieJar:delete(name)
+	self.cookies[name] = nil
 end
 
 function CookieJar:string(url)
 	-- convert to header string
-	local domain = get_domain(url)
-
-	if not self.domains[domain] then  -- no cookies for this domain
-		return ""
-	end
-
 	local str = ""
 
-	for k, v in pairs(self.domains[domain]) do
-		if v ~= nil then
-			str = str .. k .. "=" .. v .. "; "
+	for _, cookie in pairs(self.cookies) do
+		if str then
+			str = str .. "; "
 		end
+
+		str = str .. ("%s=%s"):format(cookie.name, cookie.value)
 	end
 
-	return str:sub(1, -2)
+	return str
 end
 
 function CookieJar:__tostring()

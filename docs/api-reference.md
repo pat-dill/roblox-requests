@@ -1,6 +1,6 @@
 # API Reference
 
-## Module Level
+## Module
 
 ### http.send
 
@@ -8,20 +8,29 @@
 
 Creates and sends an HTTP request with the given method, URL, and options.
 
-Accepted options:
+Options:
 
-| Name    | Type                        | Description                                                                            |
-|---------|-----------------------------|----------------------------------------------------------------------------------------|
-| headers | dictionary                  | Headers to be used with the Request.                                                   |
-| query   | dictionary                  | Query string parameters to add to the URL.                                             |
-| data    | string OR table OR FormData | Data to send in the body of the request. Tables will automatically be encoded as JSON. |
-| cookies | dictionary OR CookieJar     | Cookies to send with request.                                                          |
+| Name             | Type                        | Description                                                                            |
+|------------------|-----------------------------|----------------------------------------------------------------------------------------|
+| headers          | dictionary                  | Headers to be used with the Request.                                                   |
+| query            | dictionary                  | Query string parameters to add to the URL.                                             |
+| data             | string OR table OR FormData | Data to send in the body of the request. Tables will automatically be encoded as JSON. |
+| cookies          | dictionary OR CookieJar     | Cookies to send with request.                                                          |
+| ignore_ratelimit | bool                        | If true, the rate-limit will be ignored for this request.                              |
 
 ### http.get, post, head, put, delete, patch, options
 
 `http.get(url, [options]) -> Response`
 
 Shortcut methods for `http.send`.
+
+### http.set_ratelimit
+
+`http.set_ratelimit(requests, period)`
+
+Changes global rate limit. Default is 250 requests / 30 seconds.
+
+This **must** be called before any HTTP requests are made for changes to take effect.
 
 ## http.Request
 
@@ -72,15 +81,15 @@ will not block the current thread.
 
 ### Attributes
 
-- request (Request) - Request that generated this response
-- url (string) - Requests' URL
-- method (string) - Request's HTTP method
-- success (bool) - `true` if response was successful
-- code (number) - Status code of reponse
-- message (string) - Status message of response
-- headers (dictionary) - Headers sent in response
-- content (string) - Response body
-- cookies (CookieJar) - **New** cookies sent in this response
+- **request** (Request) - Request that generated this response
+- **url** (string) - Requests' URL
+- **method** (string) - Request's HTTP method
+- **success** (bool) - `true` if response was successful
+- **code** (number) - Status code of reponse
+- **message** (string) - Status message of response
+- **headers** (dictionary) - Headers sent in response
+- **content** (string) - Response body
+- **cookies** (CookieJar) - New cookies sent in this response
 
 ### Response:json
 
@@ -98,15 +107,31 @@ All main module methods also apply to sessions.
 
 ### Attributes
 
-- headers (dictionary) - Default headers used with each request
-- cookies (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header
-- base_url (string) - Base URL to prefix each request with. If a request UTL contains the HTTP protocol ("http(s)://"), this will be ignored
+- **headers** (dictionary) - Default headers used with each request
+- **cookies** (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header
+- **base_url** (string) - Base URL to prefix each request with. If a request URL contains the HTTP protocol (http(s)://), this will be ignored
+- **ignore_ratelimit** (bool) - If true, all requests will ignore the global rate-limit
 
 ### Session:set_headers
 
 `Session:set_headers(new_headers)`
 
 Updates headers dictionary with values of new_headers.
+
+### Session:set_ratelimit
+
+`Session:set_ratelimit(requests, seconds)`
+
+Sets custom rate-limit for the Session. Requests sent by the session must follow this ratelimit and the global ratelimit.
+
+This can be changed at any time by calling the function again.
+
+### Session:disable_ratelimit
+
+`Session:disable_ratelimit()`
+
+Disables the Session rate-limit if one is set. This will **not** affect the global rate-limit. To make your session
+ignore the global rate-limit, use `session.ignore_ratelimit = true`
 
 ### Session:send
 
@@ -130,9 +155,9 @@ Options specified here will override the session values.
 
 ## http.FormData
 
-`http.FormData([{fieldName, fieldValue}, [...]]) -> FormData`
+`http.FormData(fields) -> FormData`
 
-Creates form data based on given fields. Field names cannot contain '=' or '&' characters.
+Creates form data based on given fields. Fields should be passed in a dictionary.
 
 ### FormData:AddField
 
@@ -140,41 +165,34 @@ Creates form data based on given fields. Field names cannot contain '=' or '&' c
 
 Adds field with given name and value.
 
-### FormData:AddFile
+## http.File
 
-`FormData:AddFile(fieldName, fileContent, [fileName, [contentType]])`
+`http.File(content) -> File`
 
-Adds a file to the form with optional file name and content type.
-Content type must be specified if not `text/plain`.
+`http.File(filename, content, [content_type]) -> File`
 
-Any non-text files will be encoded using Base64.
+Creates a file for use in a FormData field. If no content type is specified, it will
+be guessed from the file extension.
 
 ## http.CookieJar
 
-`http.CookieJar() -> CookieJar`
+CookieJars are used to store and persist cookies. This is the object referenced by `session.cookies`.
 
-Creates a CookieJar object.
+### CookieJar:insert
 
-When cookies are added for a URL, its hostname is taken and used as the domain for that cookie
-(this is being reworked in the future).
+`CookieJar:insert(name, value, options)`
 
-### Attributes
+Creates a new cookie with an optional domain and path
 
-- domains (dictionary) - Table containing cookies for each domain
+Options:
 
-### CookieJar:set
-
-`CookieJar:set(url, name, value)`
-
-Creates a new cookie under the specified URL
-
-`CookieJar:set(url, cookie_table)`
-
-Adds multiple cookies to the specified URL.
-Table should be in the format `{name="value"}`.
+| Name   | Type   | Description                                                                 |
+|--------|--------|-----------------------------------------------------------------------------|
+| domain | string | If specified, the cookie will only apply to URLs on this domain.            |
+| path   | string | If specified, the cookie will only apply to URLs that begin with this path. |
 
 ### CookieJar:delete
 
-`CookieJar:delete(url, name)`
+`CookieJar:delete(name)`
 
-Deletes a cookie from the specified domain.
+Deletes a cookie.

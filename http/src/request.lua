@@ -10,6 +10,7 @@ local json = require(Src.json)
 
 local Response = require(Src.response)
 local CookieJar = require(Src.cookies)
+local RateLimiter = require(Src.ratelimit)
 
 -- Request object
 
@@ -25,6 +26,7 @@ function Request.new(method, url, opts)
 		--    data: (str OR dictionary) Data to send in POST or PATCH request
 		--     log: (bool) Whether to log the request
 		-- cookies: (CookieJar OR dict) Cookies to use in request
+		-- ignore_ratelimit: (bool) If true, rate limiting is ignored. Not recommended unless you are rate limiting yourself.
 
 	local self = setmetatable({}, Request)
 
@@ -39,6 +41,10 @@ function Request.new(method, url, opts)
 	self.query = {}
 	self.data = nil
 
+	self._ratelimits = {RateLimiter.get("http", 250, 30)}
+
+	self.ignore_ratelimit = opts.ignore_ratelimit or false
+
 	if opts.data then
 		self:set_data(opts.data)
 	end
@@ -52,7 +58,9 @@ function Request.new(method, url, opts)
 		local jar = CookieJar.new()
 
 		if cj then
-			jar:set(self.url, cj)
+			for k, v in pairs(cj) do
+				jar:insert(k, v)
+			end
 		end
 
 		cj = jar
@@ -110,6 +118,17 @@ function Request:set_data(data)
 	self.data = data
 end
 
+function Request:_ratelimit()
+	-- checks all ratelimiters assigned to request
+
+	for _, rl in ipairs(self._ratelimits) do
+		if not rl:request() then
+			return false
+		end
+	end
+
+	return true
+end
 
 function Request:_send()
 	-- prepare request options
@@ -123,11 +142,32 @@ function Request:_send()
 		options.Body = self.data
 	end
 
-	local resp = httpservice:RequestAsync(options)
-	resp = Response.new(self, resp)
+	local attempts = 0
+	local succ, resp = false, nil
+
+	while attempts < 5 do
+		-- check if request will exceed rate limit
+		if self.ignore_ratelimit or self:_ratelimit() then
+			local st = tick()
+			resp = Response.new(self, httpservice:RequestAsync(options), tick()-st)
+			succ = true
+			break
+		end
+
+		warn("[http] Rate limit exceeded. Retrying in 5 seconds")
+
+		attempts = attempts + 1
+		wait(5)
+	end
+
+	if not succ then
+		error("[http] Rate limit still exceeded after 5 attempts")
+	end
 
 	if self._log then
-		print("[http]", resp.code, resp.message, "|", resp.method, resp.url)
+		local rl = tostring(math.floor(self._ratelimits[#self._ratelimits]:consumption()*1000)*0.1) .. "%"
+
+		print("[http]", resp.code, resp.message, "|", resp.method, resp.url, "(", rl, "ratelimit )")
 	end
 
 	if self._callback then

@@ -12,12 +12,14 @@ local CaseInsensitive = require(Lib.nocasetable)
 
 local Response = {}
 Response.__index = Response
-function Response.new(req, resp)
+function Response.new(req, resp, rt)
 	-- creates response object from original request and roblox http response
 
 	local self = setmetatable({}, Response)
 
 	self.request = req  -- original request object
+
+	self.response_time = rt
 
 	-- request meta data
 	self.url = req.url
@@ -36,7 +38,10 @@ function Response.new(req, resp)
 
 	-- cookies
 	self.cookies = CookieJar.new()
-	self.cookies:set(self.url, self.headers["set-cookie"] or {})
+
+	if self.headers["set-cookie"] then
+		self.cookies:SetCookie(self.headers["set-cookie"])
+	end
 
 	return self
 end
