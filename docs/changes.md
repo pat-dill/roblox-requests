@@ -17,9 +17,10 @@ Individual session rate-limits can also be with `Session:set_ratelimit`.
     - `:AddField()` method used for both text and file fields
     - New `http.File` class for files
 
-## To Do
-
-- Rework CookieJars
+- Reworked CookieJars
+    - Cookies can now use domain and path qualifiers
+    - new `Cookie` class used internally
+    - `CookieJar:insert(name, value, opts)` for adding new cookies
 
 !!! warning
     Backwards-compatibility is NOT guaranteed before version 1.0.

@@ -1,6 +1,6 @@
 -- base64
 
-local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
 -- encoding
 function enc(data)
@@ -39,7 +39,7 @@ function safe_enc(data, log)
         log = true
     end
 
-    local CHUNK_SIZE = math.floor(200*1000/3)*3  -- 200 KB chunks
+    local CHUNK_SIZE = math.floor(200*1024/3)*3  -- 200 KB chunks
 
     local encoded = ""
     local chunks = {}

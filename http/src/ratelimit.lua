@@ -15,12 +15,12 @@ local function log(s)
     -- log(s)
 end
 
+if not _G.ratelimit then
+    _G.ratelimit = {}
+end
+
 function RateLimiter.get(id, rate, window_size)
     local self = setmetatable({}, RateLimiter)
-
-    if not _G.ratelimit then
-        _G.ratelimit = {}
-    end
 
     -- create window table for this id
     if not _G.ratelimit[id] then
@@ -29,13 +29,13 @@ function RateLimiter.get(id, rate, window_size)
         _G.ratelimit[id].windows = {}
         _G.ratelimit[id].window_size = window_size
         _G.ratelimit[id].rate = rate
+
+        log("[ratelimit] Created RateLimiter with id", self.id)
     end
 
     self.id = id
     self.window_size = _G.ratelimit[id].window_size
     self.rate = _G.ratelimit[id].rate
-
-    log("[ratelimit] Created RateLimiter with id", self.id)
 
     return self    
 end
@@ -91,12 +91,16 @@ function RateLimiter:request()
     -- checks if request will fall within ratelimit
     -- returns true if allowed, false if denied
 
+    debug.profilebegin("ratelimit")
+
     if self:weighted(1) > self.rate then
         return false
     else
         self:increment()
         return true
     end
+
+    debug.profilened()
 end
 
 ------------------

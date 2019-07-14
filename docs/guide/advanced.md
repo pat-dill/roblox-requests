@@ -13,22 +13,36 @@ Persisting cookies across requests:
 ```lua
 local session = http.Session()
 
-session:get("https://httpbin.org/cookies/set/sessioncookie/123456789")
+session.cookies:insert("sessioncookie", "123456789", {domain="httpbin.org", path="/cookies"})  -- add new cookie to httpbin.org/cookies
 local r = session:get("https://httpbin.org/cookies")
 
 print(r.content)
 -- {"cookies": {"sessioncookie": "123456789"}}
+
+print(session:get("https://httpbin.org/").content)  -- cookies will only be sent to their set path
+-- {"cookies": {}}
+
 ```
 
-Sessions can also be used to provide default data to requests. This is done
-with some helper functions:
+Sessions can also be used to provide default data to requests.
 
 ```lua
 local session = http.Session()
-session:set_headers{["X-Test"] = "true"}
+session.headers = {
+	["X-Test"] = true
+}
 
 -- both "x-test" and "x-test2" are sent
 session:get("https://httpbin.org/headers", { headers={["X-Test2"] = "true"} })
+```
+
+Additional headers can also be merged with the current headers:
+
+```lua
+session:set_headers({
+	["x-third"] = true
+})  
+-- session.headers now contains both "X-Test" and "x-third"
 ```
 
 Any options that you pass to a request method will be merged with the session-level values.

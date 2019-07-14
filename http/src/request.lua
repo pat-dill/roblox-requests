@@ -58,7 +58,9 @@ function Request.new(method, url, opts)
 		local jar = CookieJar.new()
 
 		if cj then
-			jar:set(self.url, cj)
+			for k, v in pairs(cj) do
+				jar:insert(k, v)
+			end
 		end
 
 		cj = jar
@@ -146,7 +148,8 @@ function Request:_send()
 	while attempts < 5 do
 		-- check if request will exceed rate limit
 		if self.ignore_ratelimit or self:_ratelimit() then
-			resp = Response.new(self, httpservice:RequestAsync(options))
+			local st = tick()
+			resp = Response.new(self, httpservice:RequestAsync(options), tick()-st)
 			succ = true
 			break
 		end

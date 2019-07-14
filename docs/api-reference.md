@@ -8,7 +8,7 @@
 
 Creates and sends an HTTP request with the given method, URL, and options.
 
-Accepted options:
+Options:
 
 | Name             | Type                        | Description                                                                            |
 |------------------|-----------------------------|----------------------------------------------------------------------------------------|
@@ -81,15 +81,15 @@ will not block the current thread.
 
 ### Attributes
 
-- request (Request) - Request that generated this response
-- url (string) - Requests' URL
-- method (string) - Request's HTTP method
-- success (bool) - `true` if response was successful
-- code (number) - Status code of reponse
-- message (string) - Status message of response
-- headers (dictionary) - Headers sent in response
-- content (string) - Response body
-- cookies (CookieJar) - **New** cookies sent in this response
+- **request** (Request) - Request that generated this response
+- **url** (string) - Requests' URL
+- **method** (string) - Request's HTTP method
+- **success** (bool) - `true` if response was successful
+- **code** (number) - Status code of reponse
+- **message** (string) - Status message of response
+- **headers** (dictionary) - Headers sent in response
+- **content** (string) - Response body
+- **cookies** (CookieJar) - New cookies sent in this response
 
 ### Response:json
 
@@ -107,10 +107,10 @@ All main module methods also apply to sessions.
 
 ### Attributes
 
-- headers (dictionary) - Default headers used with each request
-- cookies (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header
-- base_url (string) - Base URL to prefix each request with. If a request URL contains the HTTP protocol (http(s)://), this will be ignored
-- ignore_ratelimit (bool) - If true, all requests will ignore the global rate-limit
+- **headers** (dictionary) - Default headers used with each request
+- **cookies** (CookieJar) - Current session cookies. Updates automatically from Set-Cookie header
+- **base_url** (string) - Base URL to prefix each request with. If a request URL contains the HTTP protocol (http(s)://), this will be ignored
+- **ignore_ratelimit** (bool) - If true, all requests will ignore the global rate-limit
 
 ### Session:set_headers
 
@@ -176,30 +176,23 @@ be guessed from the file extension.
 
 ## http.CookieJar
 
-`http.CookieJar() -> CookieJar`
+CookieJars are used to store and persist cookies. This is the object referenced by `session.cookies`.
 
-Creates a CookieJar object.
+### CookieJar:insert
 
-When cookies are added for a URL, its hostname is taken and used as the domain for that cookie
-(this is being reworked in the future).
+`CookieJar:insert(name, value, options)`
 
-### Attributes
+Creates a new cookie with an optional domain and path
 
-- domains (dictionary) - Table containing cookies for each domain
+Options:
 
-### CookieJar:set
-
-`CookieJar:set(url, name, value)`
-
-Creates a new cookie under the specified URL
-
-`CookieJar:set(url, cookie_table)`
-
-Adds multiple cookies to the specified URL.
-Table should be in the format `{name="value"}`.
+| Name   | Type   | Description                                                                 |
+|--------|--------|-----------------------------------------------------------------------------|
+| domain | string | If specified, the cookie will only apply to URLs on this domain.            |
+| path   | string | If specified, the cookie will only apply to URLs that begin with this path. |
 
 ### CookieJar:delete
 
-`CookieJar:delete(url, name)`
+`CookieJar:delete(name)`
 
-Deletes a cookie from the specified domain.
+Deletes a cookie.

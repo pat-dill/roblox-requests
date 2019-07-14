@@ -105,7 +105,9 @@ function Session:Request(method, url, opts)
 	request:update_headers(opts.headers or {})
 
 	request._callback = function(resp)
-		self.cookies:set(url, resp.cookies)
+		for _, cookie in ipairs(resp.cookies.cookies) do
+			table.insert(self.cookies.cookies, cookie)
+		end
 	end
 
 	return request

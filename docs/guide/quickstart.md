@@ -114,7 +114,23 @@ local custom_headers = {Authorization = "api-key-here"}
 local r = http.get(url, { headers=custom_headers })
 ```
 
-Note: The `User-Agent` and `Roblox-Id` headers cannot be overridden.
+!!! note
+    The `User-Agent` and `Roblox-Id` headers cannot be overridden.
+
+### Cookies
+
+To include custom cookies in a request, use the `cookies` option:
+
+```lua
+local r = http.get("http://httpbin.org/cookies", { cookies={a=1, b=2} })
+print(r.content)
+--   {
+--     "cookies": {
+--       "a": "1", 
+--       "b": "2"
+--     }
+--   }
+```
 
 ## POST JSON Payloads
 
