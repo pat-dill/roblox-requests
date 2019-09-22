@@ -10,7 +10,7 @@ An example of what you can do with Requests:
 local http = require(game.ReplicatedStorage.http)
 
 local r = http.post("https://httpbin.org/post", { query = {arg="value"},
-	                                              data = {this="json"}  })
+	                                              data = {key="value"}  })
 
 print(r.content_type,
 	  r:json().url)
