@@ -1,39 +1,43 @@
-# Roblox Requests {{ version }} 
+# Roblox Requests
 
 **Roblox Requests** brings user-friendly HTTP to Roblox with no need for the manual labor of HttpService.
 
----
+With Requests you can send robust, human-readable HTTP requests without ever having to deal with the underlying HttpService.
+No more manual query strings or encoding POST data.
 
-An example of what you can do with Requests:
+#### The Power of Roblox Requests:
 
 ```lua
-local http = require(game.ReplicatedStorage.http)
+local r = http.get("https://api.github.com/orgs/Roblox/repos")
 
-local r = http.post("https://httpbin.org/post", { query = {arg="value"},
-	                                              data = {key="value"}  })
+print(r.status_code, r.message)
+-- 200 OK
 
-print(r.content_type,
-	  r:json().url)
+repos = r:json()
+print(#repos)
+-- 30
 
--- output:
+print(r.content_type)
 -- application/json
--- https://httpbin.org/post?arg=value
+print(r.encoding)
+-- utf-8
+print(r.headers["x-ratelimit-remaining"])
+-- 59
 ```
 
-See [similar code with HttpService.](https://gist.github.com/jpatrickdill/8fe2a82c47c1bdf679eb1a1c5f07d7a0)
+Roblox Requests will bring simple support for all internet resources to your game.
 
-Requests' powerful API allows you to send HTTP/1.1 requests without the need of manual labor. You'll never
-have to add query strings to URLs or encode your POST data again.
+## Features
 
-### Roblox Requests Features
+- Sessions with Cookie Persistence
+- Default Headers, URL prefixes
+- Automatic Query Strings
+- JSON Body Encoding, JSON Response Decoding
+- Elegant Key/Value Cookies
+  - Domain/Path filters
+- Multipart File Encoding and Upload
+- Global/Per-Session Ratelimiting
 
-- Sessions with cookie persistence, base URLs/headers
-- Automatic query string building
-- Automatic JSON body encoding
-- Builtin Response object and JSON decoding
-- Domain based Key/Value cookies
-- Multipart form building including file encoding and upload
-- Global ratelimiting with per-session config options
 
 Roblox Requests was inspired by the well known [Python Requests](https://2.python-requests.org/en/master/) library.
 
