@@ -26,14 +26,25 @@ function Response.new(req, resp, rt)
 	self.method = req.method
 
 	-- response data
-	self.success = resp.Success
-	self.code = resp.StatusCode
+	self.code = resp.StatusCode  -- deprecated
+	self.status_code = resp.StatusCode
+
+	self.success = resp.Success  -- deprecated
+	self.ok = self.status_code >= 200 and self.status_code < 300
+	
 	self.message = resp.StatusMessage
 	self.headers = CaseInsensitive(resp.Headers)
-	self.content = resp.Body
+
+	self.content = resp.Body  -- deprecated
+	self.text = resp.Body
+
 
 	-- additional metadata for quick access
-	self.content_type = self.headers["content-type"]
+	local type_encoding =  self.headers["content-type"]:split(";")
+	self.content_type = type_encoding[1]
+	self.encoding = (type_encoding[2] and type_encoding[2]:split("=")[2]) or "" -- or "utf-8"
+	
+
 	self.content_length = self.headers["content-length"] or #self.content
 
 	-- cookies
@@ -47,7 +58,7 @@ function Response.new(req, resp, rt)
 end
 
 function Response:__tostring()
-	return self.content
+	return self.text
 end
 
 function Response:json()

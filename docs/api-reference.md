@@ -84,11 +84,11 @@ will not block the current thread.
 - **request** (Request) - Request that generated this response
 - **url** (string) - Requests' URL
 - **method** (string) - Request's HTTP method
-- **success** (bool) - `true` if response was successful
-- **code** (number) - Status code of reponse
+- **ok** (bool) - `true` if response has OK status code (200 \<= code \< 300)
+- **status_code** (number) - Status code of reponse
 - **message** (string) - Status message of response
 - **headers** (dictionary) - Headers sent in response
-- **content** (string) - Response body
+- **text** (string) - Response body
 - **cookies** (CookieJar) - New cookies sent in this response
 
 ### Response:json
