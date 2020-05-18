@@ -541,12 +541,12 @@ Requests allows you to provide these arguments as a dictionary using the <code>q
 <h2 id="response-content">Response Content</h2>
 <p>Requests makes it easy to read different kinds of response content.</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://api.github.com/orgs/Roblox/repos&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1">-- [{&quot;id&quot;:10803524,&quot;node_id&quot;:&quot;MDEwOlJlcG9zaXRvcnkxMD...</span>
 </code></pre></div>
 
 
-<p>The <code>content</code> attribute provides the plaintext response body, regardless of the given content-type.
+<p>The <code>text</code> attribute provides the plaintext response body, regardless of the given content-type.
 If you'd like to decode JSON data, you can use the <code>:json()</code> method:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://api.github.com/orgs/Roblox/repos&quot;</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">repos</span> <span class="o">=</span> <span class="n">r</span><span class="p">:</span><span class="n">json</span><span class="p">()</span>
@@ -557,7 +557,7 @@ If you'd like to decode JSON data, you can use the <code>:json()</code> method:<
 
 <p>In the case that JSON decoding fails, an exception will be raised. It should be noted, however, that a successful <code>:json()</code> call
 does <strong>not</strong> indicate the success of the response. Some servers may return a JSON object in a failed response, such as error details.</p>
-<p>To check that a response is successful, use <code>r.success</code> or <code>r.code</code>.</p>
+<p>To check that a response is successful, use <code>r.ok</code> or <code>r.status_code</code>.</p>
 <h3 id="response-headers">Response Headers</h3>
 <p>Response headers are often needed when using an API. They can be accessed as a dictionary through the <code>headers</code> attribute:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://upload.wikimedia.org/wikipedia/commons/3/38/JPEG_example_JPG_RIP_001.jpg&quot;</span><span class="p">)</span>
@@ -596,7 +596,7 @@ does <strong>not</strong> indicate the success of the response. Some servers may
 <h3 id="cookies">Cookies</h3>
 <p>To include custom cookies in a request, use the <code>cookies</code> option:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://httpbin.org/cookies&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">cookies</span><span class="o">=</span><span class="p">{</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">}</span> <span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1">--   {</span>
 <span class="c1">--     &quot;cookies&quot;: {</span>
 <span class="c1">--       &quot;a&quot;: &quot;1&quot;, </span>
@@ -612,7 +612,7 @@ encoded when the request is made:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="n">key1</span> <span class="o">=</span> <span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="n">list</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">}}</span>
 
 <span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/post&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span> <span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1">-- {</span>
 <span class="c1">--  ...</span>
 <span class="c1">--  &quot;json&quot;: {</span>
@@ -649,7 +649,7 @@ encoded when the request is made:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">form</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">FormData</span><span class="p">({</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;key2&quot;</span><span class="p">,</span> <span class="s2">&quot;value2&quot;</span><span class="p">})</span>
 <span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/post&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">data</span><span class="o">=</span><span class="n">form</span> <span class="p">})</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1">--  {</span>
 <span class="c1">--    ...</span>
 <span class="c1">--    &quot;form&quot;: {</span>
@@ -678,7 +678,7 @@ encoded when the request is made:</p>
 <p>Binary files can also be uploaded. This example downloads an image then uploads it to another site:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">image_url</span> <span class="o">=</span> <span class="s2">&quot;https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg&quot;</span>
 
-<span class="kd">local</span> <span class="n">image</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">File</span><span class="p">(</span><span class="s2">&quot;example.jpg&quot;</span><span class="p">,</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">).</span><span class="n">content</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">image</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">File</span><span class="p">(</span><span class="s2">&quot;example.jpg&quot;</span><span class="p">,</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">).</span><span class="n">text</span><span class="p">)</span>
 
 <span class="kd">local</span> <span class="n">form</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">FormData</span><span class="p">()</span>
 <span class="n">form</span><span class="p">:</span><span class="n">AddField</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
@@ -700,7 +700,7 @@ encoded when the request is made:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/get&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">code</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
 <span class="c1">-- 200 OK</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">success</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">ok</span><span class="p">)</span>
 <span class="c1">-- true</span>
 </code></pre></div>
 

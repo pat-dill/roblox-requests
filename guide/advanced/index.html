@@ -426,10 +426,10 @@ It also persists cookies across all requests made from the Session instance.</p>
 <span class="n">session</span><span class="p">.</span><span class="n">cookies</span><span class="p">:</span><span class="n">insert</span><span class="p">(</span><span class="s2">&quot;sessioncookie&quot;</span><span class="p">,</span> <span class="s2">&quot;123456789&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;httpbin.org&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/cookies&quot;</span><span class="p">})</span>  <span class="c1">-- add new cookie to httpbin.org/cookies</span>
 <span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/cookies&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1">-- {&quot;cookies&quot;: {&quot;sessioncookie&quot;: &quot;123456789&quot;}}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/&quot;</span><span class="p">).</span><span class="n">content</span><span class="p">)</span>  <span class="c1">-- cookies will only be sent to their set path</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/&quot;</span><span class="p">).</span><span class="n">text</span><span class="p">)</span>  <span class="c1">-- cookies will only be sent to their set path</span>
 <span class="c1">-- {&quot;cookies&quot;: {}}</span>
 </code></pre></div>
 
@@ -460,11 +460,11 @@ using a session. This example will only send cookies with the first request:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">session</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Session</span><span class="p">()</span>
 
 <span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/cookies&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">cookies</span><span class="o">=</span><span class="p">{[</span><span class="s2">&quot;temp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">}</span> <span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1">-- {&quot;cookies&quot;: {&quot;temp&quot;: &quot;value&quot;}}</span>
 
 <span class="kd">local</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">session</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/cookies&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r2</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r2</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1">-- {&quot;cookies&quot;: {}}</span>
 </code></pre></div>
 
@@ -485,7 +485,7 @@ with the request before it is sent. This is possible by creating the Request dir
 <h3 id="asynchronous-requests">Asynchronous Requests</h3>
 <p>When handling <code>Request</code> objects directly, you can send them in a separate thread by specifying a callback:</p>
 <div class="codehilite"><pre><span></span><code><span class="kr">function</span> <span class="nf">cb</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
     <span class="c1">-- do stuff</span>
 <span class="kr">end</span>
 
