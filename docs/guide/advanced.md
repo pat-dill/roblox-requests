@@ -16,10 +16,10 @@ local session = http.Session()
 session.cookies:insert("sessioncookie", "123456789", {domain="httpbin.org", path="/cookies"})  -- add new cookie to httpbin.org/cookies
 local r = session:get("https://httpbin.org/cookies")
 
-print(r.content)
+print(r.text)
 -- {"cookies": {"sessioncookie": "123456789"}}
 
-print(session:get("https://httpbin.org/").content)  -- cookies will only be sent to their set path
+print(session:get("https://httpbin.org/").text)  -- cookies will only be sent to their set path
 -- {"cookies": {}}
 
 ```
@@ -55,11 +55,11 @@ using a session. This example will only send cookies with the first request:
 local session = http.Session()
 
 local r = session:get("https://httpbin.org/cookies", { cookies={["temp"] = "value"} })
-print(r.content)
+print(r.text)
 -- {"cookies": {"temp": "value"}}
 
 local r2 = session:get("https://httpbin.org/cookies")
-print(r2.content)
+print(r2.text)
 -- {"cookies": {}}
 ```
 
@@ -85,7 +85,7 @@ When handling `Request` objects directly, you can send them in a separate thread
 
 ```lua
 function cb(response)
-	print(response.content)
+	print(response.text)
 	-- do stuff
 end
 

@@ -5,8 +5,7 @@
 With Requests you can send robust, human-readable HTTP requests without ever having to deal with the underlying HttpService.
 No more manual query strings or encoding POST data.
 
-#### The Power of Roblox Requests:
-
+**The Power of Roblox Requests:**
 ```lua
 local r = http.get("https://api.github.com/orgs/Roblox/repos")
 

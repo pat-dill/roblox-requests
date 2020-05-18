@@ -58,11 +58,11 @@ Requests makes it easy to read different kinds of response content.
 
 ```lua
 local r = http.get("https://api.github.com/orgs/Roblox/repos")
-print(r.content)
+print(r.text)
 -- [{"id":10803524,"node_id":"MDEwOlJlcG9zaXRvcnkxMD...
 ```
 
-The `content` attribute provides the plaintext response body, regardless of the given content-type.
+The `text` attribute provides the plaintext response body, regardless of the given content-type.
 If you'd like to decode JSON data, you can use the `:json()` method:
 
 ```lua
@@ -75,7 +75,7 @@ print(#repos)
 In the case that JSON decoding fails, an exception will be raised. It should be noted, however, that a successful `:json()` call
 does **not** indicate the success of the response. Some servers may return a JSON object in a failed response, such as error details.
 
-To check that a response is successful, use `r.success` or `r.code`.
+To check that a response is successful, use `r.ok` or `r.status_code`.
 
 ### Response Headers
 
@@ -123,7 +123,7 @@ To include custom cookies in a request, use the `cookies` option:
 
 ```lua
 local r = http.get("http://httpbin.org/cookies", { cookies={a=1, b=2} })
-print(r.content)
+print(r.text)
 --   {
 --     "cookies": {
 --       "a": "1", 
@@ -141,7 +141,7 @@ encoded when the request is made:
 local payload = {key1 = "value1", list={"a", "b", "c"}}
 
 local r = http.post("https://httpbin.org/post", { data=payload })
-print(r.content)
+print(r.text)
 -- {
 -- 	...
 -- 	"json": {
@@ -182,7 +182,7 @@ To use a form in a POST request, just set it as the `data` option:
 local form = http.FormData({"key", "value"}, {"key2", "value2"})
 local r = http.post("https://httpbin.org/post", { data=form })
 
-print(r.content)
+print(r.text)
 --	{
 --    ...
 --	  "form": {
@@ -214,7 +214,7 @@ Binary files can also be uploaded. This example downloads an image then uploads 
 ```lua
 local image_url = "https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg"
 
-local image = http.File("example.jpg", http.get(image_url).content)
+local image = http.File("example.jpg", http.get(image_url).text)
 
 local form = http.FormData()
 form:AddField("file", image)
@@ -240,7 +240,7 @@ We can check the response status code and message:
 local r = http.get("https://httpbin.org/get")
 print(r.code, r.message)
 -- 200 OK
-print(r.success)
+print(r.ok)
 -- true
 ```
 
