@@ -88,7 +88,7 @@ print(r.headers["Last-Modified"])
 -- Wed, 08 Oct 2014 23:28:44 GMT
 ```
 
-This dictionary, however, is special. HTTP headers are case-insensitive, so you can access them however you like:
+HTTP headers are case-insensitive, so you can access them however you like:
 
 ```lua
 print(r.headers["Last-Modified"])

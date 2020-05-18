@@ -14,7 +14,7 @@ local RateLimiter = require(Src.ratelimit)
 
 local http = {}
 
-http.VERSION = "0.2.0"
+http.VERSION = "0.2.1"
 
 http.Request = Request.new
 http.Session = Session.new

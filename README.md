@@ -2,12 +2,10 @@
 
 **Roblox Requests** brings user-friendly HTTP to Roblox with no need for the manual labor of HttpService.
 
----
-
 With Requests you can send robust, human-readable HTTP requests without ever having to deal with the underlying HttpService.
 No more manual query strings or encoding POST data.
 
-The Power of Roblox Requests:
+#### The Power of Roblox Requests:
 
 ```lua
 local r = http.get("https://api.github.com/orgs/Roblox/repos")
@@ -29,7 +27,7 @@ print(r.headers["x-ratelimit-remaining"])
 
 Roblox Requests will bring simple support for all internet resources to your game.
 
-## Roblox Requests Features
+## Features
 
 - Sessions with Cookie Persistence
 - Default Headers, URL prefixes
@@ -40,5 +38,7 @@ Roblox Requests will bring simple support for all internet resources to your gam
 - Multipart File Encoding and Upload
 - Global/Per-Session Ratelimiting
 
+
+Roblox Requests was inspired by the well known [Python Requests](https://2.python-requests.org/en/master/) library.
 
 [In this documentation](https://jpatrickdill.github.io/roblox-requests/guide/installation/) you'll find step-by-step instructions to get the most out of Roblox Requests.
