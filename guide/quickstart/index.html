@@ -698,7 +698,7 @@ encoded when the request is made:</p>
 <h2 id="response-status-codes">Response Status Codes</h2>
 <p>We can check the response status code and message:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/get&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">code</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
 <span class="c1">-- 200 OK</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">ok</span><span class="p">)</span>
 <span class="c1">-- true</span>
