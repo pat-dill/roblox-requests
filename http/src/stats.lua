@@ -98,8 +98,8 @@ local function load_data(window, req, resp)
     local endpoint = req.input_url:split("://")[2]
     window.endpoints[endpoint] = (window.endpoints[endpoint] or 0) + 1
     
-    -- response time
-    table.insert(window.response_times, resp.response_time)
+    -- response time (ms)
+    table.insert(window.response_times, math.ceil(resp.response_time*1000))
 end
 
 function Stats:_statsPostLoop()
