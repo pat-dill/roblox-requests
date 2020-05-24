@@ -828,7 +828,6 @@
 <h3 id="httpset_ratelimit">http.set_ratelimit</h3>
 <p><code>http.set_ratelimit(requests, period)</code></p>
 <p>Changes global rate limit. Default is 250 requests / 30 seconds.</p>
-<p>This <strong>must</strong> be called before any HTTP requests are made for changes to take effect.</p>
 <h2 id="httprequest">http.Request</h2>
 <p><code>http.Request(method, url, [options]) -&gt; Request</code></p>
 <p>Creates and prepares a Request object.</p>
@@ -865,6 +864,8 @@ will not block the current thread.</p>
 <li><strong>ok</strong> (bool) - <code>true</code> if response has OK status code (200 \&lt;= code \&lt; 300)</li>
 <li><strong>status_code</strong> (number) - Status code of reponse</li>
 <li><strong>message</strong> (string) - Status message of response</li>
+<li><strong>response_time</strong> (number) - Time the request took in seconds</li>
+<li><strong>timestamp</strong> (number) - Epoch time the request was sent at</li>
 <li><strong>headers</strong> (dictionary) - Headers sent in response</li>
 <li><strong>text</strong> (string) - Response body</li>
 <li><strong>cookies</strong> (CookieJar) - New cookies sent in this response</li>

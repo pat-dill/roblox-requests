@@ -514,7 +514,6 @@ You can change these settings with <code>http.set_ratelimit</code>:</p>
 </code></pre></div>
 
 
-<p>In order for these changes to apply, <code>set_ratelimit</code> <strong>must</strong> be called before any HTTP requests are sent.</p>
 <p>If you'd like a request to ignore the rate-limit, just set the <code>ignore_ratelimit</code> option to <code>true</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="kr">if</span> <span class="n">custom_ratelimit_function</span><span class="p">()</span> <span class="kr">then</span>
     <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">ignore_ratelimit</span><span class="o">=</span><span class="kc">true</span> <span class="p">})</span>
