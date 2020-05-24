@@ -17,6 +17,7 @@ Options:
 | data             | string OR table OR FormData | Data to send in the body of the request. Tables will automatically be encoded as JSON. |
 | cookies          | dictionary OR CookieJar     | Cookies to send with request.                                                          |
 | ignore_ratelimit | bool                        | If true, the rate-limit will be ignored for this request.                              |
+| no_stats         | bool                        | If true, statistics will not be reported for this request.                              |
 
 ### http.get, post, head, put, delete, patch, options
 

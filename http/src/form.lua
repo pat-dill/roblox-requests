@@ -16,7 +16,7 @@ local b64 = require(Lib.b64)
 local function randomString(l)
 	local s = ""
 
-	for i=1, l do
+	for _=1, l do
 		s = s .. string.char(math.random(97, 122))
 	end
 
@@ -54,7 +54,7 @@ function File.new(...)
 	end
 
 	-- no content-type provided: guess
-	if (not self.content_type) then
+	if not self.content_type then
 		local ext = self.name:split(".")
 		ext = ext[#ext]
 

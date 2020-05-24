@@ -238,7 +238,7 @@ We can check the response status code and message:
 
 ```lua
 local r = http.get("https://httpbin.org/get")
-print(r.code, r.message)
+print(r.status_code, r.message)
 -- 200 OK
 print(r.ok)
 -- true

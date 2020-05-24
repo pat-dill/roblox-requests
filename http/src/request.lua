@@ -41,6 +41,8 @@ function Request.new(method, url, opts)
 	self.query = {}
 	self.data = nil
 
+	self.no_stats = opts.no_stats or false
+
 	self._ratelimits = {RateLimiter.get("http", 250, 30)}
 
 	self.ignore_ratelimit = opts.ignore_ratelimit or false
@@ -172,6 +174,13 @@ function Request:_send()
 
 	if self._callback then
 		self._callback(resp)
+	end
+
+	-- don't block to report stats
+	if not self.no_stats then
+		coroutine.wrap(function()
+		
+		end)()
 	end
 
 	return resp

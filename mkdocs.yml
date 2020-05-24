@@ -1,6 +1,8 @@
 site_name: Roblox Requests
+site_url: 'http://requests.paric.xyz/'
 repo_name: 'jpatrickdill/roblox-requests'
 repo_url: 'https://github.com/jpatrickdill/roblox-requests'
+google_analytics: ['UA-167278179-1', 'paric.xyz']
 
 theme:
   name: 'material'

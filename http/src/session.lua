@@ -40,6 +40,8 @@ function Session.new(base_url)
 	self.before_request = nil
 	self.after_request = nil
 
+	self.no_stats = false
+
 	self.log = true
 
 	-----------
@@ -95,7 +97,8 @@ function Session:Request(method, url, opts)
 		data = opts.data,
 		log = self.log or opts.log,
 		cookies = opts.cookies or self.cookies,
-		ignore_ratelimit = opts.ignore_ratelimit or self.ignore_ratelimit
+		ignore_ratelimit = opts.ignore_ratelimit or self.ignore_ratelimit,
+		no_stats = self.no_stats or false
 	})
 
 	if self._ratelimit then

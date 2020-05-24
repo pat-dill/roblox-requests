@@ -53,4 +53,6 @@ function http.set_ratelimit(requests, period)
 	print("[http] RateLimiter settings changed: ", rl.rate, "reqs /", rl.window_size, "secs")
 end
 
+http.stats = require(Src.stats)
+
 return http

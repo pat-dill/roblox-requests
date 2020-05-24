@@ -15,27 +15,30 @@ local function log(s)
     -- log(s)
 end
 
-if not _G.ratelimit then
-    _G.ratelimit = {}
+if not RateLimiter.ratelimit then
+    RateLimiter.ratelimit = {}
 end
 
 function RateLimiter.get(id, rate, window_size)
     local self = setmetatable({}, RateLimiter)
 
     -- create window table for this id
-    if not _G.ratelimit[id] then
-        _G.ratelimit[id] = {}
+    if not RateLimiter.ratelimit[id] then
+        RateLimiter.ratelimit[id] = {}
 
-        _G.ratelimit[id].windows = {}
-        _G.ratelimit[id].window_size = window_size
-        _G.ratelimit[id].rate = rate
+        RateLimiter.ratelimit[id].windows = {}
+        
+        RateLimiter.ratelimit[id].rate = rate
 
         log("[ratelimit] Created RateLimiter with id", self.id)
+    else
+        RateLimiter.ratelimit[id].window_size = window_size
+        RateLimiter.ratelimit[id].rate = rate
     end
 
     self.id = id
-    self.window_size = _G.ratelimit[id].window_size
-    self.rate = _G.ratelimit[id].rate
+    self.window_size = RateLimiter.ratelimit[id].window_size
+    self.rate = RateLimiter.ratelimit[id].rate
 
     return self    
 end
@@ -58,13 +61,13 @@ function RateLimiter:increment()
     log("[ratelimit] Incrementing window", w)
 
 
-    if not _G.ratelimit[self.id].windows[w] then
-        _G.ratelimit[self.id].windows[w] = 0
+    if not RateLimiter.ratelimit[self.id].windows[w] then
+        RateLimiter.ratelimit[self.id].windows[w] = 0
     end
 
-    _G.ratelimit[self.id].windows[w] = _G.ratelimit[self.id].windows[w] + 1
+    RateLimiter.ratelimit[self.id].windows[w] = RateLimiter.ratelimit[self.id].windows[w] + 1
 
-    return _G.ratelimit[self.id].windows[w]
+    return RateLimiter.ratelimit[self.id].windows[w]
 end
 
 function RateLimiter:weighted(i)
@@ -75,8 +78,8 @@ function RateLimiter:weighted(i)
     local p = self:progress()
     local w = self:window()
 
-    local current = (_G.ratelimit[self.id].windows[w] or 0) + i
-    local prev = _G.ratelimit[self.id].windows[w-1] or 0
+    local current = (RateLimiter.ratelimit[self.id].windows[w] or 0) + i
+    local prev = RateLimiter.ratelimit[self.id].windows[w-1] or 0
 
     return current*p + prev*(1-p)
 end
@@ -91,16 +94,12 @@ function RateLimiter:request()
     -- checks if request will fall within ratelimit
     -- returns true if allowed, false if denied
 
-    debug.profilebegin("ratelimit")
-
     if self:weighted(1) > self.rate then
         return false
     else
         self:increment()
         return true
     end
-
-    debug.profilened()
 end
 
 ------------------
