@@ -20,6 +20,7 @@ function Response.new(req, resp, rt)
 	self.request = req  -- original request object
 
 	self.response_time = rt
+	self.timestamp = self.request.timestamp
 
 	-- request meta data
 	self.url = req.url

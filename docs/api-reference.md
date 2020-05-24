@@ -86,6 +86,8 @@ will not block the current thread.
 - **ok** (bool) - `true` if response has OK status code (200 \<= code \< 300)
 - **status_code** (number) - Status code of reponse
 - **message** (string) - Status message of response
+- **response_time** (number) - Time the request took in seconds
+- **timestamp** (number) - Epoch time the request was sent at
 - **headers** (dictionary) - Headers sent in response
 - **text** (string) - Response body
 - **cookies** (CookieJar) - New cookies sent in this response

@@ -12,6 +12,7 @@ local Response = require(Src.response)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
 
+
 -- Request object
 
 local Request = {}
@@ -37,6 +38,7 @@ function Request.new(method, url, opts)
 
 	self.method = method
 	self.url = u
+	self.input_url = url
 	self.headers = headers
 	self.query = {}
 	self.data = nil
@@ -152,6 +154,7 @@ function Request:_send()
 		if self.ignore_ratelimit or self:_ratelimit() then
 			local st = tick()
 			resp = Response.new(self, httpservice:RequestAsync(options), tick()-st)
+			self.timestamp = st
 			succ = true
 			break
 		end
@@ -179,7 +182,8 @@ function Request:_send()
 	-- don't block to report stats
 	if not self.no_stats then
 		coroutine.wrap(function()
-		
+			local Stats = require(Src.stats)
+			Stats:report(self, resp)
 		end)()
 	end
 

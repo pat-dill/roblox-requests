@@ -13,6 +13,7 @@ RateLimiter.__index = RateLimiter
 
 local function log(s)
     -- log(s)
+    return s
 end
 
 if not RateLimiter.ratelimit then

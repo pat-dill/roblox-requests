@@ -14,7 +14,7 @@ local RateLimiter = require(Src.ratelimit)
 local function randomString(l)
 	local s = ""
 
-	for i=1, l do
+	for _=1, l do
 		s = s .. string.char(math.random(97, 122))
 	end
 
@@ -48,10 +48,11 @@ function Session.new(base_url)
 	return self
 end
 
+
 function Session:set_ratelimit(rate, window)
 	-- delete original ratelimiter
 	if self._ratelimit then
-		_G.ratelimit[self._ratelimit.id] = nil
+		RateLimiter.ratelimit[self._ratelimit.id] = nil
 	end
 
 	-- sets new session ratelimiter
@@ -64,7 +65,7 @@ function Session:disable_ratelimit()
 	-- disables session rate limit
 
 	if self._ratelimit then
-		_G.ratelimit[self._ratelimit.id] = nil
+		RateLimiter.ratelimit[self._ratelimit.id] = nil
 		self._ratelimit=  nil
 	end
 end
