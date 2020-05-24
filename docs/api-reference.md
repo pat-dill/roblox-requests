@@ -31,8 +31,6 @@ Shortcut methods for `http.send`.
 
 Changes global rate limit. Default is 250 requests / 30 seconds.
 
-This **must** be called before any HTTP requests are made for changes to take effect.
-
 ## http.Request
 
 `http.Request(method, url, [options]) -> Request`

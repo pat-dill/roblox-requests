@@ -26,19 +26,17 @@ function RateLimiter.get(id, rate, window_size)
     if not RateLimiter.ratelimit[id] then
         RateLimiter.ratelimit[id] = {}
 
-        RateLimiter.ratelimit[id].windows = {}
-        
-        RateLimiter.ratelimit[id].rate = rate
-
-        log("[ratelimit] Created RateLimiter with id", self.id)
-    else
-        RateLimiter.ratelimit[id].window_size = window_size
-        RateLimiter.ratelimit[id].rate = rate
+        RateLimiter.ratelimit[id].windows = {}        
     end
+
+    RateLimiter.ratelimit[id].window_size = window_size
+    RateLimiter.ratelimit[id].rate = rate
 
     self.id = id
     self.window_size = RateLimiter.ratelimit[id].window_size
     self.rate = RateLimiter.ratelimit[id].rate
+
+    log("[ratelimit] Created RateLimiter with id", self.id)
 
     return self    
 end

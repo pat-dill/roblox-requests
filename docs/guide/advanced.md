@@ -109,8 +109,6 @@ local http = require(ReplicatedStorage.http)
 http.set_ratelimit(10, 60)  -- allow 10 requests every 60 seconds
 ```
 
-In order for these changes to apply, `set_ratelimit` **must** be called before any HTTP requests are sent.
-
 If you'd like a request to ignore the rate-limit, just set the `ignore_ratelimit` option to `true`:
 
 ```lua
