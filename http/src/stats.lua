@@ -7,8 +7,8 @@ local scopy = require(Lib.scopy)
 ------------------------------------
 
 local STATS_SERVER = "http://localhost:3003/api"  -- default stats server
-local WINDOW_INTERVAL = 2  -- x second data windows
-local POST_INTERVAL = 6  -- post every x seconds
+local WINDOW_INTERVAL = 1  -- x second data windows
+local POST_INTERVAL = 4  -- post every x seconds
 
 POST_INTERVAL = math.ceil(POST_INTERVAL / WINDOW_INTERVAL)
 
@@ -69,41 +69,9 @@ function Stats:enable(stats_server)
     end)()
 end
 
-local function new_window(ts)
-    return {
-        timestamp = math.floor(ts),
-        total = 0,
-        codes = {},
-        general_codes = {},
-        endpoints = {},
-        response_times = {}
-    }
-end
-
-local function load_data(window, req, resp)
-    -- if math.floor(req.timestamp) ~= math.floor(self.timestamp) then
-    --     return
-    -- end
-
-    window.total = window.total + 1
-
-    -- specific status code
-    window.codes[tostring(resp.status_code)] = (window.codes[tostring(resp.status_code)] or 0) + 1
-    
-    -- status code (1xx, 2xx, 3xx, 4xx, 5xx)
-    local general_code = tostring(math.floor(resp.status_code/100)*100)
-    window.general_codes[general_code] = (window.general_codes[general_code] or 0) + 1
-
-    -- full url without protocol
-    local endpoint = req.input_url:split("://")[2]
-    window.endpoints[endpoint] = (window.endpoints[endpoint] or 0) + 1
-    
-    -- response time (ms)
-    table.insert(window.response_times, math.ceil(resp.response_time*1000))
-end
-
 function Stats:_statsPostLoop()
     -- initial window
+    table.insert(self.data, {})
 
     local i = 0
     while true do
@@ -119,7 +87,7 @@ function Stats:_statsPostLoop()
             end)()
         end
 
-        table.insert(self.data, new_window(tick()))
+        table.insert(self.data, {})
 
         wait(WINDOW_INTERVAL)
     end
@@ -135,7 +103,21 @@ function Stats:report(req, resp)
         error("no data windows")
     end
 
-    load_data(self.data[#self.data], req, resp)
+    local req_data = {
+        timestamp = math.floor(req.timestamp),
+        response_time = resp.response_time,
+        upload = math.ceil(#(req.data or "")/102.4)/10,
+        download = math.ceil((resp.content_length)/102.4)/10,
+        content_type = resp.content_type,
+        encoding = resp.encoding or "utf-8",
+        url = req.input_url,
+        code = resp.status_code,
+        method = req.method:lower(),
+    }
+    
+
+    table.insert(self.data[#self.data], req_data)
 end
+
 
 return Stats

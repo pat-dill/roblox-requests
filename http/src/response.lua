@@ -45,8 +45,8 @@ function Response.new(req, resp, rt)
 	self.content_type = type_encoding[1]
 	self.encoding = (type_encoding[2] and type_encoding[2]:split("=")[2]) or "" -- or "utf-8"
 	
-
-	self.content_length = self.headers["content-length"] or #self.content
+	self.content_length = #(self.text)
+	
 
 	-- cookies
 	self.cookies = CookieJar.new()
@@ -66,11 +66,11 @@ function Response:json()
 	-- convert json respose content to table
 
 	local succ, data = pcall(function()
-		return json.dec(self.content)
+		return json.dec(self.text)
 	end)
 
 	if not succ then
-		error("[http] Failed to convert response content to JSON:\n", self.content)
+		error("[http] Failed to convert response content to JSON:\n", self.text)
 	end
 
 	return data
