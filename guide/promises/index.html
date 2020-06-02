@@ -461,8 +461,10 @@ If the request threw an error during preparation, <code>request_sent</code> will
     <span class="kr">end</span><span class="p">)</span>
     <span class="p">:</span><span class="n">catch</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
         <span class="kr">if</span> <span class="n">err</span><span class="p">.</span><span class="n">request_sent</span> <span class="kr">then</span>
+            <span class="c1">-- error in HTTP response</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HTTP Error:&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
         <span class="kr">else</span>
+            <span class="c1">-- error preparing request</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">.</span><span class="n">error</span><span class="p">)</span>
         <span class="kr">end</span>
     <span class="kr">end</span><span class="p">)</span>
