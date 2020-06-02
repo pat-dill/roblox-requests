@@ -1,6 +1,8 @@
 site_name: Roblox Requests
+site_url: 'http://requests.paric.xyz/'
 repo_name: 'jpatrickdill/roblox-requests'
 repo_url: 'https://github.com/jpatrickdill/roblox-requests'
+google_analytics: ['UA-167278179-1', 'paric.xyz']
 
 theme:
   name: 'material'
@@ -22,8 +24,9 @@ nav:
     - Installation: guide/installation.md
     - Quickstart: guide/quickstart.md
     - Advanced Usage: guide/advanced.md
+    - Promises: guide/promises.md
   - API Reference: api-reference.md
 
 
 extra:
-  version: 0.2.1
+  version: 0.3.0

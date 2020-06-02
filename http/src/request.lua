@@ -1,16 +1,20 @@
 local Main = script.Parent.Parent
 local Lib = Main.lib
 local Src = Main.src
----------------------------------
+---------------------------------------------------
 
 local httpservice = game:GetService("HttpService")
+
 local Url = require(Lib.url)
+local Promise = require(Lib.promise)
 
 local json = require(Src.json)
-
 local Response = require(Src.response)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
+
+---------------------------------------------------
+
 
 -- Request object
 
@@ -37,9 +41,12 @@ function Request.new(method, url, opts)
 
 	self.method = method
 	self.url = u
+	self.input_url = url
 	self.headers = headers
 	self.query = {}
 	self.data = nil
+
+	self.no_stats = opts.no_stats or false
 
 	self._ratelimits = {RateLimiter.get("http", 250, 30)}
 
@@ -150,6 +157,7 @@ function Request:_send()
 		if self.ignore_ratelimit or self:_ratelimit() then
 			local st = tick()
 			resp = Response.new(self, httpservice:RequestAsync(options), tick()-st)
+			self.timestamp = st
 			succ = true
 			break
 		end
@@ -174,24 +182,46 @@ function Request:_send()
 		self._callback(resp)
 	end
 
+	-- don't block to report stats
+	if not self.no_stats then
+		coroutine.wrap(function()
+			local Stats = require(Src.stats)
+			Stats:report(self, resp)
+		end)()
+	end
+
 	return resp
 end
 
 
-function Request:send(cb)
+function Request:send(promise)
 	-- send request via HTTPService and return Response object
 
-	-- if a callback function is specified, the request will be executed asynchronously and
-	-- pass the return value to the callback. Otherwise, it is run blocking
+	-- if promise is true, returns promise
 
-	if cb then
-		-- run in new coroutine
-		coroutine.wrap(function()
-			cb(self:_send())
-		end)()
+	if promise then
+		return Promise.new(function(resolve, reject)
+			local ok, result = pcall(self._send, self)
+
+			local succ = ok and result.ok
+	
+			if succ then
+				resolve(result)
+			else
+				if ok then
+					reject({request_sent=true, response=result})
+				else
+					reject({request_sent=false, error=result})
+				end
+			end
+		end)
 	else
 		return self:_send()
 	end
+end
+
+function Request:promise()
+	return self:send(true)
 end
 
 return Request

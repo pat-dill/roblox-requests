@@ -66,13 +66,13 @@ print(r2.text)
 ## Request Objects
 
 When you send a request with the `http.get()` method, a `Request` object is actually created and
-prepared with any data you passed. In some cases, you may wish to do something extra
+prepared with any data you passed. You may wish to do something else
 with the request before it is sent. This is possible by creating the Request directly:
 
 ```lua
-local request = http.Request("POST", "https://httpbin.org/post", { data=data })
+local request = http.Request("POST", "https://httpbin.org/post")
 
-request:set_data("use this body instead")
+request:set_data("request body")
 
 local response = request:send()
 ```
@@ -108,8 +108,6 @@ local http = require(ReplicatedStorage.http)
 
 http.set_ratelimit(10, 60)  -- allow 10 requests every 60 seconds
 ```
-
-In order for these changes to apply, `set_ratelimit` **must** be called before any HTTP requests are sent.
 
 If you'd like a request to ignore the rate-limit, just set the `ignore_ratelimit` option to `true`:
 
