@@ -1,10 +1,12 @@
 -- HTTP Module by Patrick Dill
 -- based on Python Requests (python-requests.org)
 
--- API --
-
 local Lib = script.lib
 local Src = script.src
+
+------------------------------------------
+
+local Promise = require(Lib.promise)
 
 local Request = require(Src.request)
 local Session = require(Src.session)
@@ -12,9 +14,11 @@ local Forms = require(Src.form)
 
 local RateLimiter = require(Src.ratelimit)
 
+------------------------------------------
+
 local http = {}
 
-http.VERSION = "0.2.1"
+http.VERSION = "0.3.0"
 
 http.Request = Request.new
 http.Session = Session.new
@@ -39,10 +43,24 @@ function http.send(method, url, opts)
 	return req:send()
 end
 
+function http.promise_send(method, url, opts)
+	-- same as http.send but returns a Promise
+	-- rejects with a table that includes response if response was sent
+
+	opts = opts or {}
+
+	local req = Request.new(method, url, opts)
+	return req:send(true)
+end
+
 -- create quick functions for each http method
 for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"}) do
 	http[method:lower()] = function(url, opts)
 		return http.send(method, url, opts)
+	end
+
+	http["promise_" .. method:lower()] = function(url, opts)
+		return http.promise_send(method, url, opts)
 	end
 end
 

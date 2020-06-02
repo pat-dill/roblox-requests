@@ -24,6 +24,7 @@ nav:
     - Installation: guide/installation.md
     - Quickstart: guide/quickstart.md
     - Advanced Usage: guide/advanced.md
+    - Promises: guide/promises.md
   - API Reference: api-reference.md
 
 

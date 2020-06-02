@@ -101,6 +101,21 @@ print(r.headers["SeRvEr"])
 -- ATS/8.0.3
 ```
 
+## Response Status Codes
+
+We can check the response status code and message:
+
+```lua
+local r = http.get("https://httpbin.org/get")
+print(r.status_code, r.message)
+-- 200 OK
+print(r.ok)
+-- true
+```
+
+All is well.
+
+
 ## Custom Headers
 
 If you'd like to add HTTP headers, just pass a dictionary to the `headers` option.
@@ -231,17 +246,3 @@ Requests will try to guess the file type from the extension. If you'd like, howe
 ```lua
 local file = http.File("extensionless_name", "<html>But we know it's HTML</html>", "text/html")
 ```
-
-## Response Status Codes
-
-We can check the response status code and message:
-
-```lua
-local r = http.get("https://httpbin.org/get")
-print(r.status_code, r.message)
--- 200 OK
-print(r.ok)
--- true
-```
-
-All is well.

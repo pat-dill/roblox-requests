@@ -66,13 +66,13 @@ print(r2.text)
 ## Request Objects
 
 When you send a request with the `http.get()` method, a `Request` object is actually created and
-prepared with any data you passed. In some cases, you may wish to do something extra
+prepared with any data you passed. You may wish to do something else
 with the request before it is sent. This is possible by creating the Request directly:
 
 ```lua
-local request = http.Request("POST", "https://httpbin.org/post", { data=data })
+local request = http.Request("POST", "https://httpbin.org/post")
 
-request:set_data("use this body instead")
+request:set_data("request body")
 
 local response = request:send()
 ```

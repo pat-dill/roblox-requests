@@ -5,6 +5,8 @@ local Lib = Main.lib
 local Src = Main.src
 ---------------------------------
 
+local Promise = require(Lib.promise)
+
 local Request = require(Src.request)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
@@ -50,6 +52,12 @@ end
 
 
 function Session:set_ratelimit(rate, window)
+	if not rate then
+		self:disable_ratelimit()
+	end
+
+	window = window or 60
+
 	-- delete original ratelimiter
 	if self._ratelimit then
 		RateLimiter.ratelimit[self._ratelimit.id] = nil
@@ -134,10 +142,23 @@ function Session:send(method, url, opts)
 	return req:send()
 end
 
+function Session:promise_send(method, url, opts)
+	-- same as session:send but returns a Promise
+
+	opts = opts or {}
+
+	local req = self:Request(method, url, opts)
+	return req:send(true)
+end
+
 -- create quick functions for each http method
 for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"}) do
 	Session[method:lower()] = function(self, url, opts)
 		return self:send(method, url, opts)
+	end
+
+	Session["promise_" .. method:lower()] = function(self, url, opts)
+		return self:promise_send(method, url, opts)
 	end
 end
 

@@ -17,13 +17,25 @@ Options:
 | data             | string OR table OR FormData | Data to send in the body of the request. Tables will automatically be encoded as JSON. |
 | cookies          | dictionary OR CookieJar     | Cookies to send with request.                                                          |
 | ignore_ratelimit | bool                        | If true, the rate-limit will be ignored for this request.                              |
-| no_stats         | bool                        | If true, statistics will not be reported for this request.                              |
+| no_stats         | bool                        | If true, statistics will not be reported for this request.                             |
 
 ### http.get, post, head, put, delete, patch, options
 
 `http.get(url, [options]) -> Response`
 
 Shortcut methods for `http.send`.
+
+### http.promise_send
+
+`http.promise_send(method, url, [opts]) -> Promise`
+
+This has the same functionality as `http.send` but returns a Promise.
+
+### http.promise_get, promise_post, promise_...
+
+`http.promise_get(url, [opts]) -> Promise`
+
+Shortcut methods for `http.promise_send`
 
 ### http.set_ratelimit
 
@@ -71,10 +83,19 @@ Sets new data for request. The data can be a string, table (JSON), or FormData.
 
 Sends the request and returns a `Response` object.
 
-`Request:send(cb)`
+### Request:promise
 
-Sends request and passes the response to a callback function. This
-will not block the current thread.
+`Request:promise() -> Promise`
+
+Returns a [Promise](https://eryn.io/roblox-lua-promise/).
+The Promise will resolve with the response object if the response has a 2xx status code. Otherwise, the Promise will reject with this rejection table:
+
+| Name             | Type                        | Description                                                                            |
+|------------------|-----------------------------|----------------------------------------------------------------------------------------|
+| request_sent     | bool                        | Whether the request was sent successfully.                                             |
+| response         | bool                        | The response object. This value is only present if `request_sent` is `true`.           |
+| error            | string                      | The error thrown during preparation of the request if `request_sent` is `false`.       |
+
 
 ## Response
 
@@ -121,18 +142,13 @@ Updates headers dictionary with values of new_headers.
 
 ### Session:set_ratelimit
 
-`Session:set_ratelimit(requests, seconds)`
+`Session:set_ratelimit([requests[, seconds]])`
 
 Sets custom rate-limit for the Session. Requests sent by the session must follow this ratelimit and the global ratelimit.
 
+If no values are provided, this will disable the session ratelimit. This will not disable the global ratelimit.
+
 This can be changed at any time by calling the function again.
-
-### Session:disable_ratelimit
-
-`Session:disable_ratelimit()`
-
-Disables the Session rate-limit if one is set. This will **not** affect the global rate-limit. To make your session
-ignore the global rate-limit, use `session.ignore_ratelimit = true`
 
 ### Session:send
 
@@ -146,6 +162,18 @@ Options specified here will override the session values.
 `Session:get(url, [opts]) -> Response`
 
 Shortcut methods for `Session:send`
+
+### Session:promise_send
+
+`Session:promise_send(method, url, [opts]) -> Promise`
+
+This has the same functionality as `Session:send` but returns a Promise.
+
+### Session:promise_get, promise_post, promise_...
+
+`Session:promise_get(url, [opts]) -> Promise`
+
+Shortcut methods for `Session:promise_send`
 
 ### Session:Request
 
