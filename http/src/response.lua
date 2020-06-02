@@ -41,7 +41,7 @@ function Response.new(req, resp, rt)
 
 
 	-- additional metadata for quick access
-	local type_encoding =  self.headers["content-type"]:split(";")
+	local type_encoding = self.headers["content-type"]:split(";")
 	self.content_type = type_encoding[1]
 	self.encoding = (type_encoding[2] and type_encoding[2]:split("=")[2]) or "" -- or "utf-8"
 	
