@@ -228,6 +228,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/promises/" title="Promises" class="md-nav__link">
+      Promises
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -296,6 +308,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#httppromise_send" class="md-nav__link">
+    http.promise_send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httppromise_get-promise_post-promise_" class="md-nav__link">
+    http.promise_get, promise_post, promise_...
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#httpset_ratelimit" class="md-nav__link">
     http.set_ratelimit
   </a>
@@ -346,6 +372,13 @@
           <li class="md-nav__item">
   <a href="#requestsend" class="md-nav__link">
     Request:send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestpromise" class="md-nav__link">
+    Request:promise
   </a>
   
 </li>
@@ -412,13 +445,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sessiondisable_ratelimit" class="md-nav__link">
-    Session:disable_ratelimit
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sessionsend" class="md-nav__link">
     Session:send
   </a>
@@ -428,6 +454,20 @@
           <li class="md-nav__item">
   <a href="#sessionget-post-head-put-delete-patch-options" class="md-nav__link">
     Session:get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionpromise_send" class="md-nav__link">
+    Session:promise_send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionpromise_get-promise_post-promise_" class="md-nav__link">
+    Session:promise_get, promise_post, promise_...
   </a>
   
 </li>
@@ -553,6 +593,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#httppromise_send" class="md-nav__link">
+    http.promise_send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httppromise_get-promise_post-promise_" class="md-nav__link">
+    http.promise_get, promise_post, promise_...
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#httpset_ratelimit" class="md-nav__link">
     http.set_ratelimit
   </a>
@@ -603,6 +657,13 @@
           <li class="md-nav__item">
   <a href="#requestsend" class="md-nav__link">
     Request:send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestpromise" class="md-nav__link">
+    Request:promise
   </a>
   
 </li>
@@ -669,13 +730,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sessiondisable_ratelimit" class="md-nav__link">
-    Session:disable_ratelimit
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sessionsend" class="md-nav__link">
     Session:send
   </a>
@@ -685,6 +739,20 @@
           <li class="md-nav__item">
   <a href="#sessionget-post-head-put-delete-patch-options" class="md-nav__link">
     Session:get, post, head, put, delete, patch, options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionpromise_send" class="md-nav__link">
+    Session:promise_send
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionpromise_get-promise_post-promise_" class="md-nav__link">
+    Session:promise_get, promise_post, promise_...
   </a>
   
 </li>
@@ -825,6 +893,12 @@
 <h3 id="httpget-post-head-put-delete-patch-options">http.get, post, head, put, delete, patch, options</h3>
 <p><code>http.get(url, [options]) -&gt; Response</code></p>
 <p>Shortcut methods for <code>http.send</code>.</p>
+<h3 id="httppromise_send">http.promise_send</h3>
+<p><code>http.promise_send(method, url, [opts]) -&gt; Promise</code></p>
+<p>This has the same functionality as <code>http.send</code> but returns a Promise.</p>
+<h3 id="httppromise_get-promise_post-promise_">http.promise_get, promise_post, promise_...</h3>
+<p><code>http.promise_get(url, [opts]) -&gt; Promise</code></p>
+<p>Shortcut methods for <code>http.promise_send</code></p>
 <h3 id="httpset_ratelimit">http.set_ratelimit</h3>
 <p><code>http.set_ratelimit(requests, period)</code></p>
 <p>Changes global rate limit. Default is 250 requests / 30 seconds.</p>
@@ -852,9 +926,36 @@
 <h3 id="requestsend">Request:send</h3>
 <p><code>Request:send() -&gt; Response</code></p>
 <p>Sends the request and returns a <code>Response</code> object.</p>
-<p><code>Request:send(cb)</code></p>
-<p>Sends request and passes the response to a callback function. This
-will not block the current thread.</p>
+<h3 id="requestpromise">Request:promise</h3>
+<p><code>Request:promise() -&gt; Promise</code></p>
+<p>Returns a <a href="https://eryn.io/roblox-lua-promise/">Promise</a>.
+The Promise will resolve with the response object if the response has a 2xx status code. Otherwise, the Promise will reject with this rejection table:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>request_sent</td>
+<td>bool</td>
+<td>Whether the request was sent successfully.</td>
+</tr>
+<tr>
+<td>response</td>
+<td>bool</td>
+<td>The response object. This value is only present if <code>request_sent</code> is <code>true</code>.</td>
+</tr>
+<tr>
+<td>error</td>
+<td>string</td>
+<td>The error thrown during preparation of the request if <code>request_sent</code> is <code>false</code>.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="response">Response</h2>
 <h3 id="attributes_1">Attributes</h3>
 <ul>
@@ -888,13 +989,10 @@ will not block the current thread.</p>
 <p><code>Session:set_headers(new_headers)</code></p>
 <p>Updates headers dictionary with values of new_headers.</p>
 <h3 id="sessionset_ratelimit">Session:set_ratelimit</h3>
-<p><code>Session:set_ratelimit(requests, seconds)</code></p>
+<p><code>Session:set_ratelimit([requests[, seconds]])</code></p>
 <p>Sets custom rate-limit for the Session. Requests sent by the session must follow this ratelimit and the global ratelimit.</p>
+<p>If no values are provided, this will disable the session ratelimit. This will not disable the global ratelimit.</p>
 <p>This can be changed at any time by calling the function again.</p>
-<h3 id="sessiondisable_ratelimit">Session:disable_ratelimit</h3>
-<p><code>Session:disable_ratelimit()</code></p>
-<p>Disables the Session rate-limit if one is set. This will <strong>not</strong> affect the global rate-limit. To make your session
-ignore the global rate-limit, use <code>session.ignore_ratelimit = true</code></p>
 <h3 id="sessionsend">Session:send</h3>
 <p><code>Session:send(method, url, [opts]) -&gt; Response</code></p>
 <p>Creates and sends a request prepared with session defaults.
@@ -902,6 +1000,12 @@ Options specified here will override the session values.</p>
 <h3 id="sessionget-post-head-put-delete-patch-options">Session:get, post, head, put, delete, patch, options</h3>
 <p><code>Session:get(url, [opts]) -&gt; Response</code></p>
 <p>Shortcut methods for <code>Session:send</code></p>
+<h3 id="sessionpromise_send">Session:promise_send</h3>
+<p><code>Session:promise_send(method, url, [opts]) -&gt; Promise</code></p>
+<p>This has the same functionality as <code>Session:send</code> but returns a Promise.</p>
+<h3 id="sessionpromise_get-promise_post-promise_">Session:promise_get, promise_post, promise_...</h3>
+<p><code>Session:promise_get(url, [opts]) -&gt; Promise</code></p>
+<p>Shortcut methods for <code>Session:promise_send</code></p>
 <h3 id="sessionrequest">Session:Request</h3>
 <p><code>Session:Request(method, url, [opts]) -&gt; Request</code></p>
 <p>Creates a Request prepared with session defaults.
@@ -965,7 +1069,7 @@ be guessed from the file extension.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../guide/advanced/" title="Advanced Usage" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../guide/promises/" title="Promises" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -974,7 +1078,7 @@ be guessed from the file extension.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Advanced Usage
+                Promises
               </div>
             </div>
           </a>

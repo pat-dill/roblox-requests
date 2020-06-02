@@ -312,6 +312,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../promises/" title="Promises" class="md-nav__link">
+      Promises
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -478,11 +490,11 @@ using a session. This example will only send cookies with the first request:</p>
 
 <h2 id="request-objects">Request Objects</h2>
 <p>When you send a request with the <code>http.get()</code> method, a <code>Request</code> object is actually created and
-prepared with any data you passed. In some cases, you may wish to do something extra
+prepared with any data you passed. You may wish to do something else
 with the request before it is sent. This is possible by creating the Request directly:</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">request</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;https://httpbin.org/post&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span> <span class="p">})</span>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">request</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;https://httpbin.org/post&quot;</span><span class="p">)</span>
 
-<span class="n">request</span><span class="p">:</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;use this body instead&quot;</span><span class="p">)</span>
+<span class="n">request</span><span class="p">:</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;request body&quot;</span><span class="p">)</span>
 
 <span class="kd">local</span> <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">:</span><span class="n">send</span><span class="p">()</span>
 </code></pre></div>
@@ -588,13 +600,13 @@ It can also be removed by calling <code>:disable_ratelimit()</code>.</p>
           </a>
         
         
-          <a href="../../api-reference/" title="API Reference" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../promises/" title="Promises" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                API Reference
+                Promises
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

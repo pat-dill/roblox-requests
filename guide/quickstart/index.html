@@ -281,6 +281,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#response-status-codes" class="md-nav__link">
+    Response Status Codes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#custom-headers" class="md-nav__link">
     Custom Headers
   </a>
@@ -327,13 +334,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#response-status-codes" class="md-nav__link">
-    Response Status Codes
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -349,6 +349,18 @@
   <li class="md-nav__item">
     <a href="../advanced/" title="Advanced Usage" class="md-nav__link">
       Advanced Usage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../promises/" title="Promises" class="md-nav__link">
+      Promises
     </a>
   </li>
 
@@ -430,6 +442,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#response-status-codes" class="md-nav__link">
+    Response Status Codes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#custom-headers" class="md-nav__link">
     Custom Headers
   </a>
@@ -473,13 +492,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#response-status-codes" class="md-nav__link">
-    Response Status Codes
-  </a>
   
 </li>
       
@@ -586,6 +598,17 @@ does <strong>not</strong> indicate the success of the response. Some servers may
 </code></pre></div>
 
 
+<h2 id="response-status-codes">Response Status Codes</h2>
+<p>We can check the response status code and message:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/get&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
+<span class="c1">-- 200 OK</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">ok</span><span class="p">)</span>
+<span class="c1">-- true</span>
+</code></pre></div>
+
+
+<p>All is well.</p>
 <h2 id="custom-headers">Custom Headers</h2>
 <p>If you'd like to add HTTP headers, just pass a dictionary to the <code>headers</code> option.</p>
 <p>For example, API keys are often specified in the headers of a request:</p>
@@ -700,19 +723,6 @@ encoded when the request is made:</p>
 <p>Requests will try to guess the file type from the extension. If you'd like, however, you can set it yourself:</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">file</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">File</span><span class="p">(</span><span class="s2">&quot;extensionless_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;html&gt;But we know it&#39;s HTML&lt;/html&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;text/html&quot;</span><span class="p">)</span>
 </code></pre></div>
-
-
-<h2 id="response-status-codes">Response Status Codes</h2>
-<p>We can check the response status code and message:</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org/get&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
-<span class="c1">-- 200 OK</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">ok</span><span class="p">)</span>
-<span class="c1">-- true</span>
-</code></pre></div>
-
-
-<p>All is well.</p>
                 
               
               

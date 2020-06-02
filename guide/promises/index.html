@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-        <link rel="canonical" href="http://requests.paric.xyz/guide/installation/">
+        <link rel="canonical" href="http://requests.paric.xyz/guide/promises/">
       
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
@@ -17,7 +17,7 @@
     
     
       
-        <title>Installation - Roblox Requests</title>
+        <title>Promises - Roblox Requests</title>
       
     
     
@@ -63,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#method-1-model-file" class="md-skip">
+        <a href="#promises" class="md-skip">
           Skip to content
         </a>
       
@@ -91,7 +91,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Installation
+              Promises
             
           </span>
         </div>
@@ -198,56 +198,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Installation
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="Installation" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../installation/" title="Installation" class="md-nav__link">
       Installation
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#method-1-model-file" class="md-nav__link">
-    Method 1: Model File
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#method-2-filesystem" class="md-nav__link">
-    Method 2: Filesystem
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -279,11 +234,74 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../promises/" title="Promises" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Promises
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Promises" class="md-nav__link md-nav__link--active">
       Promises
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#making-a-request" class="md-nav__link">
+    Making a Request
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handling-errors" class="md-nav__link">
+    Handling Errors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sessions" class="md-nav__link">
+    Sessions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepared-requests" class="md-nav__link">
+    Prepared Requests
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -318,6 +336,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon">
@@ -328,15 +348,29 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#method-1-model-file" class="md-nav__link">
-    Method 1: Model File
+  <a href="#making-a-request" class="md-nav__link">
+    Making a Request
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#method-2-filesystem" class="md-nav__link">
-    Method 2: Filesystem
+  <a href="#handling-errors" class="md-nav__link">
+    Handling Errors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sessions" class="md-nav__link">
+    Sessions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepared-requests" class="md-nav__link">
+    Prepared Requests
   </a>
   
 </li>
@@ -353,7 +387,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/jpatrickdill/roblox-requests/edit/master/docs/guide/installation.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/jpatrickdill/roblox-requests/edit/master/docs/guide/promises.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -361,20 +395,122 @@
                   
                 
                 
-                  <h1>Installation</h1>
-                
-                <p>There are two methods to get started with Roblox Requests.</p>
-<p>For our examples, Requests will be installed into <code>ReplicatedStorage</code> under the name <code>http</code>. In practice, you can place the library anywhere.</p>
-<h2 id="method-1-model-file">Method 1: Model File</h2>
+                <h1 id="promises">Promises</h1>
+<p>Roblox Requests supports <a href="https://eryn.io/roblox-lua-promise/">Roblox Lua Promises</a> for response handling. This section
+shows how to use all yielding functions in this library as Promises.</p>
+<h2 id="making-a-request">Making a Request</h2>
+<p>In the quickstart, we learned how to send a basic request:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://api.github.com/orgs/Roblox/repos&quot;</span><span class="p">)</span>  <span class="c1">-- GitHub&#39;s public timeline</span>
+</code></pre></div>
+
+
+<p>Let's try sending this using a Promise. All module-level functions are implemented as promises:</p>
 <ul>
-<li>Download the <code>rbxmx</code> model file from the repository</li>
-<li>Insert the model into Studio in a place like <code>ReplicatedStorage</code></li>
+<li>http.send -&gt; http.promise_send</li>
+<li>http.get -&gt; http.promise_get</li>
+<li>http.post -&gt; http.promise_post</li>
+<li>etc.</li>
 </ul>
-<h2 id="method-2-filesystem">Method 2: Filesystem</h2>
-<ul>
-<li>Copy the <code>http</code> directory into your codebase</li>
-<li>Use a plugin like <a href="https://github.com/LPGhatguy/rojo">Rojo</a> to sync the files into a place</li>
-</ul>
+<p>We'll use <code>http.promise_get</code> to get the reponse as a Promise and print the result.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">http</span><span class="p">.</span><span class="n">promise_get</span><span class="p">(</span><span class="s2">&quot;https://api.github.com/orgs/Roblox/repos&quot;</span><span class="p">)</span>
+    <span class="p">:</span><span class="n">andThen</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="c1">-- [{&quot;id&quot;:10803524,&quot;node_id&quot;:&quot;MDEwOlJlcG9zaXRvcnkxMD...</span>
+</code></pre></div>
+
+
+<h2 id="handling-errors">Handling Errors</h2>
+<p>Using Promises with Roblox Requests allows you to more easily handle failed requests.
+When a request fails, the Promise is rejected with a table:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>request_sent</td>
+<td>bool</td>
+<td>Whether the request was sent successfully.</td>
+</tr>
+<tr>
+<td>response</td>
+<td>bool</td>
+<td>The response object. This value is only present if <code>request_sent</code> is <code>true</code>.</td>
+</tr>
+<tr>
+<td>error</td>
+<td>string</td>
+<td>The error thrown during preparation of the request if <code>request_sent</code> is <code>false</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>If the request was sent and returned a non-2xx status code, <code>request_sent</code> will be <code>true</code> and <code>response</code> will hold the Response object.
+If the request threw an error during preparation, <code>request_sent</code> will be <code>false</code> and <code>error</code> will show the error thrown.</p>
+<p>Here's an example that handles HTTP errors:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">http</span><span class="p">.</span><span class="n">promise_get</span><span class="p">(</span><span class="s2">&quot;https://api.github.com/orgs/this_org_does_not_exist/repos&quot;</span><span class="p">)</span>
+    <span class="p">:</span><span class="n">andThen</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">)</span>
+    <span class="p">:</span><span class="n">catch</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="kr">if</span> <span class="n">err</span><span class="p">.</span><span class="n">request_sent</span> <span class="kr">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HTTP Error:&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
+        <span class="kr">else</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">.</span><span class="n">error</span><span class="p">)</span>
+        <span class="kr">end</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="c1">-- HTTP Error: 404 Not Found</span>
+</code></pre></div>
+
+
+<h2 id="sessions">Sessions</h2>
+<p>The same module-level promise functions are provided for sessions:</p>
+<div class="codehilite"><pre><span></span><code>    <span class="kd">local</span> <span class="n">session</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Session</span><span class="p">(</span><span class="s2">&quot;https://httpbin.org&quot;</span><span class="p">)</span>
+
+    <span class="n">session</span><span class="p">:</span><span class="n">promise_get</span><span class="p">(</span><span class="s2">&quot;/get&quot;</span><span class="p">)</span>
+        <span class="p">:</span><span class="n">andThen</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="kr">end</span><span class="p">)</span>
+        <span class="p">:</span><span class="n">catch</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="kr">if</span> <span class="n">err</span><span class="p">.</span><span class="n">request_sent</span> <span class="kr">then</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HTTP Error:&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="kr">else</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">.</span><span class="n">error</span><span class="p">)</span>
+            <span class="kr">end</span>
+        <span class="kr">end</span><span class="p">)</span>
+
+    <span class="c1">-- {</span>
+    <span class="c1">--     &quot;args&quot;: {}, </span>
+    <span class="c1">--     &quot;url&quot;: &quot;http://httpbin.org/get&quot;,</span>
+    <span class="c1">--     ...</span>
+</code></pre></div>
+
+
+<h2 id="prepared-requests">Prepared Requests</h2>
+<p>Directly created Request objects can be sent as Promises, too. Calling <code>:promise()</code> on a Request
+will return a Promise object.</p>
+<div class="codehilite"><pre><span></span><code>    <span class="kd">local</span> <span class="n">request</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;https://httpbin.org/post&quot;</span><span class="p">)</span>
+
+    <span class="n">request</span><span class="p">:</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;request body&quot;</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">:</span><span class="n">promise</span><span class="p">()</span>
+        <span class="p">:</span><span class="n">andThen</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="kr">end</span><span class="p">)</span>
+        <span class="p">:</span><span class="n">catch</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="kr">if</span> <span class="n">err</span><span class="p">.</span><span class="n">request_sent</span> <span class="kr">then</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HTTP Error:&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">err</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="kr">else</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">.</span><span class="n">error</span><span class="p">)</span>
+            <span class="kr">end</span>
+        <span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
                 
               
               
@@ -393,7 +529,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../.." title="Home" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../advanced/" title="Advanced Usage" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -402,19 +538,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Home
+                Advanced Usage
               </div>
             </div>
           </a>
         
         
-          <a href="../quickstart/" title="Quickstart" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../../api-reference/" title="API Reference" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Quickstart
+                API Reference
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
