@@ -42,3 +42,5 @@ Roblox Requests will bring simple support for all internet resources to your gam
 Roblox Requests was inspired by the well known [Python Requests](https://2.python-requests.org/en/master/) library.
 
 [In this documentation](https://jpatrickdill.github.io/roblox-requests/guide/installation/) you'll find step-by-step instructions to get the most out of Roblox Requests.
+
+This project is MIT Licensed.
