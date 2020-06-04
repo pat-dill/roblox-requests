@@ -270,19 +270,6 @@
     Request Objects
   </a>
   
-    <nav class="md-nav" aria-label="Request Objects">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#asynchronous-requests" class="md-nav__link">
-    Asynchronous Requests
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -377,19 +364,6 @@
   <a href="#request-objects" class="md-nav__link">
     Request Objects
   </a>
-  
-    <nav class="md-nav" aria-label="Request Objects">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#asynchronous-requests" class="md-nav__link">
-    Asynchronous Requests
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -501,20 +475,6 @@ with the request before it is sent. This is possible by creating the Request dir
 
 
 <p>The same is possible from a session by using <code>Session:Request()</code>.</p>
-<h3 id="asynchronous-requests">Asynchronous Requests</h3>
-<p>When handling <code>Request</code> objects directly, you can send them in a separate thread by specifying a callback:</p>
-<div class="codehilite"><pre><span></span><code><span class="kr">function</span> <span class="nf">cb</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="c1">-- do stuff</span>
-<span class="kr">end</span>
-
-<span class="kd">local</span> <span class="n">request</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;https://httpbin.org/post&quot;</span><span class="p">)</span>
-<span class="n">request</span><span class="p">:</span><span class="n">send</span><span class="p">(</span><span class="n">cb</span><span class="p">)</span>
-
-<span class="c1">-- continue executing without waiting for response</span>
-</code></pre></div>
-
-
 <h2 id="rate-limiting">Rate-limiting</h2>
 <p>Roblox Requests ratelimits all HTTP requests sent through the module. If a request would tip the ratelimit past 500
 requests/minute, Requests will issue a warning and retry in 5 seconds.</p>
