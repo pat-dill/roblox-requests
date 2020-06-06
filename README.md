@@ -13,7 +13,7 @@ local r = http.get("https://api.github.com/orgs/Roblox/repos")
 print(r.status_code, r.message)
 -- 200 OK
 
-repos = r:json()
+local repos = r:json()
 print(#repos)
 -- 30
 
