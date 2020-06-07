@@ -1,12 +1,17 @@
 local Main = script.Parent.Parent
 local Lib = Main.lib
 local Src = Main.src
----------------------------------
+-----------------------------------------------------
+
+local CaseInsensitive = require(Lib.nocasetable)
+local html = require(Lib.html)
 
 local json = require(Src.json)
-
 local CookieJar = require(Src.cookies)
-local CaseInsensitive = require(Lib.nocasetable)
+
+-----------------------------------------------------
+
+local html_types = {"text/html", "application/xhtml+xml"}
 
 -- Response Object
 
@@ -74,6 +79,22 @@ function Response:json()
 	end
 
 	return data
+end
+
+function Response:html(ignore_content_type)
+	if ignore_content_type or table.find(html_types, self.content_type) then
+		return html.parse(self.text, 100000, tostring(self.url))
+	else
+		error("[http] Response is not specified as HTML.")
+	end
+end
+
+function Response:xml(ignore_content_type)
+	if ignore_content_type or self.content_type:find("+xml") or self.content_type:find("/xml") then
+		return html.parse(self.text, 100000)
+	else
+		error("[http] Response is not specified as XML.")
+	end
 end
 
 ---------------
