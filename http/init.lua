@@ -6,12 +6,11 @@ local Src = script.src
 
 ------------------------------------------
 
-local Promise = require(Lib.promise)
+local html = require(Lib.html)
 
 local Request = require(Src.request)
 local Session = require(Src.session)
 local Forms = require(Src.form)
-
 local RateLimiter = require(Src.ratelimit)
 
 ------------------------------------------
@@ -33,9 +32,9 @@ function http.send(method, url, opts)
 	-- options (dictionary):
 		-- headers: (dictionary) Headers to send with request
 		--   query: (dictionary) Query string parameters
-		--    data: (str OR dictionary) Data to send in POST or PATCH request
+		--    data: (str | dictionary) Data to send in POST or PATCH request
 		--     log: (bool) Whether to log the request
-		-- cookies: (CookieJar OR dict) Cookies to use in request
+		-- cookies: (CookieJar | dict) Cookies to use in request
 
 	opts = opts or {}
 
@@ -71,6 +70,13 @@ function http.set_ratelimit(requests, period)
 	print("[http] RateLimiter settings changed: ", rl.rate, "reqs /", rl.window_size, "secs")
 end
 
+function http.parse_html(html_string, page_url)
+	return html.parse(html_string, 100000, page_url)
+end
+
+http.parse_xml = http.parse_html
+
 http.stats = require(Src.stats)
+
 
 return http
