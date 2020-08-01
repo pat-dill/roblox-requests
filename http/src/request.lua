@@ -40,7 +40,7 @@ function Request.new(method, url, opts)
 	local u = Url.parse(url)
 	local headers = opts.headers or {}
 
-	self.method = method
+	self.method = method:upper()
 	self.url = u
 	self.input_url = url
 	self.headers = headers
