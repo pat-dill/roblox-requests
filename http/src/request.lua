@@ -79,7 +79,7 @@ function Request.new(method, url, opts)
 	self._callback = nil
 
 
-	self._log = opts.log or true
+	self._log = (opts.log == nil and true) or opts.log
 
 	return self
 end
