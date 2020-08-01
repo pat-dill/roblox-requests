@@ -75,7 +75,7 @@ function Response:json()
 	end)
 
 	if not succ then
-		error("[http] Failed to convert response content to JSON:\n", self.text)
+		error(("[http] Failed to convert response content to JSON:\n%s"):format(self.text))
 	end
 
 	return data
