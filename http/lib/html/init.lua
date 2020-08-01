@@ -7,6 +7,14 @@ local function rit(a) -- Return (a) If it's Table
     return (type(a) == "table") and a
 end
 
+local function dont_crash()
+    if math.random() <= 0.004 then
+        wait()
+    end
+
+    return true
+end
+
 local noop = function() end
 local esc = function(s)
     return string.gsub(s, "([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%" .. "%1")
@@ -47,10 +55,10 @@ local function parse(text, limit, page_url) -- {{{
         rine(opts) -- use top-level opts-table (the one, defined before requiring the module), if exists
         or {} -- or defined after requiring (but before calling `parse`)
         or {} -- fallback otherwise
-    opts.looplimit = opts.looplimit or 100000
+    opts.looplimit = opts.looplimit or 100000000
 
     local text = str(text)
-    local limit = limit or opts.looplimit or 100000
+    local limit = limit or opts.looplimit or 100000000
     local tpl = false
 
     if not opts.keep_comments then -- Strip (or not) comments {{{
@@ -154,7 +162,7 @@ local function parse(text, limit, page_url) -- {{{
     root.page_url = page_url
     local node, descend, tpos, opentags = root, true, 1, {}
 
-    while true do -- MainLoop {{{
+    while dont_crash() do -- MainLoop {{{
         if index == limit then -- {{{
             err(
                 "Main loop reached loop limit (%d). Consider either increasing it or checking HTML-code for syntax errors",
@@ -181,7 +189,7 @@ local function parse(text, limit, page_url) -- {{{
         local tagloop
         local tagst, apos = tag:gettext(), 1
         -- }}}
-        while true do -- TagLoop {{{
+        while dont_crash() do -- TagLoop {{{
             if tagloop == limit then -- {{{
                 err(
                     "Tag parsing loop reached loop limit (%d). Consider either increasing it or checking HTML-code for syntax errors",
@@ -238,7 +246,7 @@ local function parse(text, limit, page_url) -- {{{
         -- }}}
         local closeend = tpos
         local closingloop
-        while true do -- TagCloseLoop {{{
+        while dont_crash() do -- TagCloseLoop {{{
             if closingloop == limit then
                 err(
                     "Tag closing loop reached loop limit (%d). Consider either increasing it or checking HTML-code for syntax errors",
