@@ -4,7 +4,7 @@ local _U = {}
 function _U.deprecate(method, version, name)
     return function(...)
         if version then
-            warn(("[http] %s deprecated in version %s. See documentation at http://requests.paric.xyz/"):format(version, name or "Function"))
+            warn(("[http] %s deprecated in version %s. See documentation at http://requests.paric.xyz/"):format(name, version or "Function"))
         else
             warn(("[http] %s deprecated. See documentation at http://requests.paric.xyz/"):format(name or "Function"))
         end

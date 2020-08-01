@@ -5,11 +5,10 @@ local Lib = Main.lib
 local Src = Main.src
 ---------------------------------
 
-local Promise = require(Lib.promise)
-
 local Request = require(Src.request)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
+local Util = require(Src.util)
 
 -- util
 
@@ -130,7 +129,7 @@ function Session:Request(method, url, opts)
 	return request
 end
 
-function Session:send(method, url, opts)
+function Session:request(method, url, opts)
 	-- quick method to send http requests
 	--  method: (str) HTTP Method
 	--     url: (str) Fully qualified URL
@@ -146,8 +145,9 @@ function Session:send(method, url, opts)
 	local req = self:Request(method, url, opts)
 	return req:send()
 end
+Session.send = Util.deprecate(Session.request, "0.5", "Session:send")
 
-function Session:promise_send(method, url, opts)
+function Session:promise_request(method, url, opts)
 	-- same as session:send but returns a Promise
 
 	opts = opts or {}
@@ -155,6 +155,7 @@ function Session:promise_send(method, url, opts)
 	local req = self:Request(method, url, opts)
 	return req:send(true)
 end
+Session.promise_send = Util.deprecate(Session.promise_request, "0.5", "Session:promise_send")
 
 -- create quick functions for each http method
 for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"}) do
