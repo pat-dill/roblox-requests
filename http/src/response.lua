@@ -44,7 +44,7 @@ function Response.new(req, resp, rt)
 	self.content = resp.Body  -- deprecated
 	self.text = resp.Body
 
-	self.headers["content-type"] = self.headers["conetnt-type"] or "text/plain"
+	self.headers["content-type"] = self.headers["content-type"] or "text/plain"
 
 	-- additional metadata for quick access
 	local type_encoding = self.headers["content-type"]:split(";")
