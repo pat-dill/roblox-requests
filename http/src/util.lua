@@ -1,12 +1,12 @@
 local _U = {}
 
 -- deprecated decorator
-function _U.deprecate(method, version)
+function _U.deprecate(method, version, name)
     return function(...)
         if version then
-            warn(("[http] Function deprecated in version %s. See documentation at http://requests.paric.xyz/"):format(version))
+            warn(("[http] %s deprecated in version %s. See documentation at http://requests.paric.xyz/"):format(version, name or "Function"))
         else
-            warn("[http] Function deprecated. See documentation at http://requests.paric.xyz/")
+            warn(("[http] %s deprecated. See documentation at http://requests.paric.xyz/"):format(name or "Function"))
         end
 
         return method(...)

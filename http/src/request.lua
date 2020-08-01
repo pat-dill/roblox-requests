@@ -57,7 +57,7 @@ function Request.new(method, url, opts)
 		self:set_data(opts.data)
 	end
 
-	self:update_query(opts.query or {})
+	self:set_query(opts.query or {})
 
 	-- handle cookies
 
@@ -95,7 +95,7 @@ function Request:set_headers(headers)
 
 	return self
 end
-Request.update_headers = Util.deprecate(Request.set_headers, "0.5")
+Request.update_headers = Util.deprecate(Request.set_headers, "0.5", "update_headers")
 
 
 function Request:set_query(params)
@@ -109,7 +109,7 @@ function Request:set_query(params)
 
 	return self
 end
-Request.update_query = Util.deprecate(Request.set_headers, "0.5")
+Request.update_query = Util.deprecate(Request.set_headers, "0.5", "update_query")
 
 
 function Request:set_data(data)
