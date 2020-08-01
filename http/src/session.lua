@@ -99,12 +99,17 @@ function Session:Request(method, url, opts)
 		url = self.base_url .. url
 	end
 
+	local will_log = self.log
+	if opts.log ~= nil then
+		will_log = opts.log
+	end
+
 	-- prepare request based on session defaults
 	local request = Request.new(method, url, {
 		headers = self.headers,
 		query = opts.query,
 		data = opts.data,
-		log = self.log or opts.log,
+		log = will_log,
 		cookies = opts.cookies or self.cookies,
 		ignore_ratelimit = opts.ignore_ratelimit or self.ignore_ratelimit,
 		no_stats = self.no_stats or false
@@ -114,7 +119,7 @@ function Session:Request(method, url, opts)
 		table.insert(request._ratelimits, self._ratelimit)  -- make request follow session ratelimit
 	end
 
-	request:update_headers(opts.headers or {})
+	request:set_headers(opts.headers or {})
 
 	request._callback = function(resp)
 		for _, cookie in ipairs(resp.cookies.cookies) do

@@ -12,6 +12,7 @@ local json = require(Src.json)
 local Response = require(Src.response)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
+local Util = require(Src.util)
 
 ---------------------------------------------------
 
@@ -85,7 +86,7 @@ function Request.new(method, url, opts)
 end
 
 
-function Request:update_headers(headers)
+function Request:set_headers(headers)
 	-- headers: (dictionary) additional headers to set
 
 	for k, v in pairs(headers) do
@@ -94,9 +95,10 @@ function Request:update_headers(headers)
 
 	return self
 end
+Request.update_headers = Util.deprecate(Request.set_headers, "0.5")
 
 
-function Request:update_query(params)
+function Request:set_query(params)
 	-- params: (dictionary) additional query string parameters to set
 
 	for k, v in pairs(params) do
@@ -107,6 +109,7 @@ function Request:update_query(params)
 
 	return self
 end
+Request.update_query = Util.deprecate(Request.set_headers, "0.5")
 
 
 function Request:set_data(data)
@@ -123,6 +126,8 @@ function Request:set_data(data)
 	end
 
 	self.data = data
+
+	return self
 end
 
 function Request:_ratelimit()
