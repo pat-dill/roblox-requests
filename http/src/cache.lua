@@ -25,7 +25,12 @@ function Cache.update_settings(urls, settings)
     urls = type(urls) == "table" and urls or {urls}
 
     local _concat = {}
-    for i, url in ipairs(urls) do
+    local i = 0
+    while i < #urls do
+        i += 1
+
+        local url = urls[i]
+
         if url:sub(1, 7) == "http://" then
             urls[i] = url:sub(8)
             url = urls[i]
@@ -35,16 +40,14 @@ function Cache.update_settings(urls, settings)
         end
 
         if url:sub(1, 2) == "*." then
-            table.insert(_concat, url:sub(3))
+            table.insert(urls, url:sub(3))
         end
 
         if not url:find("/") then
-            table.insert(_concat, url .. "/")
-            table.insert(_concat, url .. "/*")
+            table.insert(urls, url .. "/")
+            table.insert(urls, url .. "/*")
         end
     end
-
-    urls = TableConcat(urls, _concat)
 
     for _, url in ipairs(urls) do
         Cache.settings[url] = settings
@@ -52,11 +55,11 @@ function Cache.update_settings(urls, settings)
 end
 
 function Cache.cache_locally(urls)
-    Cache.update_settings(urls, {use_datastore=false})
+    Cache.update_settings(urls, {cache_globally=false})
 end
 
 function Cache.cache_globally(urls)
-    Cache.update_settings(urls, {use_datastore=true})
+    Cache.update_settings(urls, {cache_globally=true})
 end
 
 -- "paric.xyz/" would cache http://paric.xyz/ only
@@ -95,7 +98,7 @@ function Cache.is_cached(url, req_id)
         return true
     end
 
-    if Cache.settings[setting_key].use_datastore then
+    if Cache.settings[setting_key].cache_globally then
         if Cache.exists_in_cloud[req_id] then
             return true
         else
@@ -125,7 +128,7 @@ function Cache.update_cache(url, req_id, data)
     local setting_key = Cache.should_cache(url)
 
     -- cloud cache
-    if Cache.settings[setting_key].use_datastore then
+    if Cache.settings[setting_key].cache_globally then
         -- back it up!!
         return
     end
