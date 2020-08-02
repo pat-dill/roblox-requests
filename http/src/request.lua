@@ -14,6 +14,8 @@ local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
 local Util = require(Src.util)
 
+local Cache = require(Src.cache)
+
 ---------------------------------------------------
 
 
@@ -154,14 +156,31 @@ function Request:_send()
 		options.Body = self.data
 	end
 
+	local trimmed_url = options.Url:sub(-1, -1) == "/" and options.Url:sub(1, -2) or options.Url
+
+	local unique_id =  ("%s : %s : %s"):format(self.method, trimmed_url, options.Body or "")
+
+	if Cache.is_cached(options.Url, unique_id) then
+		local st = tick()
+		local data, cache_type = Cache.get_cached(options.Url, unique_id)
+		local resp = Response.new(self, data, tick()-st)
+		resp.from_cache = true
+
+		print("[http]", cache_type:upper(), "CACHE |", resp.method, resp.url)
+
+		return resp
+	end
+
 	local attempts = 0
-	local succ, resp = false, nil
+	local succ, resp, raw_response = false, nil, nil
 
 	while attempts < 5 do
 		-- check if request will exceed rate limit
 		if self.ignore_ratelimit or self:_ratelimit() then
 			local st = tick()
-			resp = Response.new(self, httpservice:RequestAsync(options), tick()-st)
+
+			raw_response = httpservice:RequestAsync(options)
+			resp = Response.new(self, raw_response, tick()-st)
 			self.timestamp = st
 			succ = true
 			break
@@ -193,6 +212,10 @@ function Request:_send()
 			local Stats = require(Src.stats)
 			Stats:report(self, resp)
 		end)()
+	end
+
+	if Cache.should_cache(options.Url) then
+		Cache.update_cache(options.Url, unique_id, raw_response)
 	end
 
 	return resp

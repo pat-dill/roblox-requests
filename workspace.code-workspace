@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\requests-front-page\\_docs"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

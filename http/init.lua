@@ -26,6 +26,8 @@ http.Session = Session.new
 http.FormData = Forms.FormData.new
 http.File = Forms.File.new
 
+http.cache = require(Src.cache)
+
 function http.request(method, url, opts)
 	-- quick method to send http requests
 	--  method: (str) HTTP Method

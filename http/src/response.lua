@@ -46,6 +46,8 @@ function Response.new(req, resp, rt)
 
 	self.headers["content-type"] = self.headers["content-type"] or "text/plain"
 
+	self.from_cache = false
+
 	-- additional metadata for quick access
 	local type_encoding = self.headers["content-type"]:split(";")
 	self.content_type = type_encoding[1]:lower()
@@ -62,6 +64,10 @@ function Response.new(req, resp, rt)
 	end
 
 	return self
+end
+
+function Response:expand()
+
 end
 
 function Response:__tostring()
