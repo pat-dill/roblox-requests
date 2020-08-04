@@ -1,3 +1,16 @@
+local MS = game:GetService("MessagingService")
+local DS = game:GetService("DataStoreService")
+local RS = game:GetService("RunService")
+
+local json = require(script.Parent.json)
+----------------------------------------------
+
+local STUDIO = RS:IsStudio()
+
+local function dlog(...)
+    print("[http]", ...)
+end
+
 local Cache = {}
 -- Cache.__index = Cache
 
@@ -5,21 +18,6 @@ Cache.settings = {}
 Cache.max_size = math.huge
 
 Cache.data = {}
-Cache.exists_in_cloud = {}
-
-
---
-
-local function TableConcat(t1,t2)
-    for i=1,#t2 do
-        t1[#t1+i] = t2[i]
-    end
-    return t1
-end
-
---
-
--- Cache.update_settings({"paric.xyz", "*.paric.xyz"})
 
 function Cache.update_settings(urls, settings)
     urls = type(urls) == "table" and urls or {urls}
@@ -51,6 +49,10 @@ function Cache.update_settings(urls, settings)
 
     for _, url in ipairs(urls) do
         Cache.settings[url] = settings
+
+        if settings.cache_locally == false and not settings.cache_globally then
+            Cache.settings[url] = nil
+        end
     end
 end
 
@@ -99,7 +101,7 @@ function Cache.is_cached(url, req_id)
     end
 
     if Cache.settings[setting_key].cache_globally then
-        if Cache.exists_in_cloud[req_id] then
+        if Cache.global_cache_index[req_id] then
             return true
         else
             return false
@@ -109,12 +111,81 @@ function Cache.is_cached(url, req_id)
     end
 end
 
+-- handle global cache indexing
+
+Cache.global_cache_index = {}
+local global_cache_queue = {}
+
+local global_cache_enabled, ds_cache = pcall(function() return DS:GetDataStore("HttpRequestsCache") end)
+dlog("global cache enabled:", global_cache_enabled)
+
+if global_cache_enabled then
+    Cache.global_cache_index = ds_cache:GetAsync("index") or {} -- dynamically updating index using messagingservice
+    Cache.global_cache_update_interval = 20  -- update global cache 3 times / min by default
+
+    coroutine.wrap(function()
+        while wait(Cache.global_cache_update_interval) do
+            dlog("pushing new cache index to datastore")
+
+            pcall(function()
+                for k, v in pairs(global_cache_queue) do
+                    ds_cache:SetAsync(k, v)
+                end
+
+                local index_list = {}
+
+                ds_cache:UpdateAsync("index", function(idx)
+                    idx = idx or {}
+                    for k, _ in pairs(global_cache_queue) do
+                        table.insert(index_list, k)
+                        
+                        idx[k] = true
+                        Cache.global_cache_index[k] = true
+                    end
+
+                    return idx
+                end)
+
+                if not STUDIO then
+                    MS:PublishAsync("RequestsCacheIndex", json.enc(index_list))
+                end
+
+                global_cache_queue = {}
+            end)
+        end
+    end)()
+
+    if not STUDIO then
+        MS:SubscribeAsync("RequestsCacheIndex", function (msg)
+            local append = json.dec(msg.Data)
+        
+            dlog("new cache index message. length", #append)
+        
+            for _, v in ipairs(append) do
+                Cache.global_cache_index[v] = true
+            end
+        end)
+    end
+end
+
+
+
+
+-- cache methods
+
 function Cache.get_cached(url, req_id)
     local setting_key = Cache.should_cache(url)
 
     local server_cached = Cache.data[req_id]
     if server_cached then
         return server_cached, "local"
+    end
+
+    -- cloud cache
+    if global_cache_enabled and Cache.settings[setting_key].cache_globally then
+        dlog("accessing datastore cache for", req_id)
+
+        return ds_cache:GetAsync(req_id), "global"
     end
 end
 
@@ -128,8 +199,9 @@ function Cache.update_cache(url, req_id, data)
     local setting_key = Cache.should_cache(url)
 
     -- cloud cache
-    if Cache.settings[setting_key].cache_globally then
-        -- back it up!!
+    if global_cache_enabled and Cache.settings[setting_key].cache_globally then
+        dlog("queued", req_id)
+        global_cache_queue[req_id] = data
         return
     end
 end

@@ -158,7 +158,7 @@ function Request:_send()
 
 	local trimmed_url = options.Url:sub(-1, -1) == "/" and options.Url:sub(1, -2) or options.Url
 
-	local unique_id =  ("%s : %s : %s"):format(self.method, trimmed_url, options.Body or "")
+	local unique_id =  ("Request_%s_%s_%s"):format(self.method, trimmed_url, options.Body or "")
 
 	if Cache.is_cached(options.Url, unique_id) then
 		local st = tick()
@@ -214,7 +214,7 @@ function Request:_send()
 		end)()
 	end
 
-	if Cache.should_cache(options.Url) then
+	if resp.ok and Cache.should_cache(options.Url) then
 		Cache.update_cache(options.Url, unique_id, raw_response)
 	end
 
