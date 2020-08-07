@@ -69,6 +69,8 @@ end
 -- "*.paric.xyz" would cache all subdomains INCLUDING paric.xyz
 
 function Cache.should_cache(url)
+    url = url:split("?")[1]
+
     for key, _ in pairs(Cache.settings) do
         local pattern = ".*://" .. key:gsub("%*", ".*")
 
