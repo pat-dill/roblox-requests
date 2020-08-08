@@ -36,8 +36,10 @@ Roblox Requests will bring simple support for all internet resources to your gam
 - Elegant Key/Value Cookies
   - Domain/Path filters
 - Multipart File Encoding and Upload
+- Local and Global Response Caching
+  - Cloud backed global cache
+- Builtin Lua Promise Support
 - Global/Per-Session Ratelimiting
-
 
 Roblox Requests was inspired by the well known [Python Requests](https://2.python-requests.org/en/master/) library.
 
