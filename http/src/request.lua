@@ -160,7 +160,7 @@ function Request:_send()
 
 	local unique_id =  ("Request_%s_%s_%s"):format(self.method, trimmed_url, options.Body or "")
 
-	if Cache.is_cached(options.Url, unique_id) then
+	if self.method:upper() == "GET" and Cache.is_cached(options.Url, unique_id) then
 		local st = tick()
 		local data, cache_type = Cache.get_cached(options.Url, unique_id)
 		local resp = Response.new(self, data, tick()-st)
@@ -214,7 +214,7 @@ function Request:_send()
 		end)()
 	end
 
-	if resp.ok and Cache.should_cache(options.Url) then
+	if self.method:upper() == "GET" and resp.ok and Cache.should_cache(options.Url) then
 		Cache.update_cache(options.Url, unique_id, raw_response)
 	end
 
