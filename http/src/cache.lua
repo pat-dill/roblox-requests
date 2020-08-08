@@ -56,12 +56,18 @@ function Cache.update_settings(urls, settings)
     end
 end
 
-function Cache.cache_locally(urls)
-    Cache.update_settings(urls, {cache_globally=false})
+function Cache.cache_locally(urls, opts)
+    opts = opts or {}
+    opts.cache_globally = false
+
+    Cache.update_settings(urls, opts)
 end
 
-function Cache.cache_globally(urls)
-    Cache.update_settings(urls, {cache_globally=true})
+function Cache.cache_globally(urls, opts)
+    opts = opts or {}
+    opts.cache_globally = true
+
+    Cache.update_settings(urls, opts)
 end
 
 -- "paric.xyz/" would cache http://paric.xyz/ only
