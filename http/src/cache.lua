@@ -125,7 +125,7 @@ Cache.global_cache_index = {}
 local global_cache_queue = {}
 
 local global_cache_enabled, ds_cache = pcall(function() return DS:GetDataStore("HttpRequestsCache") end)
-dlog("global cache enabled:", global_cache_enabled)
+dlog("global cache useable:", global_cache_enabled)
 
 if global_cache_enabled then
     Cache.global_cache_index = ds_cache:GetAsync("index") or {} -- dynamically updating index using messagingservice
