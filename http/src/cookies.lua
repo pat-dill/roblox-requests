@@ -18,6 +18,8 @@ local function maybe_number(str)
 end
 
 local function trim(s)
+	s = s or ""
+	
 	while s:sub(1, 1) == " " do
 		s = s:sub(2)
 	end

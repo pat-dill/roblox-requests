@@ -8,6 +8,9 @@
 
       "http": {
         "$path": "http"
+      },
+      "TestEZ": {
+        "$path": "testez-master/src"
       }
     }
   }

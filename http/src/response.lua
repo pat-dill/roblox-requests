@@ -44,10 +44,13 @@ function Response.new(req, resp, rt)
 	self.content = resp.Body  -- deprecated
 	self.text = resp.Body
 
+	self.headers["content-type"] = self.headers["content-type"] or "text/plain"
+
+	self.from_cache = false
 
 	-- additional metadata for quick access
 	local type_encoding = self.headers["content-type"]:split(";")
-	self.content_type = type_encoding[1]
+	self.content_type = type_encoding[1]:lower()
 	self.encoding = (type_encoding[2] and type_encoding[2]:split("=")[2]) or "" -- or "utf-8"
 	
 	self.content_length = #(self.text)
@@ -63,6 +66,10 @@ function Response.new(req, resp, rt)
 	return self
 end
 
+function Response:expand()
+
+end
+
 function Response:__tostring()
 	return self.text
 end
@@ -75,7 +82,7 @@ function Response:json()
 	end)
 
 	if not succ then
-		error("[http] Failed to convert response content to JSON:\n", self.text)
+		error(("[http] Failed to convert response content to JSON:\n%s"):format(self.text))
 	end
 
 	return data

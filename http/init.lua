@@ -12,12 +12,13 @@ local Request = require(Src.request)
 local Session = require(Src.session)
 local Forms = require(Src.form)
 local RateLimiter = require(Src.ratelimit)
+local Util = require(Src.util)
 
 ------------------------------------------
 
 local http = {}
 
-http.VERSION = "0.3.0"
+http.VERSION = "0.5.0"
 
 http.Request = Request.new
 http.Session = Session.new
@@ -25,7 +26,9 @@ http.Session = Session.new
 http.FormData = Forms.FormData.new
 http.File = Forms.File.new
 
-function http.send(method, url, opts)
+http.cache = require(Src.cache)
+
+function http.request(method, url, opts)
 	-- quick method to send http requests
 	--  method: (str) HTTP Method
 	--     url: (str) Fully qualified URL
@@ -41,8 +44,9 @@ function http.send(method, url, opts)
 	local req = Request.new(method, url, opts)
 	return req:send()
 end
+http.send = Util.deprecate(http.request, "0.5", "http.send")
 
-function http.promise_send(method, url, opts)
+function http.promise_request(method, url, opts)
 	-- same as http.send but returns a Promise
 	-- rejects with a table that includes response if response was sent
 
@@ -51,11 +55,12 @@ function http.promise_send(method, url, opts)
 	local req = Request.new(method, url, opts)
 	return req:send(true)
 end
+http.promise_send = Util.deprecate(http.promise_request, "0.5", "http.promise_send")
 
 -- create quick functions for each http method
 for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"}) do
 	http[method:lower()] = function(url, opts)
-		return http.send(method, url, opts)
+		return http.request(method, url, opts)
 	end
 
 	http["promise_" .. method:lower()] = function(url, opts)

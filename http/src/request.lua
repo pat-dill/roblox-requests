@@ -12,6 +12,9 @@ local json = require(Src.json)
 local Response = require(Src.response)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
+local Util = require(Src.util)
+
+local Cache = require(Src.cache)
 
 ---------------------------------------------------
 
@@ -39,7 +42,7 @@ function Request.new(method, url, opts)
 	local u = Url.parse(url)
 	local headers = opts.headers or {}
 
-	self.method = method
+	self.method = method:upper()
 	self.url = u
 	self.input_url = url
 	self.headers = headers
@@ -56,7 +59,7 @@ function Request.new(method, url, opts)
 		self:set_data(opts.data)
 	end
 
-	self:update_query(opts.query or {})
+	self:set_query(opts.query or {})
 
 	-- handle cookies
 
@@ -79,13 +82,13 @@ function Request.new(method, url, opts)
 	self._callback = nil
 
 
-	self._log = opts.log or true
+	self._log = (opts.log == nil and true) or opts.log
 
 	return self
 end
 
 
-function Request:update_headers(headers)
+function Request:set_headers(headers)
 	-- headers: (dictionary) additional headers to set
 
 	for k, v in pairs(headers) do
@@ -94,9 +97,10 @@ function Request:update_headers(headers)
 
 	return self
 end
+Request.update_headers = Util.deprecate(Request.set_headers, "0.5", "update_headers")
 
 
-function Request:update_query(params)
+function Request:set_query(params)
 	-- params: (dictionary) additional query string parameters to set
 
 	for k, v in pairs(params) do
@@ -107,6 +111,7 @@ function Request:update_query(params)
 
 	return self
 end
+Request.update_query = Util.deprecate(Request.set_headers, "0.5", "update_query")
 
 
 function Request:set_data(data)
@@ -123,6 +128,8 @@ function Request:set_data(data)
 	end
 
 	self.data = data
+
+	return self
 end
 
 function Request:_ratelimit()
@@ -149,14 +156,31 @@ function Request:_send()
 		options.Body = self.data
 	end
 
+	local trimmed_url = options.Url:sub(-1, -1) == "/" and options.Url:sub(1, -2) or options.Url
+
+	local unique_id =  ("Request_%s_%s_%s"):format(self.method, trimmed_url, options.Body or "")
+
+	if self.method:upper() == "GET" and Cache.is_cached(options.Url, unique_id) then
+		local st = tick()
+		local data, cache_type = Cache.get_cached(options.Url, unique_id)
+		local resp = Response.new(self, data, tick()-st)
+		resp.from_cache = true
+
+		print("[http]", cache_type:upper(), "CACHE |", resp.method, resp.url)
+
+		return resp
+	end
+
 	local attempts = 0
-	local succ, resp = false, nil
+	local succ, resp, raw_response = false, nil, nil
 
 	while attempts < 5 do
 		-- check if request will exceed rate limit
 		if self.ignore_ratelimit or self:_ratelimit() then
 			local st = tick()
-			resp = Response.new(self, httpservice:RequestAsync(options), tick()-st)
+
+			raw_response = httpservice:RequestAsync(options)
+			resp = Response.new(self, raw_response, tick()-st)
 			self.timestamp = st
 			succ = true
 			break
@@ -188,6 +212,10 @@ function Request:_send()
 			local Stats = require(Src.stats)
 			Stats:report(self, resp)
 		end)()
+	end
+
+	if self.method:upper() == "GET" and resp.ok and Cache.should_cache(options.Url) then
+		Cache.update_cache(options.Url, unique_id, raw_response)
 	end
 
 	return resp

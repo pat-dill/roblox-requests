@@ -5,11 +5,10 @@ local Lib = Main.lib
 local Src = Main.src
 ---------------------------------
 
-local Promise = require(Lib.promise)
-
 local Request = require(Src.request)
 local CookieJar = require(Src.cookies)
 local RateLimiter = require(Src.ratelimit)
+local Util = require(Src.util)
 
 -- util
 
@@ -99,12 +98,17 @@ function Session:Request(method, url, opts)
 		url = self.base_url .. url
 	end
 
+	local will_log = self.log
+	if opts.log ~= nil then
+		will_log = opts.log
+	end
+
 	-- prepare request based on session defaults
 	local request = Request.new(method, url, {
 		headers = self.headers,
 		query = opts.query,
 		data = opts.data,
-		log = self.log or opts.log,
+		log = will_log,
 		cookies = opts.cookies or self.cookies,
 		ignore_ratelimit = opts.ignore_ratelimit or self.ignore_ratelimit,
 		no_stats = self.no_stats or false
@@ -114,7 +118,7 @@ function Session:Request(method, url, opts)
 		table.insert(request._ratelimits, self._ratelimit)  -- make request follow session ratelimit
 	end
 
-	request:update_headers(opts.headers or {})
+	request:set_headers(opts.headers or {})
 
 	request._callback = function(resp)
 		for _, cookie in ipairs(resp.cookies.cookies) do
@@ -125,7 +129,7 @@ function Session:Request(method, url, opts)
 	return request
 end
 
-function Session:send(method, url, opts)
+function Session:request(method, url, opts)
 	-- quick method to send http requests
 	--  method: (str) HTTP Method
 	--     url: (str) Fully qualified URL
@@ -141,8 +145,9 @@ function Session:send(method, url, opts)
 	local req = self:Request(method, url, opts)
 	return req:send()
 end
+Session.send = Util.deprecate(Session.request, "0.5", "Session:send")
 
-function Session:promise_send(method, url, opts)
+function Session:promise_request(method, url, opts)
 	-- same as session:send but returns a Promise
 
 	opts = opts or {}
@@ -150,6 +155,7 @@ function Session:promise_send(method, url, opts)
 	local req = self:Request(method, url, opts)
 	return req:send(true)
 end
+Session.promise_send = Util.deprecate(Session.promise_request, "0.5", "Session:promise_send")
 
 -- create quick functions for each http method
 for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"}) do
