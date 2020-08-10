@@ -18,7 +18,7 @@ local Util = require(Src.util)
 
 local http = {}
 
-http.VERSION = "0.5.0"
+http.VERSION = "0.5.1"
 
 http.Request = Request.new
 http.Session = Session.new
