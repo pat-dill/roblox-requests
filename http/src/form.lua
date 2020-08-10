@@ -68,7 +68,7 @@ function File.new(...)
 	return self
 end
 
-function File:__tostring(self)
+function File:__tostring()
 	return ("File('%s', '%s')"):format(self.name, self.content_type)
 end
 
@@ -81,7 +81,7 @@ function FormData.new(fields)
 	local self = setmetatable({}, FormData)
 	self.__FormData = true
 
-	local fields = fields or {}
+	fields = fields or {}
 
 	self.boundary = "--FormBoundary-" .. randomString(28)
 	self.content_type = "application/x-www-form-urlencoded"

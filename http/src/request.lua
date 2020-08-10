@@ -163,12 +163,14 @@ function Request:_send()
 	if self.method:upper() == "GET" and Cache.is_cached(options.Url, unique_id) then
 		local st = tick()
 		local data, cache_type = Cache.get_cached(options.Url, unique_id)
-		local resp = Response.new(self, data, tick()-st)
-		resp.from_cache = true
 
-		print("[http]", cache_type:upper(), "CACHE |", resp.method, resp.url)
+		if st - data.timestamp <= Cache.get_expire(options.Url) then
+			local resp = Response.new(self, data, tick()-st)
+			resp.from_cache = true
 
-		return resp
+			print("[http]", cache_type:upper(), "CACHE |", resp.method, resp.url)
+			return resp
+		end
 	end
 
 	local attempts = 0
