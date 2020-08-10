@@ -125,54 +125,61 @@ Cache.global_cache_index = {}
 local global_cache_queue = {}
 
 local global_cache_enabled, ds_cache = pcall(function() return DS:GetDataStore("HttpRequestsCache") end)
-dlog("global cache useable:", global_cache_enabled)
 
 if global_cache_enabled then
-    Cache.global_cache_index = ds_cache:GetAsync("index") or {} -- dynamically updating index using messagingservice
-    Cache.global_cache_update_interval = 20  -- update global cache 3 times / min by default
+    local succ, global_cache_index = pcall(function() return ds_cache:GetAsync("index") or {} end) -- dynamically updating index using messagingservice
+    if succ then
+        Cache.global_cache_index = global_cache_index
 
-    coroutine.wrap(function()
-        while wait(Cache.global_cache_update_interval) do
-            dlog("pushing new cache index to datastore")
+        Cache.global_cache_update_interval = 20  -- update global cache 3 times / min by default
 
-            pcall(function()
-                for k, v in pairs(global_cache_queue) do
-                    ds_cache:SetAsync(k, v)
-                end
-
-                local index_list = {}
-
-                ds_cache:UpdateAsync("index", function(idx)
-                    idx = idx or {}
-                    for k, _ in pairs(global_cache_queue) do
-                        table.insert(index_list, k)
-                        
-                        idx[k] = true
-                        Cache.global_cache_index[k] = true
+        coroutine.wrap(function()
+            while wait(Cache.global_cache_update_interval) do
+                pcall(function()
+                    local i = 0
+                    for k, v in pairs(global_cache_queue) do
+                        ds_cache:SetAsync(k, v)
+                        i += 1
                     end
 
-                    return idx
+                    if i > 0 then
+                        dlog(("pushing %s requests to global cache index"):format(i))
+                    end
+
+                    local index_list = {}
+
+                    ds_cache:UpdateAsync("index", function(idx)
+                        idx = idx or {}
+                        for k, _ in pairs(global_cache_queue) do
+                            table.insert(index_list, k)
+                            
+                            idx[k] = true
+                            Cache.global_cache_index[k] = true
+                        end
+
+                        return idx
+                    end)
+
+                    if not STUDIO then
+                        MS:PublishAsync("RequestsCacheIndex", json.enc(index_list))
+                    end
+
+                    global_cache_queue = {}
                 end)
+            end
+        end)()
 
-                if not STUDIO then
-                    MS:PublishAsync("RequestsCacheIndex", json.enc(index_list))
+        if not STUDIO then
+            MS:SubscribeAsync("RequestsCacheIndex", function (msg)
+                local append = json.dec(msg.Data)
+            
+                -- dlog("new cache index message. length", #append)
+            
+                for _, v in ipairs(append) do
+                    Cache.global_cache_index[v] = true
                 end
-
-                global_cache_queue = {}
             end)
         end
-    end)()
-
-    if not STUDIO then
-        MS:SubscribeAsync("RequestsCacheIndex", function (msg)
-            local append = json.dec(msg.Data)
-        
-            dlog("new cache index message. length", #append)
-        
-            for _, v in ipairs(append) do
-                Cache.global_cache_index[v] = true
-            end
-        end)
     end
 end
 
@@ -180,6 +187,12 @@ end
 
 
 -- cache methods
+
+function Cache.get_expire(url)
+    local setting_key = Cache.should_cache(url)
+
+    return Cache.settings[setting_key].expires or math.huge
+end
 
 function Cache.get_cached(url, req_id)
     local setting_key = Cache.should_cache(url)
