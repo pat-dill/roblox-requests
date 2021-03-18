@@ -64,7 +64,7 @@ for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATC
 	end
 
 	http["promise_" .. method:lower()] = function(url, opts)
-		return http.promise_send(method, url, opts)
+		return http.promise_request(method, url, opts)
 	end
 end
 
