@@ -18,7 +18,7 @@ local Util = require(Src.util)
 
 local http = {}
 
-http.VERSION = "0.5.1"
+http.VERSION = "0.5.3"
 
 http.Request = Request.new
 http.Session = Session.new
@@ -64,7 +64,7 @@ for _, method in pairs({"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATC
 	end
 
 	http["promise_" .. method:lower()] = function(url, opts)
-		return http.promise_send(method, url, opts)
+		return http.promise_request(method, url, opts)
 	end
 end
 
