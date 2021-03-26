@@ -18,7 +18,7 @@ local Util = require(Src.util)
 
 local http = {}
 
-http.VERSION = "0.5.3"
+http.VERSION = "0.5.4"
 
 http.Request = Request.new
 http.Session = Session.new
@@ -80,8 +80,6 @@ function http.parse_html(html_string, page_url)
 end
 
 http.parse_xml = http.parse_html
-
-http.stats = require(Src.stats)
 
 
 return http

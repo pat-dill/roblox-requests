@@ -160,7 +160,7 @@ function FormData:build()
 				end
 			end
 
-			content = content .. "\r\n\r\n\r\n" .. val .. "\r\n"
+			content = content .. "\r\n\r\n" .. val .. "\r\n"
 		end
 		content = content .. "--"..self.boundary.."--"
 	end
