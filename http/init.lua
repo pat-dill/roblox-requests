@@ -81,7 +81,5 @@ end
 
 http.parse_xml = http.parse_html
 
-http.stats = require(Src.stats)
-
 
 return http
