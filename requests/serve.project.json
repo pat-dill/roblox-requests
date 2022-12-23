@@ -1,0 +1,16 @@
+{
+  "name": "requests",
+  "globIgnorePaths": [
+    "**/package.json",
+    "**/tsconfig.json"
+  ],
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "requests": {
+        "$path": "default.project.json"
+      }
+    }
+  }
+}
