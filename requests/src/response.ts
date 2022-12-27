@@ -1,6 +1,8 @@
 import {Headers, RequestConfig} from "./types";
 import {endsWith} from "./utils";
 import createHeaders from "./headers";
+import {CookieJar, parseSetCookie} from "./cookies";
+import {Session} from "./session";
 const HttpService = game.GetService("HttpService");
 
 export class Response {
@@ -14,11 +16,14 @@ export class Response {
     readonly ok: boolean;
     readonly time: number;
     readonly headers: Headers;
-    readonly body: string;
+    readonly content: string;
     readonly contentType: string;
+    readonly cookies: CookieJar;
+    private _session: Session;
 
-    constructor(request: RequestConfig, rawResponse: RequestAsyncResponse, time: number) {
+    constructor(request: RequestConfig, rawResponse: RequestAsyncResponse, time: number, session: Session) {
         this.isResponse = true;
+        this._session = session
 
         this.request = request;
         this.url = request.url as string;
@@ -33,16 +38,28 @@ export class Response {
         this.headers = createHeaders(rawResponse.Headers);
         this.contentType = this.headers["content-type"] ?? ""
 
-        this.body = rawResponse.Body
+        this.content = rawResponse.Body
+
+        if (this.headers["set-cookie"]) {
+            this.cookies = parseSetCookie(this.headers["set-cookie"])
+        } else {
+            this.cookies = {}
+        }
+
+        this._session.config.cookies ??= {};
+        for (const [name, cookie] of pairs(this.cookies)) {
+            this._session.config.cookies[name] = cookie;
+        }
     }
 
     json(ignoreWarning?: boolean) {
         ignoreWarning ??= !(this.request.contentTypeWarning);
 
         if (!ignoreWarning && !endsWith(this.contentType, "/json")) {
-            warn("You are calling json() on a response whose content type doesn't specify JSON");
+            warn("You are calling json() on a response whose content type doesn't specify JSON." +
+                " You can disable this warning by setting http.config.contentTypeWarning = false");
         }
 
-        return HttpService.JSONDecode(this.body);
+        return HttpService.JSONDecode(this.content);
     }
 }

@@ -1,8 +1,15 @@
 import {Session} from "./session";
 import {GetRequestConfig, PostRequestConfig, RequestConfig, RequestData} from "./types";
+import {File, Form, FormFields} from "./form";
 
 const defaultSession = new Session();
 export const config = defaultSession.config;
+
+export const file = (nameOrContent?: string, content?: string, contentType?: string) => {
+    return new File(nameOrContent, content, contentType);
+}
+
+export const form = (fields?: FormFields) => new Form(fields);
 
 export const request = (config: RequestConfig) => defaultSession.request(config);
 

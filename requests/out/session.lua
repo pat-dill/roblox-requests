@@ -4,7 +4,7 @@ local defaultSessionConfig = TS.import(script, script.Parent, "defaults").defaul
 local startsWith = TS.import(script, script.Parent, "utils").startsWith
 local dispatch = TS.import(script, script.Parent, "dispatch").dispatch
 local createHeaders = TS.import(script, script.Parent, "headers").default
-local urlEncode = TS.import(script, script.Parent, "urlencode").urlEncode
+local Form = TS.import(script, script.Parent, "form").Form
 local Session
 do
 	Session = setmetatable({}, {
@@ -36,14 +36,13 @@ do
 			end
 		end
 	end
-	function Session:request(config)
+	function Session:prepareRequest(config)
+		-- prepares final request data based on session and request configs
 		local _object = {
 			method = string.lower(config.method),
 		}
 		local _left = "headers"
-		local _object_1 = {
-			["content-type"] = "text/plain",
-		}
+		local _object_1 = {}
 		local _spread = self.config.headers
 		if type(_spread) == "table" then
 			for _k, _v in _spread do
@@ -87,22 +86,21 @@ do
 		_object[_left_3] = _condition_1
 		_object.body = config.body
 		local finalConfig = _object
-		-- processing
+		-- handle baseURLs
 		local _condition_2 = config.url
 		if _condition_2 == nil then
 			_condition_2 = ""
 		end
 		local url = _condition_2
-		-- first handle baseURLs
 		if not (startsWith(url, "http://") or startsWith(url, "https://")) then
-			local _condition_3 = self.config.baseURL
+			local _condition_3 = config.baseURL
 			if not (_condition_3 ~= "" and _condition_3) then
-				_condition_3 = config.baseURL
+				_condition_3 = self.config.baseURL
 			end
 			if _condition_3 ~= "" and _condition_3 then
-				local _condition_4 = self.config.baseURL
+				local _condition_4 = config.baseURL
 				if not (_condition_4 ~= "" and _condition_4) then
-					_condition_4 = config.baseURL
+					_condition_4 = self.config.baseURL
 				end
 				url = tostring(_condition_4) .. url
 			else
@@ -145,6 +143,49 @@ do
 				error("Data passed but data transformer is undefined")
 			end
 		end
+		-- handle forms
+		-- first, add any directly passed files to form
+		if config.file then
+			if config.files == nil then
+				config.files = {}
+			end
+			local _files = config.files
+			local _file = config.file
+			table.insert(_files, _file)
+		end
+		if config.files then
+			if config.form == nil then
+				config.form = Form.new()
+			end
+			for i, file in ipairs(config.files) do
+				if not file.isFile then
+					error("Object passed in file argument is not a File")
+				end
+				local name = if (#config.files == 1) then "file" else "files[" .. (tostring(i - 1) .. "]")
+				-- cannot use (config.form as Form).set() because it compiles to
+				-- (config.form):set(), which is considered ambiguous and causes an error
+				local _form = config.form
+				_form:set(name, file)
+			end
+		end
+		-- then build form
+		if config.form then
+			local _value_1 = finalConfig.body
+			if _value_1 ~= "" and _value_1 then
+				warn("Request body is being overridden by form data. You may be passing multiple" .. " types of data, such as JSON and a form. Only the form will be sent")
+			end
+			local _value_2 = config.form.isForm
+			if not (_value_2 ~= 0 and (_value_2 == _value_2 and (_value_2 ~= "" and _value_2))) then
+				-- convert table to form
+				config.form = Form.new(config.form)
+			end
+			local body, contentType = (config.form):build()
+			if finalConfig.headers == nil then
+				finalConfig.headers = createHeaders()
+			end
+			finalConfig.headers["Content-Type"] = contentType
+			finalConfig.body = body
+		end
 		-- handle cookies
 		local _object_3 = {}
 		local _spread_4 = self.config.cookies
@@ -162,15 +203,16 @@ do
 		local cookies = _object_3
 		local serialCookies = {}
 		for name, value in pairs(cookies) do
-			local _value_1 = value
-			if type(_value_1) == "string" then
-				local _serialCookies = serialCookies
-				local _arg0 = urlEncode(name) .. ("=" .. urlEncode(value))
-				table.insert(_serialCookies, _arg0)
+			if type(value) == "string" then
+				-- serialCookies.push(`${urlEncode(name, false)}=${urlEncode(value, false)}`)
+				local _arg0 = '"' .. (tostring(name) .. ('"="' .. (value .. '"')))
+				table.insert(serialCookies, _arg0)
 			else
-				local _serialCookies = serialCookies
-				local _arg0 = urlEncode(name) .. ("=" .. urlEncode(value.value))
-				table.insert(_serialCookies, _arg0)
+				if value:shouldSend(finalConfig) then
+					-- serialCookies.push(`${urlEncode(name, false)}=${urlEncode(value.value, false)}`)
+					local _arg0 = '"' .. (tostring(name) .. ('"="' .. (value.value .. '"')))
+					table.insert(serialCookies, _arg0)
+				end
 			end
 		end
 		if finalConfig.headers == nil then
@@ -179,25 +221,28 @@ do
 		if #serialCookies > 0 then
 			finalConfig.headers.cookie = table.concat(serialCookies, "; ")
 		end
+		return finalConfig
+	end
+	function Session:request(config)
+		local preparedRequest = self:prepareRequest(config)
 		-- create promise that dispatches request
 		local requestPromise = TS.Promise.new(function(resolve, reject)
 			-- dispatch request
-			local success, responseOrRejection = dispatch(finalConfig):await()
+			local success, responseOrRejection = dispatch(preparedRequest, self):await()
 			if not success then
 				return reject(responseOrRejection)
 			end
 			local response = responseOrRejection
 			if config.throwForStatus and not response.ok then
 				return reject({
-					message = response.body,
+					message = response.content,
 					response = response,
 				})
 			end
 			return resolve(response)
 		end)
-		local _value_1 = finalConfig.timeout
-		if _value_1 ~= 0 and (_value_1 == _value_1 and _value_1) then
-			requestPromise = requestPromise:timeout(finalConfig.timeout)
+		if preparedRequest.timeout ~= nil then
+			requestPromise = requestPromise:timeout(preparedRequest.timeout)
 		end
 		return requestPromise
 	end
@@ -223,7 +268,6 @@ do
 		return _fn:request(_object)
 	end
 	function Session:post(url, data, config)
-		local _fn = self
 		local _object = {}
 		if type(config) == "table" then
 			for _k, _v in config do
@@ -232,8 +276,21 @@ do
 		end
 		_object.method = "post"
 		_object.url = url
-		_object.data = data
-		return _fn:request(_object)
+		local newConfig = _object
+		if not (data ~= 0 and (data == data and (data ~= "" and data))) then
+			newConfig.data = nil
+		elseif data.isForm then
+			-- data is form
+			newConfig.form = data
+		elseif data.isFile then
+			-- add file to form
+			newConfig.form = Form.new({
+				file = data,
+			})
+		else
+			newConfig.data = data
+		end
+		return self:request(newConfig)
 	end
 	function Session:put(url, data, config)
 		local _fn = self

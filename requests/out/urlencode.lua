@@ -5,9 +5,23 @@ end
 local hexToChar = function(hex)
 	return string.char(tonumber(hex, 16))
 end
-local urlEncode = function(rawUrl)
+local urlEncode = function(rawUrl, plus)
+	if plus == nil then
+		plus = false
+	end
 	local url = tostring(rawUrl)
-	url = (string.gsub(url, "([^%w ])", charToHex))
+	local _url = url
+	local _arg0 = if plus then "([^%w ])" else "([^%w])"
+	url = (string.gsub(_url, _arg0, charToHex))
+	url = (string.gsub(url, " ", "+"))
+	return url
+end
+local urlEncodeMapSafe = function(rawUrl)
+	local plus = true
+	local url = tostring(rawUrl)
+	local _url = url
+	local _arg0 = if plus then "([^%w ])" else "([^%w])"
+	url = (string.gsub(_url, _arg0, charToHex))
 	url = (string.gsub(url, " ", "+"))
 	return url
 end
@@ -17,5 +31,6 @@ local urlDecode = function(encodedUrl)
 end
 return {
 	urlEncode = urlEncode,
+	urlEncodeMapSafe = urlEncodeMapSafe,
 	urlDecode = urlDecode,
 }

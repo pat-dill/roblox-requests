@@ -5,7 +5,7 @@ local HttpService = game:GetService("HttpService")
 local RequestAsync = TS.Promise.promisify(function(options)
 	return HttpService:RequestAsync(options)
 end)
-local function dispatch(request)
+local function dispatch(request, session)
 	return TS.Promise.new(function(resolve, reject)
 		local st = tick()
 		RequestAsync({
@@ -15,7 +15,7 @@ local function dispatch(request)
 			Headers = request.headers,
 		}):andThen(function(rawResponse)
 			local secs = tick() - st
-			return resolve(Response.new(request, rawResponse, secs))
+			return resolve(Response.new(request, rawResponse, secs, session))
 		end):catch(reject)
 	end)
 end

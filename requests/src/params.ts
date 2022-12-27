@@ -1,7 +1,7 @@
 import {Params, RequestConfig} from "./types";
-import {urlEncode} from "./urlencode";
+import {urlEncode, urlEncodeMapSafe} from "./urlencode";
 
-export default function serializeParams(params: Params, config: RequestConfig) {
+export default function serializeParams(params: Params, config?: RequestConfig) {
     let serials: string[] = [];
 
     for (let [key, val] of pairs(params)) {
@@ -11,7 +11,7 @@ export default function serializeParams(params: Params, config: RequestConfig) {
         } else {
             switch (config?.paramsArrayFormat) {
                 case "comma":
-                    let combined = val.map(urlEncode).join(",");
+                    let combined = val.map(urlEncodeMapSafe).join(",");
                     serials.push(`${key}=${combined}`);
 
                     break;

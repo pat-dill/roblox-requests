@@ -1,6 +1,8 @@
 -- Compiled with roblox-ts v2.0.4
 local TS = require(script.Parent.include.RuntimeLib)
-local urlEncode = TS.import(script, script.Parent, "urlencode").urlEncode
+local _urlencode = TS.import(script, script.Parent, "urlencode")
+local urlEncode = _urlencode.urlEncode
+local urlEncodeMapSafe = _urlencode.urlEncodeMapSafe
 local function serializeParams(params, config)
 	local serials = {}
 	for key, val in pairs(params) do
@@ -26,7 +28,7 @@ local function serializeParams(params, config)
 					-- ▼ ReadonlyArray.map ▼
 					local _newValue = table.create(#val)
 					for _k, _v in val do
-						_newValue[_k] = urlEncode(_v, _k - 1, val)
+						_newValue[_k] = urlEncodeMapSafe(_v, _k - 1, val)
 					end
 					-- ▲ ReadonlyArray.map ▲
 					local combined = table.concat(_newValue, ",")

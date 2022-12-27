@@ -1,8 +1,17 @@
 -- Compiled with roblox-ts v2.0.4
 local TS = require(script.include.RuntimeLib)
 local Session = TS.import(script, script, "session").Session
+local _form = TS.import(script, script, "form")
+local File = _form.File
+local Form = _form.Form
 local defaultSession = Session.new()
 local config = defaultSession.config
+local file = function(nameOrContent, content, contentType)
+	return File.new(nameOrContent, content, contentType)
+end
+local form = function(fields)
+	return Form.new(fields)
+end
 local request = function(config)
 	return defaultSession:request(config)
 end
@@ -29,6 +38,8 @@ local patch = function(url, data, config)
 end
 return {
 	config = config,
+	file = file,
+	form = form,
 	request = request,
 	get = get,
 	delete_ = delete_,

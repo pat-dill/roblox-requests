@@ -5,6 +5,7 @@ import {dispatch} from "./dispatch";
 import {Response} from "./response";
 import createHeaders from "./headers";
 import {urlEncode} from "./urlencode";
+import {File, Form, FormFields} from "./form";
 
 export class Session {
     config: SessionConfig;
@@ -19,17 +20,18 @@ export class Session {
         this.config.headers = defaultSessionConfig.headers ?? createHeaders();
 
         if (config.headers) {
-            for (let [key, val] of pairs(config.headers)) {
+            for (const [key, val] of pairs(config.headers)) {
                 this.config.headers[key] = val;
             }
         }
     }
 
-    request(config: RequestConfig): Promise<Response> {
-        let finalConfig: RequestConfig = {
+    prepareRequest(config: RequestConfig): RequestConfig {
+        // prepares final request data based on session and request configs
+
+        const finalConfig: RequestConfig = {
             method: config.method.lower() as RequestConfig["method"],
             headers: createHeaders({
-                "content-type": "text/plain",
                 ...this.config.headers, ...config.headers
             }),
 
@@ -44,15 +46,13 @@ export class Session {
             body: config.body
         }
 
-
-        // processing
+        // handle baseURLs
 
         let url = config.url ?? "";
 
-        // first handle baseURLs
         if (!(startsWith(url, "http://") || startsWith(url, "https://"))) {
-            if (this.config.baseURL || config.baseURL) {
-                url = (this.config.baseURL || config.baseURL) + url;
+            if (config.baseURL || this.config.baseURL) {
+                url = (config.baseURL || this.config.baseURL) + url;
             } else {
                 throw `${config.url} is not an absolute URL and no baseURL was specified`;
             }
@@ -86,27 +86,80 @@ export class Session {
             }
         }
 
+        // handle forms
+        // first, add any directly passed files to form
+        if (config.file) {
+            config.files ??= [];
+            config.files.push(config.file);
+        }
+        if (config.files) {
+            config.form ??= new Form();
+
+            for (let [i, file] of ipairs(config.files)) {
+                if (!file.isFile) {
+                    throw "Object passed in file argument is not a File";
+                }
+
+                const name = (config.files.size() === 1) ? "file" : `files[${i-1}]`;
+
+                // cannot use (config.form as Form).set() because it compiles to
+                // (config.form):set(), which is considered ambiguous and causes an error
+                let _form = config.form as Form;
+                _form.set(name, file);
+            }
+        }
+
+        // then build form
+        if (config.form) {
+            if (finalConfig.body) {
+                warn("Request body is being overridden by form data. You may be passing multiple" +
+                     " types of data, such as JSON and a form. Only the form will be sent")
+            }
+
+            if (!config.form.isForm) {
+                // convert table to form
+                config.form = new Form(config.form as FormFields);
+            }
+
+            const [body, contentType] = (config.form as Form).build();
+
+            finalConfig.headers ??= createHeaders();
+            finalConfig.headers["Content-Type"] = contentType;
+
+            finalConfig.body = body;
+        }
+
         // handle cookies
-        let cookies = {
+        const cookies = {
             ...this.config.cookies,
             ...config.cookies
         }
-        let serialCookies = [];
-        for (let [name, value] of pairs(cookies)) {
+        const serialCookies = [];
+        for (const [name, value] of pairs(cookies)) {
             if (typeIs(value, "string")) {
-                serialCookies.push(`${urlEncode(name)}=${urlEncode(value)}`)
+                // serialCookies.push(`${urlEncode(name, false)}=${urlEncode(value, false)}`)
+                serialCookies.push(`"${name}"="${value}"`)
             } else {
-                serialCookies.push(`${urlEncode(name)}=${urlEncode(value.value)}`)
+                if (value.shouldSend(finalConfig)) {
+                    // serialCookies.push(`${urlEncode(name, false)}=${urlEncode(value.value, false)}`)
+                    serialCookies.push(`"${name}"="${value.value}"`)
+                }
             }
         }
 
         finalConfig.headers ??= createHeaders();
         if (serialCookies.size() > 0) finalConfig.headers["cookie"] = serialCookies.join("; ");
 
+        return finalConfig;
+    }
+
+    request(config: RequestConfig): Promise<Response> {
+        const preparedRequest = this.prepareRequest(config);
+
         // create promise that dispatches request
         let requestPromise: Promise<Response> = new Promise((resolve, reject) => {
             // dispatch request
-            let [success, responseOrRejection]: [boolean, Response | unknown] = dispatch(finalConfig).await();
+            const [success, responseOrRejection]: [boolean, Response | unknown] = dispatch(preparedRequest, this).await();
 
             if (!success) {
                 return reject(responseOrRejection);
@@ -116,7 +169,7 @@ export class Session {
 
             if (config.throwForStatus && !response.ok) {
                 return reject({
-                    message: response.body,
+                    message: response.content,
                     response: response
                 });
             }
@@ -124,8 +177,8 @@ export class Session {
             return resolve(response);
         });
 
-        if (finalConfig.timeout) {
-            requestPromise = requestPromise.timeout(finalConfig.timeout);
+        if (preparedRequest.timeout !== undefined) {
+            requestPromise = requestPromise.timeout(preparedRequest.timeout);
         }
 
         return requestPromise;
@@ -134,7 +187,7 @@ export class Session {
     updateHeaders(headers: Headers) {
         this.config.headers ??= {};
 
-        for (let [key, val] of pairs(headers)) {
+        for (const [key, val] of pairs(headers)) {
             this.config.headers[key] = val;
         }
     }
@@ -149,13 +202,32 @@ export class Session {
         });
     }
 
-    post(url: string, data?: RequestData, config?: PostRequestConfig): Promise<Response> {
-        return this.request({
+    // _shortcutPrepareConfig(url: string, data?: RequestData | Form | File, config?: PostRequestConfig) {
+    //
+    // }
+
+    post(url: string, data?: RequestData | Form | File, config?: PostRequestConfig): Promise<Response> {
+        let newConfig: RequestConfig = {
             ...config,
             method: "post",
             url: url,
-            data: data
-        })
+        }
+
+        if (!data) {
+            newConfig.data = undefined;
+        } else if ((data as Form).isForm) {
+            // data is form
+            newConfig.form = data as Form;
+        } else if ((data as File).isFile) {
+            // add file to form
+            newConfig.form = new Form({
+                file: data as File
+            });
+        } else {
+            newConfig.data = data as RequestData;
+        }
+
+        return this.request(newConfig)
     }
 
     put(url: string, data?: RequestData, config?: PostRequestConfig): Promise<Response> {

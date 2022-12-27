@@ -1,6 +1,6 @@
 import {RequestConfig} from "./types";
 import {endsWith, startsWith} from "./utils";
-import {urlEncode} from "./urlencode";
+import {urlDecode, urlEncode} from "./urlencode";
 
 export class Cookie {
     name: string;
@@ -14,8 +14,9 @@ export class Cookie {
         this.domain = domain;
     }
 
-    shouldSend(config: RequestConfig & { url: string }) {
+    shouldSend(config: RequestConfig) {
         if (!(this.domain || this.path)) return true;
+        if (!config.url) return false;
 
         const urlSplit = config.url.split("://");
         const segments = urlSplit[urlSplit.size() - 1].split("/");
@@ -39,7 +40,31 @@ export class Cookie {
     }
 
     toString() {
-        return `${urlEncode(this.name)}=${urlEncode(this.value)}`
+        return urlEncode(this.value, false);
+    }
+
+    static parse(setCookie: string): Cookie {
+        const attrs = setCookie.split("; ");
+
+        let cookieName = attrs[0].split("=")[0];
+        if (startsWith(cookieName, '"')) {
+            // noinspection TypeScriptValidateJSTypes
+            cookieName = cookieName.sub(2, cookieName.size() - 1);
+        }
+        cookieName = urlDecode(cookieName);
+
+        let cookieVal = attrs[0].split("=")[1];
+        if (startsWith(cookieVal, '"')) {
+            // noinspection TypeScriptValidateJSTypes
+            cookieVal = cookieVal.sub(2, cookieName.size() - 1);
+        }
+        cookieVal = urlDecode(cookieVal);
+
+        const cookie = new Cookie(cookieName, cookieVal);
+
+        attrs.remove(0);
+
+        return cookie
     }
 }
 
@@ -49,4 +74,22 @@ export type CookieJar = {
 
 export type RequestCookies = {
     [key: string]: string | Cookie
+}
+
+export const parseSetCookie = (setCookie: string | string[]): CookieJar => {
+    if (typeIs(setCookie, "string")) {
+        const cookie = Cookie.parse(setCookie);
+        return {
+            [cookie.name]: cookie
+        }
+    } else {
+        const cookies: CookieJar = {};
+
+        for (const [_, cookieStr] of ipairs(setCookie)) {
+            const cookie = Cookie.parse(cookieStr);
+            cookies[cookie.name] = cookie
+        }
+
+        return cookies
+    }
 }

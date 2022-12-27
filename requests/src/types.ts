@@ -1,4 +1,5 @@
 import {RequestCookies} from "./cookies";
+import {Form, FormFields, File} from "./form";
 
 export type Headers = {[key: string]: string}
 
@@ -45,6 +46,9 @@ export type RequestConfig = SessionConfig & {
 
     // request body
     data?: RequestData,
+    form?: Form | FormFields,
+    file?: File,
+    files?: File[],
     body?: string,
 
     queryString?: string

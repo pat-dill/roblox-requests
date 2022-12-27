@@ -1,6 +1,14 @@
 -- case-insensitive headers table
 -- e.g.: headers["content-type"] == headers["Content-Type"]
 
+local function convertKey(key)
+	key, _ = key:gsub("(%w+)", function (match)
+		return string.sub(match, 1, 1):upper() .. string.sub(match, 2):lower()
+	end)
+
+	return key
+end
+
 return {
     default = function (t)
         local nt = setmetatable({}, {
@@ -9,14 +17,14 @@ return {
                     return error("Headers only accept string keys")
                 end
 
-                return rawget(self, idx:lower())
+                return rawget(self, convertKey(idx))
             end,
             __newindex = function(self, idx, val)
                 if type(idx) ~= "string" then
                     return error("Headers only accept string keys")
                 end
 
-                rawset(self, idx:lower(), tostring(val))
+                rawset(self, convertKey(idx), tostring(val))
             end
         })
 
