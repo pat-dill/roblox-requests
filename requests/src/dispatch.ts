@@ -8,7 +8,7 @@ const RequestAsync = Promise.promisify((options: RequestAsyncRequest) => {
     return HttpService.RequestAsync(options);
 })
 
-export function dispatch(request: RequestConfig, session: Session): Promise<Response> {
+export function dispatch(request: RequestConfig,): Promise<[RequestAsyncResponse, number]> {
     return new Promise((resolve, reject) => {
         const st = tick();
 
@@ -21,7 +21,7 @@ export function dispatch(request: RequestConfig, session: Session): Promise<Resp
             .andThen((rawResponse) => {
                 const secs = tick() - st;
 
-                return resolve(new Response(request, rawResponse, secs, session));
+                return resolve([rawResponse, secs]);
             })
             .catch(reject);
     })

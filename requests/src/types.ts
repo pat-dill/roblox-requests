@@ -28,10 +28,6 @@ export interface SessionConfig {
     // timeout in seconds. 0 = no timeout created
     timeout?: number,
 
-    // whether to follow ratelimit
-    // if true old are queued and only sent 500/min
-    ratelimit?: boolean,
-
     // whether to throw error if !(200 <= status < 300)
     throwForStatus?: boolean,
 

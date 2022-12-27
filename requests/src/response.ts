@@ -3,6 +3,7 @@ import {endsWith} from "./utils";
 import createHeaders from "./headers";
 import {CookieJar, parseSetCookie} from "./cookies";
 import {Session} from "./session";
+
 const HttpService = game.GetService("HttpService");
 
 export class Response {
@@ -56,8 +57,10 @@ export class Response {
         ignoreWarning ??= !(this.request.contentTypeWarning);
 
         if (!ignoreWarning && !endsWith(this.contentType, "/json")) {
-            warn("You are calling json() on a response whose content type doesn't specify JSON." +
-                " You can disable this warning by setting http.config.contentTypeWarning = false");
+            warn(
+                "You are calling json() on a response whose content type doesn't specify JSON." +
+                " You can disable this warning by setting http.config.contentTypeWarning = false"
+            );
         }
 
         return HttpService.JSONDecode(this.content);

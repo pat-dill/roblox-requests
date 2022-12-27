@@ -41,7 +41,6 @@ export class Session {
             paramsArrayFormat: config.paramsArrayFormat ?? this.config.paramsArrayFormat,
 
             timeout: config.timeout ?? this.config.timeout,
-            ratelimit: config.ratelimit ?? this.config.ratelimit,
 
             body: config.body
         }
@@ -159,13 +158,16 @@ export class Session {
         // create promise that dispatches request
         let requestPromise: Promise<Response> = new Promise((resolve, reject) => {
             // dispatch request
-            const [success, responseOrRejection]: [boolean, Response | unknown] = dispatch(preparedRequest, this).await();
+            let [success, responseOrRejection]: [boolean, [RequestAsyncResponse, number] | unknown] = dispatch(preparedRequest).await();
 
             if (!success) {
                 return reject(responseOrRejection);
             }
 
-            const response = responseOrRejection as Response;
+            const dispatchResponse = responseOrRejection as [RequestAsyncResponse, number];
+
+            const [rawResponse, secs] = dispatchResponse;
+            const response = new Response(config, rawResponse, secs, this);
 
             if (config.throwForStatus && !response.ok) {
                 return reject({

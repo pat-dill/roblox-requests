@@ -10,7 +10,6 @@ local defaultSessionConfig = {
 	paramsSerializer = serializeParams,
 	transformData = transformData,
 	cookies = {},
-	ratelimit = true,
 	throwForStatus = true,
 	contentTypeWarning = true,
 }

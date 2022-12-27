@@ -3,6 +3,7 @@ local TS = require(script.Parent.include.RuntimeLib)
 local defaultSessionConfig = TS.import(script, script.Parent, "defaults").defaultSessionConfig
 local startsWith = TS.import(script, script.Parent, "utils").startsWith
 local dispatch = TS.import(script, script.Parent, "dispatch").dispatch
+local Response = TS.import(script, script.Parent, "response").Response
 local createHeaders = TS.import(script, script.Parent, "headers").default
 local Form = TS.import(script, script.Parent, "form").Form
 local Session
@@ -78,31 +79,25 @@ do
 			_condition = self.config.timeout
 		end
 		_object[_left_2] = _condition
-		local _left_3 = "ratelimit"
-		local _condition_1 = config.ratelimit
-		if _condition_1 == nil then
-			_condition_1 = self.config.ratelimit
-		end
-		_object[_left_3] = _condition_1
 		_object.body = config.body
 		local finalConfig = _object
 		-- handle baseURLs
-		local _condition_2 = config.url
-		if _condition_2 == nil then
-			_condition_2 = ""
+		local _condition_1 = config.url
+		if _condition_1 == nil then
+			_condition_1 = ""
 		end
-		local url = _condition_2
+		local url = _condition_1
 		if not (startsWith(url, "http://") or startsWith(url, "https://")) then
-			local _condition_3 = config.baseURL
-			if not (_condition_3 ~= "" and _condition_3) then
-				_condition_3 = self.config.baseURL
+			local _condition_2 = config.baseURL
+			if not (_condition_2 ~= "" and _condition_2) then
+				_condition_2 = self.config.baseURL
 			end
-			if _condition_3 ~= "" and _condition_3 then
-				local _condition_4 = config.baseURL
-				if not (_condition_4 ~= "" and _condition_4) then
-					_condition_4 = self.config.baseURL
+			if _condition_2 ~= "" and _condition_2 then
+				local _condition_3 = config.baseURL
+				if not (_condition_3 ~= "" and _condition_3) then
+					_condition_3 = self.config.baseURL
 				end
-				url = tostring(_condition_4) .. url
+				url = tostring(_condition_3) .. url
 			else
 				error(tostring(config.url) .. " is not an absolute URL and no baseURL was specified")
 			end
@@ -228,11 +223,15 @@ do
 		-- create promise that dispatches request
 		local requestPromise = TS.Promise.new(function(resolve, reject)
 			-- dispatch request
-			local success, responseOrRejection = dispatch(preparedRequest, self):await()
+			local success, responseOrRejection = dispatch(preparedRequest):await()
 			if not success then
 				return reject(responseOrRejection)
 			end
-			local response = responseOrRejection
+			local dispatchResponse = responseOrRejection
+			local _binding = dispatchResponse
+			local rawResponse = _binding[1]
+			local secs = _binding[2]
+			local response = Response.new(config, rawResponse, secs, self)
 			if config.throwForStatus and not response.ok then
 				return reject({
 					message = response.content,

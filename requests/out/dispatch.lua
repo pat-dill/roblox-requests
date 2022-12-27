@@ -1,11 +1,10 @@
 -- Compiled with roblox-ts v2.0.4
 local TS = require(script.Parent.include.RuntimeLib)
-local Response = TS.import(script, script.Parent, "response").Response
 local HttpService = game:GetService("HttpService")
 local RequestAsync = TS.Promise.promisify(function(options)
 	return HttpService:RequestAsync(options)
 end)
-local function dispatch(request, session)
+local function dispatch(request)
 	return TS.Promise.new(function(resolve, reject)
 		local st = tick()
 		RequestAsync({
@@ -15,7 +14,7 @@ local function dispatch(request, session)
 			Headers = request.headers,
 		}):andThen(function(rawResponse)
 			local secs = tick() - st
-			return resolve(Response.new(request, rawResponse, secs, session))
+			return resolve({ rawResponse, secs })
 		end):catch(reject)
 	end)
 end

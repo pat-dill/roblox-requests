@@ -14,7 +14,6 @@ export const defaultSessionConfig: SessionConfig = {
 
     cookies: {},
 
-    ratelimit: true,
     throwForStatus: true,
     contentTypeWarning: true
 }
