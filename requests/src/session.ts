@@ -53,7 +53,7 @@ export class Session {
             if (config.baseURL || this.config.baseURL) {
                 url = (config.baseURL || this.config.baseURL) + url;
             } else {
-                throw `${config.url} is not an absolute URL and no baseURL was specified`;
+                throw `${config.url} is not an absolute URL and no baseURL was set`;
             }
         }
 
@@ -86,7 +86,14 @@ export class Session {
         }
 
         // handle forms
-        // first, add any directly passed files to form
+
+        // first convert normal tables to form
+        if (config.form !== undefined) {
+            if (!config.form._isForm) {
+                config.form = new Form(config.form as FormFields);
+            }
+        }
+        //  add any directly passed files to form
         if (config.file) {
             config.files ??= [];
             config.files.push(config.file);
@@ -95,14 +102,14 @@ export class Session {
             config.form ??= new Form();
 
             for (let [i, file] of ipairs(config.files)) {
-                if (!file.isFile) {
+                if (!file._isFile) {
                     throw "Object passed in file argument is not a File";
                 }
 
-                const name = (config.files.size() === 1) ? "file" : `files[${i-1}]`;
+                const name = (config.files.size() === 1) ? "file" : `files[${i - 1}]`;
 
                 // cannot use (config.form as Form).set() because it compiles to
-                // (config.form):set(), which is considered ambiguous and causes an error
+                // (config.form):set(), which is considered ambiguous by lua and causes an error
                 let _form = config.form as Form;
                 _form.set(name, file);
             }
@@ -112,10 +119,10 @@ export class Session {
         if (config.form) {
             if (finalConfig.body) {
                 warn("Request body is being overridden by form data. You may be passing multiple" +
-                     " types of data, such as JSON and a form. Only the form will be sent")
+                    " types of data, such as JSON and a form. Only the form will be sent")
             }
 
-            if (!config.form.isForm) {
+            if (!config.form._isForm) {
                 // convert table to form
                 config.form = new Form(config.form as FormFields);
             }
@@ -152,6 +159,11 @@ export class Session {
         return finalConfig;
     }
 
+    /**
+     * Returns a Promise that sends an HTTP request based on the passed configuration.
+     *
+     * @param config - Config used to send request
+     */
     request(config: RequestConfig): Promise<Response> {
         const preparedRequest = this.prepareRequest(config);
 
@@ -196,6 +208,12 @@ export class Session {
 
     // shortcut functions
 
+    /**
+     * Returns a Promise that sends a GET request.
+     *
+     * @param url - URL to send request to
+     * @param config - Partial request config
+     */
     get(url: string, config?: GetRequestConfig): Promise<Response> {
         return this.request({
             ...config,
@@ -217,10 +235,10 @@ export class Session {
 
         if (!data) {
             newConfig.data = undefined;
-        } else if ((data as Form).isForm) {
+        } else if ((data as Form)._isForm) {
             // data is form
             newConfig.form = data as Form;
-        } else if ((data as File).isFile) {
+        } else if ((data as File)._isFile) {
             // add file to form
             newConfig.form = new Form({
                 file: data as File

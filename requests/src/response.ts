@@ -7,7 +7,7 @@ import {Session} from "./session";
 const HttpService = game.GetService("HttpService");
 
 export class Response {
-    readonly isResponse: true;
+    readonly _isResponse: true;
 
     readonly request: RequestConfig;
     readonly url: string;
@@ -23,7 +23,7 @@ export class Response {
     private _session: Session;
 
     constructor(request: RequestConfig, rawResponse: RequestAsyncResponse, time: number, session: Session) {
-        this.isResponse = true;
+        this._isResponse = true;
         this._session = session
 
         this.request = request;

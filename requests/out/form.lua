@@ -45,7 +45,7 @@ do
 		return self:constructor(...) or self
 	end
 	function File:constructor(nameOrContent, content, contentType)
-		self.isFile = true
+		self._isFile = true
 		self.name = nil
 		if content ~= nil then
 			self.name = nameOrContent
@@ -99,7 +99,7 @@ do
 		return self:constructor(...) or self
 	end
 	function Form:constructor(fields)
-		self.isForm = true
+		self._isForm = true
 		self.fields = fields or {}
 	end
 	function Form:set(fieldsOrName, value)
@@ -121,7 +121,7 @@ do
 	end
 	function Form:hasFile()
 		for k, v in pairs(self.fields) do
-			if type(v) == "table" and v.isFile then
+			if type(v) == "table" and v._isFile then
 				return true
 			end
 		end
@@ -141,7 +141,7 @@ do
 			local _v = v
 			local _condition = type(_v) == "table"
 			if _condition then
-				_condition = v.isFile
+				_condition = v._isFile
 			end
 			if _condition then
 				-- value is file

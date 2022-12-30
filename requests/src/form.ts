@@ -24,7 +24,7 @@ const randomString = (length: number) => {
 }
 
 export class File {
-    isFile: true;
+    _isFile: true;
     name?: string;
     content: string;
     contentType: string;
@@ -33,7 +33,7 @@ export class File {
     constructor(name: string | undefined, content?: string, contentType?: string);
 
     constructor(nameOrContent: string, content?: string, contentType?: string) {
-        this.isFile = true;
+        this._isFile = true;
 
         this.name = undefined;
         if (content !== undefined) {
@@ -68,11 +68,11 @@ type FormValue = string | number | string[] | File
 export type FormFields = {[key: string]: FormValue};
 
 export class Form {
-    isForm: true;
+    _isForm: true;
     fields: FormFields;
 
     constructor(fields?: FormFields) {
-        this.isForm = true;
+        this._isForm = true;
         this.fields = fields ?? {};
     }
 
@@ -93,7 +93,7 @@ export class Form {
 
     private hasFile() {
         for (const [k, v] of pairs(this.fields)) {
-            if (typeIs(v, "table") && (v as File).isFile) {
+            if (typeIs(v, "table") && (v as File)._isFile) {
                 return true;
             }
         }
@@ -119,7 +119,7 @@ export class Form {
         for (let [k, v] of pairs(this.fields)) {
             body += `--${boundary}\r\nContent-Disposition: form-data; name="${k}"`;
 
-            if (typeIs(v, "table") && (v as File).isFile) {
+            if (typeIs(v, "table") && (v as File)._isFile) {
                 // value is file
                 v = v as File;
 

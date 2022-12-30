@@ -99,7 +99,7 @@ do
 				end
 				url = tostring(_condition_3) .. url
 			else
-				error(tostring(config.url) .. " is not an absolute URL and no baseURL was specified")
+				error(tostring(config.url) .. " is not an absolute URL and no baseURL was set")
 			end
 		end
 		-- next handle query string parameters
@@ -139,7 +139,14 @@ do
 			end
 		end
 		-- handle forms
-		-- first, add any directly passed files to form
+		-- first convert normal tables to form
+		if config.form ~= nil then
+			local _value_1 = config.form._isForm
+			if not (_value_1 ~= 0 and (_value_1 == _value_1 and (_value_1 ~= "" and _value_1))) then
+				config.form = Form.new(config.form)
+			end
+		end
+		-- add any directly passed files to form
 		if config.file then
 			if config.files == nil then
 				config.files = {}
@@ -153,12 +160,12 @@ do
 				config.form = Form.new()
 			end
 			for i, file in ipairs(config.files) do
-				if not file.isFile then
+				if not file._isFile then
 					error("Object passed in file argument is not a File")
 				end
 				local name = if (#config.files == 1) then "file" else "files[" .. (tostring(i - 1) .. "]")
 				-- cannot use (config.form as Form).set() because it compiles to
-				-- (config.form):set(), which is considered ambiguous and causes an error
+				-- (config.form):set(), which is considered ambiguous by lua and causes an error
 				local _form = config.form
 				_form:set(name, file)
 			end
@@ -169,7 +176,7 @@ do
 			if _value_1 ~= "" and _value_1 then
 				warn("Request body is being overridden by form data. You may be passing multiple" .. " types of data, such as JSON and a form. Only the form will be sent")
 			end
-			local _value_2 = config.form.isForm
+			local _value_2 = config.form._isForm
 			if not (_value_2 ~= 0 and (_value_2 == _value_2 and (_value_2 ~= "" and _value_2))) then
 				-- convert table to form
 				config.form = Form.new(config.form)
@@ -278,10 +285,10 @@ do
 		local newConfig = _object
 		if not (data ~= 0 and (data == data and (data ~= "" and data))) then
 			newConfig.data = nil
-		elseif data.isForm then
+		elseif data._isForm then
 			-- data is form
 			newConfig.form = data
-		elseif data.isFile then
+		elseif data._isFile then
 			-- add file to form
 			newConfig.form = Form.new({
 				file = data,

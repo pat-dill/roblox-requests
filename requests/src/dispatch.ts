@@ -14,7 +14,7 @@ export function dispatch(request: RequestConfig,): Promise<[RequestAsyncResponse
 
         RequestAsync({
             Url: request.url as string,
-            Method: request.method.upper() as "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "PATCH",
+            Method: request.method.upper() as RequestAsyncRequest["Method"],
             Body: request.body,
             Headers: request.headers
         })
