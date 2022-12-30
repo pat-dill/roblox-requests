@@ -17,7 +17,7 @@ do
 		return self:constructor(...) or self
 	end
 	function Response:constructor(request, rawResponse, time, session)
-		self.isResponse = true
+		self._isResponse = true
 		self._session = session
 		self.request = request
 		self.url = request.url

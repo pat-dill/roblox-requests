@@ -5,16 +5,25 @@ local _form = TS.import(script, script, "form")
 local File = _form.File
 local Form = _form.Form
 local defaultSession = Session.new()
+-- default config for editing
 local config = defaultSession.config
+-- creates new session
+local session = function(config)
+	return Session.new(config)
+end
+-- creates file
 local file = function(nameOrContent, content, contentType)
 	return File.new(nameOrContent, content, contentType)
 end
+-- creates form
 local form = function(fields)
 	return Form.new(fields)
 end
+-- sends request
 local request = function(config)
 	return defaultSession:request(config)
 end
+-- shortcuts
 local get = function(url, config)
 	return defaultSession:get(url, config)
 end
@@ -38,6 +47,7 @@ local patch = function(url, data, config)
 end
 return {
 	config = config,
+	session = session,
 	file = file,
 	form = form,
 	request = request,
