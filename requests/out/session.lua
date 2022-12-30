@@ -108,20 +108,7 @@ do
 			if not transformParams then
 				error("URL parameters were passed but no paramsSerializer was found")
 			end
-			local _object_3 = {}
-			local _spread_4 = self.config.params
-			if type(_spread_4) == "table" then
-				for _k, _v in _spread_4 do
-					_object_3[_k] = _v
-				end
-			end
-			local _spread_5 = config.params
-			if type(_spread_5) == "table" then
-				for _k, _v in _spread_5 do
-					_object_3[_k] = _v
-				end
-			end
-			local queryString = transformParams(_object_3, finalConfig)
+			local queryString = transformParams(finalConfig.params, finalConfig)
 			-- append if URL already included a query string
 			local _value = (string.find(url, "%?"))
 			url ..= (if _value ~= 0 and (_value == _value and _value) then "&" else "?") .. queryString

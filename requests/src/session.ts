@@ -1,4 +1,4 @@
-import {GetRequestConfig, Headers, PostRequestConfig, RequestConfig, RequestData, SessionConfig} from "./types";
+import {GetRequestConfig, Headers, Params, PostRequestConfig, RequestConfig, RequestData, SessionConfig} from "./types";
 import {defaultSessionConfig} from "./defaults";
 import {startsWith} from "./utils";
 import {dispatch} from "./dispatch";
@@ -65,7 +65,7 @@ export class Session {
             }
 
             const queryString = transformParams(
-                {...this.config.params, ...config.params},
+                finalConfig.params as Params,
                 finalConfig  // current config state is passed so transformer knows array format
             );
 
