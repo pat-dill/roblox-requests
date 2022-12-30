@@ -122,11 +122,6 @@ export class Session {
                     " types of data, such as JSON and a form. Only the form will be sent")
             }
 
-            if (!config.form._isForm) {
-                // convert table to form
-                config.form = new Form(config.form as FormFields);
-            }
-
             const [body, contentType] = (config.form as Form).build();
 
             finalConfig.headers ??= createHeaders();

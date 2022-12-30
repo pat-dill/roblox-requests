@@ -163,11 +163,6 @@ do
 			if _value_1 ~= "" and _value_1 then
 				warn("Request body is being overridden by form data. You may be passing multiple" .. " types of data, such as JSON and a form. Only the form will be sent")
 			end
-			local _value_2 = config.form._isForm
-			if not (_value_2 ~= 0 and (_value_2 == _value_2 and (_value_2 ~= "" and _value_2))) then
-				-- convert table to form
-				config.form = Form.new(config.form)
-			end
 			local body, contentType = (config.form):build()
 			if finalConfig.headers == nil then
 				finalConfig.headers = createHeaders()
