@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local TS = require(script.Parent.include.RuntimeLib)
 local _utils = TS.import(script, script.Parent, "utils")
 local endsWith = _utils.endsWith
@@ -76,7 +76,7 @@ do
 		if startsWith(cookieVal, '"') then
 			-- noinspection TypeScriptValidateJSTypes
 			local _cookieVal = cookieVal
-			local _arg1 = #cookieName - 1
+			local _arg1 = #cookieVal - 1
 			cookieVal = string.sub(_cookieVal, 2, _arg1)
 		end
 		cookieVal = urlDecode(cookieVal)

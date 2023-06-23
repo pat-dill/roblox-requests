@@ -92,7 +92,7 @@ export class Form {
     }
 
     private hasFile() {
-        for (const [k, v] of pairs(this.fields)) {
+        for (const [, v] of pairs(this.fields)) {
             if (typeIs(v, "table") && (v as File)._isFile) {
                 return true;
             }
@@ -111,7 +111,7 @@ export class Form {
         ] as LuaTuple<[string, string]>;
     }
 
-    // Buids multipart encoded form
+    // Builds multipart encoded form
     buildMultipart(): LuaTuple<[string, string]> {
         const boundary = "--FormBoundary-" + randomString(28);
         let body = "";
@@ -144,7 +144,7 @@ export class Form {
     }
 
     /*
-    Builds form into HTTP body - either mulipart form or URL encoded.
+    Builds form into HTTP body - either multipart form or URL encoded.
     If content type isn't specified, it will be URL encoded unless a file is present.
      */
     build(contentType?: "multipart" | "url"): LuaTuple<[string, string]> {

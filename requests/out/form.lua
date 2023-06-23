@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local TS = require(script.Parent.include.RuntimeLib)
 local mimes = TS.import(script, script.Parent, "mimes").default
 local base64 = TS.import(script, script.Parent, "base64")
@@ -120,7 +120,7 @@ do
 		end
 	end
 	function Form:hasFile()
-		for k, v in pairs(self.fields) do
+		for _, v in pairs(self.fields) do
 			if type(v) == "table" and v._isFile then
 				return true
 			end

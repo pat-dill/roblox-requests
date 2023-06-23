@@ -46,11 +46,6 @@ export class Response {
         } else {
             this.cookies = {}
         }
-
-        this._session.config.cookies ??= {};
-        for (const [name, cookie] of pairs(this.cookies)) {
-            this._session.config.cookies[name] = cookie;
-        }
     }
 
     json(ignoreWarning?: boolean) {

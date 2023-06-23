@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local default = {
 	["123"] = "application/vnd.lotus-1-2-3",
 	ez = "application/andrew-inset",

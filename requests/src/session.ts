@@ -183,6 +183,15 @@ export class Session {
                 });
             }
 
+            // add cookies
+
+            this.config.cookies ??= {};
+            for (const [name, cookie] of pairs(response.cookies)) {
+                this.config.cookies[name] = cookie;
+            }
+
+            // resolve
+
             return resolve(response);
         });
 
@@ -217,14 +226,10 @@ export class Session {
         });
     }
 
-    // _shortcutPrepareConfig(url: string, data?: RequestData | Form | File, config?: PostRequestConfig) {
-    //
-    // }
-
-    post(url: string, data?: RequestData | Form | File, config?: PostRequestConfig): Promise<Response> {
+    _createConfigFromData<T>(url: string, method: RequestConfig["method"], data?: RequestData | Form | File, baseConfig?: T): RequestConfig {
         let newConfig: RequestConfig = {
-            ...config,
-            method: "post",
+            ...baseConfig,
+            method,
             url: url,
         }
 
@@ -242,25 +247,25 @@ export class Session {
             newConfig.data = data as RequestData;
         }
 
+        return newConfig;
+    }
+
+    post(url: string, data?: RequestData | Form | File, config?: PostRequestConfig): Promise<Response> {
+        const newConfig = this._createConfigFromData(url, "post", data, config);
+
         return this.request(newConfig)
     }
 
-    put(url: string, data?: RequestData, config?: PostRequestConfig): Promise<Response> {
-        return this.request({
-            ...config,
-            method: "put",
-            url: url,
-            data: data
-        })
+    put(url: string, data?: RequestData | Form | File, config?: PostRequestConfig): Promise<Response> {
+        const newConfig = this._createConfigFromData(url, "put", data, config);
+
+        return this.request(newConfig)
     }
 
     patch(url: string, data?: RequestData, config?: PostRequestConfig): Promise<Response> {
-        return this.request({
-            ...config,
-            method: "patch",
-            url: url,
-            data: data
-        })
+        const newConfig = this._createConfigFromData(url, "patch", data, config);
+
+        return this.request(newConfig)
     }
 
     delete(url: string, config?: GetRequestConfig): Promise<Response> {

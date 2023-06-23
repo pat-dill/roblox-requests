@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local TS = require(script.Parent.include.RuntimeLib)
 local createHeaders = TS.import(script, script.Parent, "headers").default
 local serializeParams = TS.import(script, script.Parent, "params").default

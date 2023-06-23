@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local TS = require(script.Parent.include.RuntimeLib)
 local endsWith = TS.import(script, script.Parent, "utils").endsWith
 local createHeaders = TS.import(script, script.Parent, "headers").default
@@ -38,13 +38,6 @@ do
 			self.cookies = parseSetCookie(self.headers["set-cookie"])
 		else
 			self.cookies = {}
-		end
-		local _exp = self._session.config
-		if _exp.cookies == nil then
-			_exp.cookies = {}
-		end
-		for name, cookie in pairs(self.cookies) do
-			self._session.config.cookies[name] = cookie
 		end
 	end
 	function Response:json(ignoreWarning)

@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local TS = require(script.Parent.include.RuntimeLib)
 local defaultSessionConfig = TS.import(script, script.Parent, "defaults").defaultSessionConfig
 local startsWith = TS.import(script, script.Parent, "utils").startsWith
@@ -227,6 +227,15 @@ do
 					response = response,
 				})
 			end
+			-- add cookies
+			local _exp = self.config
+			if _exp.cookies == nil then
+				_exp.cookies = {}
+			end
+			for name, cookie in pairs(response.cookies) do
+				self.config.cookies[name] = cookie
+			end
+			-- resolve
 			return resolve(response)
 		end)
 		if preparedRequest.timeout ~= nil then
@@ -255,14 +264,14 @@ do
 		_object.url = url
 		return _fn:request(_object)
 	end
-	function Session:post(url, data, config)
+	function Session:_createConfigFromData(url, method, data, baseConfig)
 		local _object = {}
-		if type(config) == "table" then
-			for _k, _v in config do
+		if type(baseConfig) == "table" then
+			for _k, _v in baseConfig do
 				_object[_k] = _v
 			end
 		end
-		_object.method = "post"
+		_object.method = method
 		_object.url = url
 		local newConfig = _object
 		if not (data ~= 0 and (data == data and (data ~= "" and data))) then
@@ -278,33 +287,19 @@ do
 		else
 			newConfig.data = data
 		end
+		return newConfig
+	end
+	function Session:post(url, data, config)
+		local newConfig = self:_createConfigFromData(url, "post", data, config)
 		return self:request(newConfig)
 	end
 	function Session:put(url, data, config)
-		local _fn = self
-		local _object = {}
-		if type(config) == "table" then
-			for _k, _v in config do
-				_object[_k] = _v
-			end
-		end
-		_object.method = "put"
-		_object.url = url
-		_object.data = data
-		return _fn:request(_object)
+		local newConfig = self:_createConfigFromData(url, "put", data, config)
+		return self:request(newConfig)
 	end
 	function Session:patch(url, data, config)
-		local _fn = self
-		local _object = {}
-		if type(config) == "table" then
-			for _k, _v in config do
-				_object[_k] = _v
-			end
-		end
-		_object.method = "patch"
-		_object.url = url
-		_object.data = data
-		return _fn:request(_object)
+		local newConfig = self:_createConfigFromData(url, "patch", data, config)
+		return self:request(newConfig)
 	end
 	function Session:delete(url, config)
 		local _fn = self

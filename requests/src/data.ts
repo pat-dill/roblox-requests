@@ -8,7 +8,7 @@ export default function transformData(data: RequestData, config: RequestConfig) 
     } else {
         if (typeIs(data, "table")) {
             config.headers ??= {};
-            config.headers["Content-Type"] = "application/json";
+            config.headers["Content-Type"] ??= "application/json";
         }
 
         return HttpService.JSONEncode(data);

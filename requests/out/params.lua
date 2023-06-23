@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local TS = require(script.Parent.include.RuntimeLib)
 local _urlencode = TS.import(script, script.Parent, "urlencode")
 local urlEncode = _urlencode.urlEncode

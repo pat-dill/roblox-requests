@@ -56,7 +56,7 @@ export class Cookie {
         let cookieVal = attrs[0].split("=")[1];
         if (startsWith(cookieVal, '"')) {
             // noinspection TypeScriptValidateJSTypes
-            cookieVal = cookieVal.sub(2, cookieName.size() - 1);
+            cookieVal = cookieVal.sub(2, cookieVal.size() - 1);
         }
         cookieVal = urlDecode(cookieVal);
 

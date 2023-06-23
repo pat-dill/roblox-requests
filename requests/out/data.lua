@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local HttpService = game:GetService("HttpService")
 local function transformData(data, config)
 	local _data = data
@@ -10,7 +10,10 @@ local function transformData(data, config)
 			if config.headers == nil then
 				config.headers = {}
 			end
-			config.headers["Content-Type"] = "application/json"
+			local _exp = config.headers
+			if _exp["Content-Type"] == nil then
+				_exp["Content-Type"] = "application/json"
+			end
 		end
 		return HttpService:JSONEncode(data)
 	end

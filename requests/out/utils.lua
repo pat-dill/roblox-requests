@@ -1,4 +1,4 @@
--- Compiled with roblox-ts v2.0.4
+-- Compiled with roblox-ts v2.1.0
 local startsWith = function(text, val)
 	local _text = text
 	local _arg1 = #val
