@@ -103,7 +103,7 @@ do
 		self.fields = fields or {}
 	end
 	function Form:set(fieldsOrName, value)
-		if value ~= 0 and (value == value and (value ~= "" and value)) then
+		if value ~= nil then
 			local _fieldsOrName = fieldsOrName
 			if not (type(_fieldsOrName) == "string") then
 				error("Field name must be string")

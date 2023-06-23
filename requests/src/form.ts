@@ -80,7 +80,7 @@ export class Form {
     set(fields: FormFields): void;
 
     set(fieldsOrName: string | FormFields, value?: FormValue) {
-        if (value) {
+        if (value !== undefined) {
             if (!typeIs(fieldsOrName, "string")) throw "Field name must be string";
             this.fields[fieldsOrName] = value;
         } else {
